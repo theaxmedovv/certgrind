@@ -1,0 +1,2 @@
+# certgrind
+sertifikat uchun mashq
