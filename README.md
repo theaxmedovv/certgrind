@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎯 Bilimdon
 
 Maktab o'quvchilari uchun real vaqtda ishlaydigan, ko'chirishga qarshi himoyali onlayn test-o'yin platformasi (Kahoot uslubida).
@@ -107,3 +108,7 @@ Takroriy importda mavjud mavzu, savol va to'plamlar qayta yaratilmaydi; xatoli q
 - Taqsimot usullari: teng (qoldiq tasodifiy mavzularga), proporsional, oxirgi mavzuga urg'u (40%), to'liq tasodifiy. Jami doim tanlangan songa aynan teng; mavzuda savol yetmasa ortgan qism boshqalarga o'tadi; hech bir mavzu 0 olmaydi (son mavzulardan kam bo'lgan holat bundan mustasno).
 - Qo'lda [−]/[+] — farq qulflanmagan mavzulardan olinadi/qo'shiladi, o'zgargan mavzu 🔒 bo'ladi; «Avtomatikka qaytarish» qulflarni olib tashlaydi. Qo'lda sozlangan taqsimot to'plamda saqlanadi va «Qayta aralashtirish» da ham o'zgarmaydi.
 - «Barcha to'plamlarni yaratish» zinapoyasiga «barcha mavzular → 100 ta» qo'shilgan. Xona yaratishda vaqt tavsiyasi: har savolga ~30 soniya.
+=======
+# certgrind
+sertifikat uchun mashq
+>>>>>>> c4b84e7f77e7b281fe34e7e44dcc82923fce7c92
