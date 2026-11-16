@@ -1,0 +1,5 @@
+{
+  "skillOverrides": {
+    "anthropic-skills:morning": "name-only"
+  }
+}

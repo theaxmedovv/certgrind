@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ room.name }} — ekran{% endblock %}
+{% block body_class %}bg-student-anim kid overflow-hidden{% endblock %}
+{% block body %}
+<div x-data="teacherRoom({{ room.id }}, 'projector')" @click.once="Sfx.unlock()" x-cloak class="min-h-screen p-6 lg:p-10 flex flex-col relative">
+  <div class="floaters" aria-hidden="true"><span style="left:6%;top:12%">?</span><span style="left:88%;top:20%;animation-delay:-3s">★</span><span style="left:12%;top:74%;animation-delay:-6s">◆</span><span style="left:80%;top:78%;animation-delay:-9s">●</span></div>
+
+  <div class="relative z-10 flex items-center justify-between">
+    <div class="font-kid font-extrabold text-3xl lg:text-5xl">🧠 Bilimdon</div>
+    <h1 class="font-kid font-extrabold text-2xl lg:text-4xl opacity-90 truncate max-w-[50%]">{{ room.name }}</h1>
+    <button @click="toggleSound()" class="text-3xl opacity-70 hover:opacity-100" aria-label="Ovoz" x-text="soundOn ? '🔔' : '🔕'"></button>
+  </div>
+
+  <!-- KUTISH: QR + raqam -->
+  <div x-show="status==='waiting'" class="relative z-10 flex-1 grid lg:grid-cols-2 gap-10 items-center max-w-[1700px] mx-auto w-full">
+    <div class="text-center">
+      <div class="inline-block bg-white p-5 rounded-[2rem] shadow-2xl anim-pop"><img src="{% url 'room_qr' room.pk %}" alt="QR-kod" class="w-72 h-72 lg:w-[30rem] lg:h-[30rem]"></div>
+      <p class="mt-4 text-xl lg:text-3xl font-extrabold">📱 QR-kodni telefon kamerasi bilan skanerlang</p>
+    </div>
+    <div class="text-center">
+      <p class="text-2xl lg:text-4xl font-extrabold opacity-90">Xona raqami</p>
+      <div class="font-kid font-extrabold text-[5.5rem] lg:text-[11rem] leading-none tracking-[.12em] text-sun drop-shadow-2xl num">{{ room.code }}</div>
+      <p class="mt-3 text-lg lg:text-2xl opacity-80 break-all font-bold">{{ join_url }}</p>
+      <div class="mt-6 inline-flex items-center gap-4 bg-white/15 rounded-3xl px-8 py-4">
+        <span class="text-2xl lg:text-4xl font-extrabold">Kirganlar:</span>
+        <span class="font-kid font-extrabold text-5xl lg:text-7xl text-sun num" x-countup="counts.total">0</span>
+      </div>
+      <div class="flex flex-wrap justify-center gap-3 mt-6 max-h-56 overflow-hidden">
+        <template x-for="p in waitingList" :key="p.id">
+          <div class="flex items-center gap-2 bg-white/15 rounded-2xl pl-1 pr-4 py-1 anim-pop">
+            <div class="w-12 h-12 rounded-full overflow-hidden" x-avatar="p.avatar"></div><span class="text-xl font-bold" x-text="p.name"></span>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- JARAYON: taymer, progress, Top 10 -->
+  <div x-show="status==='running' || status==='paused'" class="relative z-10 flex-1 max-w-5xl mx-auto w-full">
+    <div class="text-center my-3">
+      <div class="font-kid font-extrabold text-8xl lg:text-[9rem] leading-none num" :class="remaining<60 ? 'text-bad anim-flash' : ''" x-text="fmt(remaining)"></div>
+      <div class="text-3xl font-extrabold" x-show="status==='paused'">⏸ Pauza</div>
+    </div>
+    <div class="max-w-3xl mx-auto mb-4">
+      <div class="flex justify-between text-lg font-bold mb-1"><span>Test vaqti</span><span class="num"><span x-text="progressPct"></span>% · tugatgan <span x-text="counts.finished"></span>/<span x-text="counts.total"></span></span></div>
+      <div class="h-5 rounded-full bg-white/20 overflow-hidden"><div class="h-full rounded-full bg-sun transition-all duration-700" :style="`width:${progressPct}%`"></div></div>
+    </div>
+    <div class="rank-list" :style="`height:${Math.min(10, snap.participants.filter(p => p.rank).length) * 72}px`">
+      <template x-for="p in snap.participants.filter(p => p.rank && p.rank <= 10 && p.status !== 'kicked').slice(0, 10)" :key="p.id">
+        <div class="rank-row flex items-center gap-4 rounded-2xl px-5 h-16 bg-white/15 text-2xl lg:text-3xl" :style="`transform:translateY(${snap.participants.filter(x => x.rank && x.rank <= 10 && x.status !== 'kicked').slice(0,10).findIndex(x => x.id === p.id) * 72}px)`">
+          <span class="w-12 font-kid font-extrabold" x-text="p.rank"></span>
+          <span class="w-12 h-12 rounded-full overflow-hidden flex-none" x-avatar="p.avatar"></span>
+          <span class="flex-1 truncate font-bold" x-text="p.name"></span>
+          <span class="text-lg opacity-70" x-text="p.school_class"></span>
+          <span class="font-kid font-extrabold w-36 text-right num" x-text="p.score"></span>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- super-kuch hodisalari lentasi -->
+  <div x-show="ticker.length && status!=='waiting'" class="fixed bottom-4 left-4 z-20 space-y-2">
+    <template x-for="t in ticker" :key="t.id"><div class="bg-black/60 rounded-2xl px-5 py-2 text-xl font-bold anim-slide" x-text="t.text"></div></template>
+  </div>
+
+  <!-- PODIUM -->
+  <div x-show="status==='finished'" class="relative z-10 flex-1 flex flex-col justify-center">
+    <h2 class="text-center font-kid font-extrabold text-5xl lg:text-7xl">🏆 G'oliblar 🏆</h2>
+    <div class="scale-110 lg:scale-125 origin-bottom mt-6">{% include "partials/podium.html" with items="snap.podium" %}</div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/teacher.js"></script>{% endblock %}

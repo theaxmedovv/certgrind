@@ -1,0 +1,221 @@
+{% extends "teacher/base.html" %}
+{% block title %}Yangi to'plam — Bilimdon{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold mb-4">To'plam generatori</h1>
+{% if not subjects %}
+<div class="card p-10 text-center"><p class="font-bold">Avval fan va savollar kerak</p><a href="{% url 'question_import' %}" class="btn-3d btn-brand mt-3">Excel import</a></div>
+{% else %}
+{{ topics_json|json_script:"topics-data" }}
+{% if errors %}<div class="rounded-2xl bg-bad/10 border border-bad text-bad-dark dark:text-bad p-3 mb-4 font-semibold">{% for e in errors %}<div>• {{ e }}</div>{% endfor %}</div>{% endif %}
+<form method="post" class="grid lg:grid-cols-3 gap-6" x-data="gen()">
+  {% csrf_token %}
+  <input type="hidden" name="alloc" :value="allocJson">
+  <div class="lg:col-span-2 space-y-5">
+    <section class="card p-5">
+      <h2 class="font-bold mb-3">1. Fan va tur</h2>
+      <select name="subject" x-model="sid" @change="reset()" class="input mb-3">{% for s in subjects %}<option value="{{ s.pk }}" {% if subject.pk == s.pk %}selected{% endif %}>{{ s.name }}</option>{% endfor %}</select>
+      <div class="grid sm:grid-cols-3 gap-2">
+        <label class="chip justify-center py-3 cursor-pointer" :class="type==='topic' && 'on'"><input type="radio" name="set_type" value="topic" x-model="type" class="sr-only">📘 Mavzu to'plami</label>
+        <label class="chip justify-center py-3 cursor-pointer" :class="type==='cumulative' && 'on'"><input type="radio" name="set_type" value="cumulative" x-model="type" class="sr-only">📚 Yig'ma</label>
+        <label class="chip justify-center py-3 cursor-pointer" :class="type==='mixed' && 'on'"><input type="radio" name="set_type" value="mixed" x-model="type" class="sr-only">🎲 Aralash</label>
+      </div>
+    </section>
+
+    <section class="card p-5">
+      <h2 class="font-bold mb-3">2. Mavzular</h2>
+      <p class="muted text-sm" x-show="!topics.length">Bu fanda mavzu yo'q.</p>
+      <div x-show="type==='topic'"><select name="topic" x-model="one" class="input"><template x-for="t in topics" :key="t.id"><option :value="t.id" x-text="t.order + '. ' + t.name + ' (' + t.n + ' ta savol)'"></option></template></select></div>
+      <div x-show="type==='cumulative'">
+        <label class="text-sm font-bold">Qaysi mavzugacha: <span class="text-brand num" x-text="'1–' + upto"></span> <span class="muted font-normal" x-text="'(' + (topics[upto-1]?.name || '') + ')'"></span></label>
+        <input type="range" name="upto" min="2" :max="Math.max(2, topics.length)" x-model.number="upto" class="w-full accent-brand" :disabled="topics.length < 2">
+      </div>
+      <div x-show="type==='mixed'" class="grid sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto scroll-thin">
+        <template x-for="t in topics" :key="t.id"><label class="flex items-center gap-2 rounded-xl border border-line p-2 cursor-pointer"><input type="checkbox" name="topics" :value="t.id" x-model="many" class="accent-brand"><span class="flex-1 truncate" x-text="t.order + '. ' + t.name"></span><span class="muted text-xs num" x-text="t.n"></span></label></template>
+      </div>
+    </section>
+
+    <section class="card p-5">
+      <h2 class="font-bold mb-3">3. Savollar soni <span class="muted font-normal text-sm">({{ min_size }} dan {{ max_size }} gacha)</span></h2>
+      <div class="flex flex-wrap items-center gap-3 mb-3">
+        <input type="range" min="{{ min_size }}" max="{{ max_size }}" step="5" x-model.number="size" class="flex-1 min-w-[160px] accent-brand" aria-label="Savollar soni">
+        <input type="number" name="size" min="{{ min_size }}" max="{{ max_size }}" x-model.number="size" @change="clampSize()" class="input !w-24 !py-1.5 num" aria-label="Hajm">
+      </div>
+      <div class="flex flex-wrap gap-2 mb-3">
+        {% for n in sizes %}<button type="button" class="chip" :class="size==={{ n }} && 'on'" @click="size={{ n }}">{{ n }}</button>{% endfor %}
+      </div>
+      <p class="text-sm font-semibold" x-show="topics.length && chosen.length">Tanlandi: <b class="num" x-text="chosen.length"></b> ta mavzu · bazada <b class="num" x-text="avail"></b> ta savol · testga <b class="num text-brand" x-text="eff"></b> ta tushadi</p>
+      <p class="text-sm text-bad-dark font-semibold" x-show="!sizeOk">Son {{ min_size }} dan {{ max_size }} gacha bo'lishi kerak</p>
+
+      <div class="rounded-2xl border-2 border-sun bg-sun/15 p-3 mt-3 text-sm space-y-2" x-show="sizeOk && chosen.length && size > avail">
+        <p class="font-bold" x-text="shortHint"></p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="btn-3d btn-sun sm" @click="size = avail" :disabled="avail < {{ min_size }}" x-text="'Sonni ' + avail + ' ga tushirish'"></button>
+          <button type="button" class="btn-3d btn-ghost sm" @click="addTopics()" x-show="need.add.length">Mavzu qo'shish (+<span x-text="need.add.length"></span>)</button>
+        </div>
+      </div>
+      <p class="text-sm text-sun-dark font-bold mt-2" x-show="sizeOk && chosen.length > size">Hamma mavzudan savol tushmaydi, mavzular tasodifiy tanlanadi</p>
+
+      <button type="button" class="btn-3d btn-ghost sm mt-3" @click="autoTopics()" :disabled="!topics.length">✨ Mavzularni avtomatik tanlash</button>
+      <span class="muted text-xs ml-2">1-mavzudan boshlab, tanlangan songa yetadigan mavzularni belgilaydi</span>
+    </section>
+
+    <section class="card p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <h2 class="font-bold">4. Taqsimot</h2>
+        <button type="button" class="btn-3d btn-ghost sm" @click="resetLocks()" x-show="rows.some(r => r.locked)">↺ Avtomatikka qaytarish</button>
+      </div>
+      <div class="space-y-1 mb-4">
+        {% for v, l in dists %}<label class="flex items-center gap-2"><input type="radio" name="distribution" value="{{ v }}" x-model="method" class="accent-brand"> {{ l }}{% if v == 'latest_focus' %} <span class="muted text-xs">(oxirgi mavzudan 40%)</span>{% elif v == 'random' %} <span class="muted text-xs">(hamma savol bitta hovuzdan)</span>{% endif %}</label>{% endfor %}
+      </div>
+
+      <p class="text-sm text-sun-dark font-bold mb-2" x-show="notes.length" x-text="notes.join('. ')"></p>
+      <p class="text-sm text-bad-dark font-bold mb-2" x-show="planErr" x-text="planErr"></p>
+
+      <div class="flex h-5 rounded-full overflow-hidden bg-line mb-4" x-show="rows.length" role="img" aria-label="Mavzular bo'yicha taqsimot diagrammasi">
+        <template x-for="(r, i) in rows" :key="r.id"><div class="h-full transition-all duration-300" :style="`width:${eff ? r.n * 100 / eff : 0}%; background:${color(i)}`" :title="r.order + '-mavzu: ' + r.name + ' — ' + r.n + ' ta'"></div></template>
+      </div>
+
+      <div class="space-y-2">
+        <template x-for="(r, i) in rows" :key="r.id">
+          <div class="flex items-center gap-2 rounded-xl border border-line p-2" :class="r.locked && 'border-brand bg-brand/5'">
+            <span class="w-3 h-3 rounded-full flex-none" :style="`background:${color(i)}`"></span>
+            <span class="flex-1 min-w-0 truncate text-sm" x-text="r.order + '-mavzu: ' + r.name"></span>
+            <span class="muted text-xs num hidden sm:inline" x-text="'bazada ' + r.avail"></span>
+            <button type="button" class="w-8 h-8 rounded-lg border border-line font-extrabold" @click="step(r, -1)" :disabled="r.n <= 0" aria-label="Kamaytirish">−</button>
+            <input type="number" min="0" :max="r.avail" :value="r.n" @change="setN(r, $event.target.value)" class="input !w-16 !py-1 text-center num" :aria-label="r.name + ' savollar soni'">
+            <button type="button" class="w-8 h-8 rounded-lg border border-line font-extrabold" @click="step(r, 1)" :disabled="r.n >= r.avail" aria-label="Ko'paytirish">+</button>
+            <button type="button" class="w-8 h-8 rounded-lg" :class="r.locked ? 'bg-brand/15' : 'opacity-40 hover:opacity-100'" @click="toggleLock(r)" :title="r.locked ? 'Qulfni ochish' : 'Qulflash'" x-text="r.locked ? '🔒' : '🔓'"></button>
+          </div>
+        </template>
+      </div>
+      <p class="muted text-sm py-4" x-show="!rows.length && !planErr">Mavzu va sonni tanlang — taqsimot shu yerda ko'rinadi.</p>
+    </section>
+
+    <section class="card p-5">
+      <h2 class="font-bold mb-1">5. Qiyinlik aralashmasi</h2>
+      <p class="muted text-sm mb-3">Foizlar yig'indisi avtomatik 100% ga keltiriladi. Har bir mavzu ichida shu nisbat saqlanadi; yetmasa boshqa qiyinlikdan to'ldiriladi.</p>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div><label class="text-sm font-bold text-ok-dark">Oson <span class="num" x-text="easy + '%'"></span></label><input type="range" name="mix_easy" min="0" max="100" x-model.number="easy" class="w-full accent-[#22C55E]"></div>
+        <div><label class="text-sm font-bold text-sun-dark">O'rta <span class="num" x-text="medium + '%'"></span></label><input type="range" name="mix_medium" min="0" max="100" x-model.number="medium" class="w-full accent-[#FFC83D]"></div>
+        <div><label class="text-sm font-bold text-bad-dark">Qiyin <span class="num" x-text="hard + '%'"></span></label><input type="range" name="mix_hard" min="0" max="100" x-model.number="hard" class="w-full accent-[#FF4D6D]"></div>
+      </div>
+      <div class="flex h-3 rounded-full overflow-hidden bg-line mt-3"><div class="bg-ok" :style="`width:${pct(easy)}%`"></div><div class="bg-sun" :style="`width:${pct(medium)}%`"></div><div class="bg-bad" :style="`width:${pct(hard)}%`"></div></div>
+    </section>
+
+    <section class="card overflow-hidden" x-show="rows.length">
+      <h2 class="font-bold p-5 pb-2">Yig'ma jadval</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="text-left muted"><tr><th class="p-3">Mavzu</th><th class="text-right">Bazada</th><th class="text-right">Testga tushadi</th><th class="text-right">Oson</th><th class="text-right">O'rta</th><th class="text-right pr-3">Qiyin</th></tr></thead>
+          <template x-for="r in rows" :key="r.id">
+            <tr class="border-t border-line"><td class="p-3" x-text="r.order + '. ' + r.name"></td><td class="text-right num" x-text="r.avail"></td><td class="text-right num font-bold" x-text="r.n"></td><td class="text-right num" x-text="r.easy"></td><td class="text-right num" x-text="r.medium"></td><td class="text-right num pr-3" x-text="r.hard"></td></tr>
+          </template>
+          <tr class="border-t-2 border-line font-extrabold"><td class="p-3">Jami</td><td class="text-right num" x-text="avail"></td><td class="text-right num" x-text="eff"></td><td class="text-right num" x-text="sum('easy')"></td><td class="text-right num" x-text="sum('medium')"></td><td class="text-right num pr-3" x-text="sum('hard')"></td></tr>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <aside class="space-y-4 lg:sticky lg:top-20 h-fit">
+    <div class="card p-5">
+      <label class="block text-sm font-bold mb-1">Nomi (ixtiyoriy)</label>
+      <input name="name" class="input" placeholder="Avtomatik taklif qilinadi" x-model="name">
+      <p class="text-xs muted mt-1">Bo'sh qoldirsangiz: «<span x-text="suggest"></span>»</p>
+      <button class="btn-3d btn-ok w-full mt-4 text-lg" :disabled="!topics.length || !chosen.length || !sizeOk">🎲 Yaratish</button>
+      <p class="text-xs muted mt-2">Savollar tasodifiy va takrorlarsiz tanlanadi. Yaratilgach diagramma ko'rinadi, savollarni almashtirish va qayta aralashtirish mumkin.</p>
+    </div>
+  </aside>
+</form>
+<script>
+function gen() {
+  const data = JSON.parse(document.getElementById('topics-data').textContent);
+  const MIN = {{ min_size }}, MAX = {{ max_size }}, PLAN_URL = '{{ plan_url }}';
+  const csrf = () => document.querySelector('[name=csrfmiddlewaretoken]').value;
+  return {
+    sid: '{{ subject.pk }}', type: '{{ post.set_type|default:"topic" }}', topics: [], one: '', many: [], upto: 2,
+    size: 20, method: 'equal', easy: 30, medium: 50, hard: 20, name: '',
+    rows: [], eff: 0, notes: [], planErr: '', seed: Math.floor(Math.random() * 1e9), req: 0, timer: null,
+    init() {
+      this.reset();
+      ['size', 'method', 'type', 'one', 'upto', 'easy', 'medium', 'hard'].forEach(k => this.$watch(k, () => this.queue()));
+      this.$watch('many', () => this.queue());
+    },
+    reset() {
+      this.topics = data[this.sid] || [];
+      this.one = this.topics[0]?.id || ''; this.many = [];
+      this.upto = Math.min(this.topics.length, Math.max(2, Math.min(5, this.topics.length)));
+      this.rows = [];
+      this.queue();
+    },
+    color(i) { return `hsl(${(250 + i * 47) % 360} 68% 52%)`; },
+    pct(v) { const t = (this.easy + this.medium + this.hard) || 1; return Math.round(v * 100 / t); },
+    sum(k) { return this.rows.reduce((a, r) => a + r[k], 0); },
+    get sizeOk() { return Number.isInteger(this.size) && this.size >= MIN && this.size <= MAX; },
+    clampSize() { const n = parseInt(this.size); this.size = Number.isNaN(n) ? MIN : Math.min(MAX, Math.max(MIN, n)); },
+    get chosen() {
+      if (this.type === 'topic') return this.topics.filter(t => String(t.id) === String(this.one));
+      if (this.type === 'cumulative') return this.topics.slice(0, this.upto);
+      const m = this.many.map(String);
+      return this.topics.filter(t => m.includes(String(t.id)));
+    },
+    get avail() { return this.chosen.reduce((a, t) => a + t.n, 0); },
+    // kerakli sonni to'plash uchun eng kam mavzu: tanlanganlar + eng katta qolgan mavzular
+    get need() {
+      const rest = this.topics.filter(t => !this.chosen.includes(t)).sort((a, b) => b.n - a.n);
+      let sum = this.avail; const add = [];
+      for (const t of rest) { if (sum >= this.size) break; sum += t.n; add.push(t); }
+      return { add, ok: sum >= this.size, total: this.topics.reduce((a, t) => a + t.n, 0), k: this.chosen.length + add.length };
+    },
+    get shortHint() {
+      const n = this.need, c = this.chosen.length;
+      if (!n.ok) return `Bu fanda jami ${n.total} ta savol bor — ${this.size} ta savol uchun yetmaydi. Sonni ${this.avail} ga tushiring yoki bazaga savol qo'shing`;
+      return `${this.size} ta savol uchun kamida ${n.k} ta mavzu kerak (hozir ${c} ta: ${this.avail} ta savol bor). Yana ${n.add.length} ta mavzu qo'shing yoki sonni ${this.avail} ga tushiring`;
+    },
+    addTopics() {
+      const ids = [...this.chosen, ...this.need.add].map(t => String(t.id));
+      this.type = 'mixed'; this.many = ids;
+    },
+    autoTopics() {
+      let sum = 0; const ids = [];
+      for (const t of this.topics) { ids.push(String(t.id)); sum += t.n; if (sum >= this.size) break; }
+      this.type = 'mixed'; this.many = ids;
+    },
+    get suggest() {
+      const c = this.chosen, n = this.eff || this.size;
+      if (!c.length) return "To'plam (" + n + " ta)";
+      if (this.type === 'topic') return c[0].name + ' (' + n + ' ta)';
+      if (this.type === 'cumulative') return c[0].order + '–' + c[c.length - 1].order + '-mavzular (' + n + ' ta)';
+      return 'Aralash: ' + c.slice(0, 3).map(t => t.name).join(', ') + (c.length > 3 ? '…' : '') + ' (' + n + ' ta)';
+    },
+    get allocJson() { return JSON.stringify(Object.fromEntries(this.rows.map(r => [r.id, r.n]))); },
+
+    // --- jonli taqsimot (serverda hisoblanadi) ---
+    queue() { clearTimeout(this.timer); this.timer = setTimeout(() => this.recalc(), 120); },
+    async recalc(adjust) {
+      this.planErr = '';
+      const ids = this.chosen.map(t => t.id);
+      if (!ids.length || !this.sizeOk) { this.rows = []; this.eff = 0; this.notes = []; return; }
+      const my = ++this.req;
+      const body = {
+        subject: this.sid, topics: ids, size: this.size, method: this.method, seed: this.seed,
+        mix: { easy: this.easy, medium: this.medium, hard: this.hard },
+        counts: Object.fromEntries(this.rows.map(r => [r.id, r.n])), locks: this.rows.filter(r => r.locked).map(r => r.id),
+      };
+      if (adjust) body.adjust = adjust;
+      try {
+        const r = await fetch(PLAN_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf() }, body: JSON.stringify(body) });
+        const d = await r.json();
+        if (my !== this.req) return;
+        if (!d.ok) { this.planErr = (d.errors || ['Xatolik']).join('. '); return; }
+        this.rows = d.rows; this.eff = d.effective; this.notes = d.notes;
+      } catch (e) { if (my === this.req) this.planErr = "Aloqa xatosi, qayta urinib ko'ring"; }
+    },
+    step(r, d) { this.recalc({ id: r.id, n: r.n + d }); },
+    setN(r, v) { const n = parseInt(v); this.recalc({ id: r.id, n: Number.isNaN(n) ? r.n : n }); },
+    toggleLock(r) { r.locked = !r.locked; },
+    resetLocks() { this.rows.forEach(r => r.locked = false); this.recalc(); },
+  };
+}
+</script>
+{% endif %}
+{% endblock %}

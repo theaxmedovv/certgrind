@@ -1,0 +1,97 @@
+{% extends "teacher/base.html" %}
+{% block title %}Fanlar va mavzular — Bilimdon{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+  <h1 class="text-2xl font-extrabold">Fanlar va mavzular</h1>
+  <div class="flex gap-2">
+    <a href="{% url 'question_import' %}" class="btn-3d btn-ghost sm"><i data-lucide="upload" class="w-4 h-4"></i> Excel import</a>
+  </div>
+</div>
+
+<form method="post" action="{% url 'subject_create' %}" class="card p-4 mb-5 flex flex-wrap gap-2 items-end">
+  {% csrf_token %}
+  <div><label class="block text-xs font-bold mb-1">Yangi fan</label><input name="name" class="input !py-2" placeholder="Masalan: Python" required></div>
+  <div><label class="block text-xs font-bold mb-1">Sinf darajasi</label><input name="grade" class="input !py-2 !w-32" placeholder="8–9-sinf"></div>
+  <button class="btn-3d btn-brand sm">+ Fan qo'shish</button>
+</form>
+
+{% for subj in subjects %}
+<section class="mb-8" x-data="topicsBoard({{ subj.pk }}, '{% url 'topic_reorder' subj.pk %}')">
+  <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+    <div>
+      <h2 class="text-xl font-extrabold">{{ subj.name }} <span class="muted text-sm font-semibold">{{ subj.grade }}</span></h2>
+      <p class="muted text-sm">{{ subj.topic_list|length }} ta mavzu · {{ subj.total_questions }} ta savol · mavzularni sudrab tartibini o'zgartiring</p>
+    </div>
+    <div class="flex gap-2 items-center">
+      <span x-show="saved" x-transition class="text-ok-dark text-sm font-bold">✓ Saqlandi</span>
+      <a href="{% url 'subject_export' subj.pk %}" class="btn-3d btn-ghost sm"><i data-lucide="download" class="w-4 h-4"></i> Excel</a>
+      <form method="post" action="{% url 'subject_delete' subj.pk %}" onsubmit="return confirm('Fan o\'chirilsinmi?')">{% csrf_token %}<button class="btn-3d btn-ghost sm text-bad-dark">O'chirish</button></form>
+    </div>
+  </div>
+
+  <div x-ref="list" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3">
+    {% for t in subj.topic_list %}
+    <div class="card p-4 cursor-grab" draggable="true" data-id="{{ t.pk }}"
+         @dragstart="start($event)" @dragover.prevent="over($event)" @drop.prevent="drop($event)" @dragend="end($event)">
+      <div class="flex items-start gap-2">
+        <span class="chip !px-2 font-extrabold num" data-no>{{ t.order }}</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-bold truncate" title="{{ t.name }}">{{ t.name }}</div>
+          <div class="text-xs mt-0.5 {% if t.low %}text-sun-dark font-bold{% else %}muted{% endif %}">
+            {% if t.low %}⚠ {{ t.n }}/{{ recommended }} savol{% else %}{{ t.n }} ta savol{% endif %}
+          </div>
+        </div>
+        <details class="relative">
+          <summary class="cursor-pointer list-none px-1 muted">⋯</summary>
+          <div class="absolute right-0 z-10 w-56 card p-3 space-y-2 shadow-xl">
+            <form method="post" action="{% url 'topic_rename' t.pk %}" class="flex gap-1">{% csrf_token %}<input name="name" value="{{ t.name }}" class="input !py-1 !text-sm"><button class="btn-3d btn-brand sm">OK</button></form>
+            <form method="post" action="{% url 'topic_delete' t.pk %}" onsubmit="return confirm('Mavzu o\'chirilsinmi?')">{% csrf_token %}<button class="text-bad-dark text-sm font-bold">O'chirish</button></form>
+          </div>
+        </details>
+      </div>
+      <div class="flex h-2 rounded-full overflow-hidden bg-line mt-3" title="oson {{ t.easy }} · o'rta {{ t.medium }} · qiyin {{ t.hard }}">
+        <div class="bg-ok" style="width:{{ t.pe }}%"></div><div class="bg-sun" style="width:{{ t.pm }}%"></div><div class="bg-bad" style="width:{{ t.ph }}%"></div>
+      </div>
+      <div class="flex justify-between text-[11px] muted mt-1"><span>oson {{ t.easy }}</span><span>o'rta {{ t.medium }}</span><span>qiyin {{ t.hard }}</span></div>
+      <a href="{% url 'question_list' %}?topic={{ t.pk }}" class="text-brand text-xs font-bold mt-2 inline-block">Savollarni ko'rish →</a>
+    </div>
+    {% empty %}
+    <div class="card p-8 text-center sm:col-span-2 xl:col-span-3 muted">Hali mavzu yo'q. Pastdan qo'shing yoki Excel import qiling.</div>
+    {% endfor %}
+  </div>
+  <form method="post" action="{% url 'topic_create' subj.pk %}" class="mt-3 flex gap-2 max-w-md">{% csrf_token %}
+    <input name="name" class="input !py-2" placeholder="Yangi mavzu nomi" required><button class="btn-3d btn-brand sm">+ Mavzu</button>
+  </form>
+</section>
+{% empty %}
+<div class="card p-10 text-center"><div class="text-5xl mb-2">📚</div><p class="font-bold">Hali fan yo'q</p><p class="muted text-sm">Yuqoridan fan qo'shing yoki Excel faylni import qiling.</p></div>
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+<script>
+function topicsBoard(subjectId, url) {
+  let dragEl = null;
+  return {
+    saved: false,
+    start(e) { dragEl = e.currentTarget; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', dragEl.dataset.id); dragEl.style.opacity = .5; },
+    over(e) {
+      const t = e.currentTarget; if (!dragEl || t === dragEl) return;
+      const r = t.getBoundingClientRect();
+      const after = (e.clientX - r.left) > r.width / 2 && (e.clientY - r.top) > -1;
+      t.parentNode.insertBefore(dragEl, after ? t.nextSibling : t);
+    },
+    drop() { this.save(); },
+    end() { if (dragEl) dragEl.style.opacity = 1; dragEl = null; },
+    async save() {
+      const items = [...this.$refs.list.querySelectorAll('[data-id]')];
+      items.forEach((el, i) => { const n = el.querySelector('[data-no]'); if (n) n.textContent = i + 1; });
+      const csrf = document.cookie.split('; ').find(c => c.startsWith('csrftoken='))?.split('=')[1] || '';
+      try {
+        const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf }, body: JSON.stringify({ ids: items.map(el => +el.dataset.id) }) });
+        this.saved = r.ok; setTimeout(() => (this.saved = false), 2000);
+      } catch (e) { /* tarmoq xatosi: sahifa yangilanganda eski tartib ko'rinadi */ }
+    },
+  };
+}
+</script>
+{% endblock %}

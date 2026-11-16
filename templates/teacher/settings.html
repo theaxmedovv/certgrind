@@ -1,0 +1,24 @@
+{% extends "teacher/base.html" %}
+{% block title %}Sozlamalar — Bilimdon{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold mb-4">Sozlamalar</h1>
+<div class="grid md:grid-cols-2 gap-6 max-w-4xl">
+  <form method="post" class="card p-5 space-y-3">{% csrf_token %}
+    <h2 class="font-bold">Profil</h2>
+    <div class="muted text-sm">Login: <b class="text-ink">{{ request.user.username }}</b></div>
+    <label class="block text-sm font-bold">Ism<input name="first_name" value="{{ request.user.first_name }}" class="input mt-1"></label>
+    <label class="block text-sm font-bold">Familiya<input name="last_name" value="{{ request.user.last_name }}" class="input mt-1"></label>
+    <button class="btn-3d btn-brand sm">Saqlash</button>
+  </form>
+  <div class="card p-5 space-y-3">
+    <h2 class="font-bold">Xavfsizlik va ko'rinish</h2>
+    <a href="{% url 'password_change' %}" class="btn-3d btn-ghost sm">Parolni o'zgartirish</a>
+    <div class="flex items-center gap-3"><button @click="Theme.toggle()" class="btn-3d btn-ghost sm">🌓 Tungi / kunduzgi rejim</button></div>
+    <div x-data="{ vol: Sfx.volume, muted: Sfx.muted }" class="space-y-2">
+      <div class="text-sm font-bold">Ovoz balandligi (bildirishnomalar)</div>
+      <input type="range" min="0" max="1" step="0.05" x-model.number="vol" @input="Sfx.setVolume(vol); Sfx.play('click')" class="w-full accent-[#6C3BFF]">
+      <label class="text-sm flex items-center gap-2"><input type="checkbox" x-model="muted" @change="Sfx.setMuted(muted)"> Ovozni o'chirish</label>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}O'qituvchi kirishi — Bilimdon{% endblock %}
+{% block body_class %}bg-surface text-ink font-ui{% endblock %}
+{% block body %}
+<div class="min-h-screen grid lg:grid-cols-2">
+  <div class="hidden lg:flex bg-student-anim kid items-center justify-center p-10">
+    <div class="text-center space-y-4">
+      <div class="text-8xl anim-bob">🧠</div>
+      <div class="font-kid font-extrabold text-6xl">Bilimdon</div>
+      <p class="text-xl font-semibold opacity-90 max-w-sm">Sinfingiz uchun jonli, quvnoq va halol test-o'yinlar yarating</p>
+    </div>
+  </div>
+  <div class="flex items-center justify-center p-6">
+    <form method="post" class="card p-8 w-full max-w-sm space-y-4 page-in">
+      {% csrf_token %}
+      <h1 class="text-2xl font-extrabold">👩‍🏫 O'qituvchi kirishi</h1>
+      {% if form.errors %}<p class="text-bad-dark dark:text-bad text-sm font-semibold">Login yoki parol noto'g'ri.</p>{% endif %}
+      <input name="username" placeholder="Login" autofocus class="input" required aria-label="Login">
+      <input name="password" type="password" placeholder="Parol" class="input" required aria-label="Parol">
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn-3d btn-brand w-full">Kirish</button>
+      <a href="/" class="block text-center text-sm muted hover:underline">O'quvchi sifatida kirish →</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

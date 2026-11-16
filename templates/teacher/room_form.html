@@ -1,0 +1,171 @@
+{% extends "teacher/base.html" %}
+{% block title %}Yangi xona — Bilimdon{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold mb-4">Yangi xona yaratish</h1>
+{% if form.errors %}<div class="rounded-2xl bg-bad/10 border border-bad text-bad-dark dark:text-bad p-3 mb-4 font-semibold">{{ form.non_field_errors }}{% for f in form %}{% for e in f.errors %}<div>{{ f.label }}: {{ e }}</div>{% endfor %}{% endfor %}</div>{% endif %}
+{{ sets_data|json_script:"sets-data" }}
+{{ topics_data|json_script:"topics-data" }}
+
+<form method="post" class="max-w-4xl" x-data="roomWizard()" @keydown.enter="if ($event.target.tagName !== 'TEXTAREA' && step < 3) { $event.preventDefault(); go(step+1) }">
+  {% csrf_token %}
+  {% include "partials/stepper.html" with step="step" %}
+  <p class="rounded-2xl bg-bad/10 border border-bad text-bad-dark dark:text-bad p-3 mb-4 font-semibold" x-show="err" x-text="err"></p>
+
+  <!-- 1. Asosiy -->
+  <section x-show="step===1" class="card p-6 space-y-5">
+    <label class="block"><span class="font-bold">Xona nomi</span>
+      <input name="name" x-model="name" class="input mt-1" placeholder="Masalan: 7-A Sikllar nazorat ishi" maxlength="150"></label>
+    <label class="block"><span class="font-bold">Xona paroli</span> <span class="muted text-sm">— o'quvchilar kirishda kiritadi</span>
+      <input name="password" x-model="password" class="input mt-1" maxlength="40" autocomplete="off"></label>
+    <div>
+      <div class="flex justify-between"><span class="font-bold">Umumiy vaqt</span><span class="font-extrabold text-brand num"><span x-text="duration"></span> daqiqa</span></div>
+      <input type="range" min="1" max="90" x-model.number="duration" class="w-full accent-[#6C3BFF]">
+      <input type="hidden" name="duration_minutes" :value="duration">
+      <p class="muted text-sm">Hamma o'quvchi uchun bitta umumiy taymer ishlaydi. Vaqt tugaguncha savollar aylanib turadi.</p>
+      <p class="text-sm font-semibold mt-1" x-show="recommend" x-cloak>💡 <span x-text="recommendText"></span>
+        <button type="button" class="text-brand font-bold ml-1" @click="duration = recommend" x-show="duration !== recommend">Qo'llash</button></p>
+    </div>
+  </section>
+
+  <!-- 2. To'plam -->
+  <section x-show="step===2" class="card p-6 space-y-4">
+    <input type="hidden" name="question_set" :value="picked || ''">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 class="font-bold">To'plamni tanlang</h2>
+      <button type="button" class="btn-3d btn-ghost sm" @click="gen.open = !gen.open" x-text="gen.open ? 'Yopish' : '+ Shu yerda yangi to\'plam yaratish'"></button>
+    </div>
+
+    <!-- tezkor generator -->
+    <div x-show="gen.open" x-transition class="rounded-2xl border-2 border-brand/40 bg-brand/5 p-4 space-y-3">
+      <p class="text-sm" x-show="gen.err" x-text="gen.err" style="color:#E11D48"></p>
+      <div class="grid sm:grid-cols-3 gap-3">
+        <label class="text-sm font-bold">Fan<select x-model="gen.subject" @change="genReset()" class="input mt-1 !py-2">{% for s in subjects %}<option value="{{ s.pk }}">{{ s.name }}</option>{% endfor %}</select></label>
+        <label class="text-sm font-bold">Tur<select x-model="gen.type" class="input mt-1 !py-2"><option value="topic">📘 Mavzu</option><option value="cumulative">📚 Yig'ma</option><option value="mixed">🎲 Aralash</option></select></label>
+        <label class="text-sm font-bold">Hajm<select x-model.number="gen.size" class="input mt-1 !py-2">{% for n in sizes %}<option value="{{ n }}">{{ n }} ta</option>{% endfor %}</select></label>
+      </div>
+      <div x-show="gen.type==='topic'"><select x-model="gen.one" class="input !py-2"><template x-for="t in genTopics" :key="t.id"><option :value="t.id" x-text="t.order + '. ' + t.name + ' (' + t.n + ')'"></option></template></select></div>
+      <div x-show="gen.type==='cumulative'"><label class="text-sm font-bold">1 – <span class="text-brand num" x-text="gen.upto"></span>-mavzugacha</label><input type="range" min="2" :max="Math.max(2, genTopics.length)" x-model.number="gen.upto" class="w-full accent-[#6C3BFF]"></div>
+      <div x-show="gen.type==='mixed'" class="grid sm:grid-cols-2 gap-1 max-h-40 overflow-y-auto scroll-thin"><template x-for="t in genTopics" :key="t.id"><label class="flex items-center gap-2 text-sm"><input type="checkbox" :value="t.id" x-model="gen.many" class="accent-brand"> <span x-text="t.order + '. ' + t.name"></span></label></template></div>
+      <button type="button" class="btn-3d btn-ok sm" @click="generate()" :disabled="gen.busy" x-text="gen.busy ? 'Yaratilmoqda…' : '🎲 Yaratish va tanlash'"></button>
+      <p class="muted text-xs">Teng taqsimot, 30/50/20 qiyinlik. Boshqa sozlamalar uchun <a class="text-brand font-bold" href="{% url 'set_generate' %}" target="_blank">to'liq generator</a>, so'ng sahifani yangilang.</p>
+    </div>
+
+    <input x-model="search" placeholder="To'plam qidirish…" class="input !py-2">
+    <div class="flex flex-wrap gap-2">
+      <button type="button" class="chip" :class="!typeF && 'on'" @click="typeF=''">Hammasi</button>
+      <button type="button" class="chip" :class="typeF==='topic' && 'on'" @click="typeF='topic'">📘 Mavzu</button>
+      <button type="button" class="chip" :class="typeF==='cumulative' && 'on'" @click="typeF='cumulative'">📚 Yig'ma</button>
+      <button type="button" class="chip" :class="typeF==='mixed' && 'on'" @click="typeF='mixed'">🎲 Aralash</button>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto scroll-thin p-1">
+      <template x-for="s in filteredSets" :key="s.id">
+        <button type="button" @click="picked = s.id" class="text-left rounded-2xl border-2 p-3 transition" :class="picked===s.id ? 'border-brand bg-brand/10 shadow-lg shadow-brand/20' : 'border-line hover:border-brand/50'">
+          <div class="flex justify-between gap-2"><span class="text-sm font-bold" x-text="s.type_label"></span><span class="chip !py-0 num" x-text="s.count + ' ta'"></span></div>
+          <div class="font-bold" x-text="s.name"></div>
+          <div class="flex flex-wrap gap-1 mt-1"><template x-for="t in s.topics"><span class="chip !py-0 !text-[11px]" x-text="t"></span></template></div>
+        </button>
+      </template>
+    </div>
+    <p class="muted text-center py-6" x-show="!filteredSets.length">To'plam topilmadi. Yuqoridagi tugma bilan yangisini yarating yoki <a class="text-brand font-bold" href="{% url 'set_list' %}">kutubxonada «Barcha to'plamlarni yaratish»</a> ni bosing.</p>
+    <p class="text-sm" x-show="picked">✓ Tanlandi: <b x-text="(sets.find(s => s.id===picked)||{}).name"></b>. Savollar nusxasi xona yaratilganda saqlanadi — keyin tahrirlansa ham natijalar buzilmaydi.</p>
+    <p class="text-sm font-semibold" x-show="recommend" x-cloak>💡 <span x-text="recommendText"></span> Hozirgi vaqt: <b class="num" x-text="duration"></b> daqiqa.
+      <button type="button" class="text-brand font-bold ml-1" @click="duration = recommend" x-show="duration !== recommend">Qo'llash</button></p>
+  </section>
+
+  <!-- 3. O'yin sozlamalari -->
+  <section x-show="step===3" class="card p-6 space-y-6">
+    <div>
+      <div class="flex justify-between"><span class="font-bold">Oraliq ekran vaqti</span><span class="font-extrabold text-brand num"><span x-text="interval"></span> soniya</span></div>
+      <input type="range" min="1" max="10" name="interval_seconds" x-model.number="interval" class="w-full accent-[#6C3BFF]">
+      <p class="muted text-sm">Javobdan keyin natija ko'rsatiladigan vaqt. Tezlik hisobiga kirmaydi.</p>
+    </div>
+
+    <div class="rounded-2xl border border-line p-4 space-y-4">
+      <label class="flex items-center justify-between gap-4 cursor-pointer"><span><span class="font-bold">🎁 Maxfiy kod (super-kuchlar)</span><br><span class="muted text-sm">Ketma-ket 3 ta to'g'ri javob bergan o'quvchi kod oladi</span></span>
+        <input type="checkbox" name="powerups_enabled" x-model="powerups" class="sr-only peer"><span class="w-12 h-7 rounded-full bg-line peer-checked:bg-brand relative transition flex-none after:content-[''] after:absolute after:top-1 after:left-1 after:w-5 after:h-5 after:rounded-full after:bg-white after:transition peer-checked:after:translate-x-5"></span></label>
+      <div x-show="powerups" class="space-y-4 pl-2 border-l-4 border-brand/30">
+        <label class="flex items-center justify-between gap-4 cursor-pointer"><span><span class="font-bold">💰 Ball o'g'irlash</span><br><span class="muted text-sm">Nishon tizim tomonidan tasodifiy tanlanadi; miqdor shu oraliqda tasodifiy</span></span>
+          <input type="checkbox" name="steal_enabled" x-model="steal" class="sr-only peer"><span class="w-12 h-7 rounded-full bg-line peer-checked:bg-sun relative transition flex-none after:content-[''] after:absolute after:top-1 after:left-1 after:w-5 after:h-5 after:rounded-full after:bg-white after:transition peer-checked:after:translate-x-5"></span></label>
+        <div x-show="steal" class="grid grid-cols-2 gap-4">
+          <div><div class="flex justify-between text-sm"><span class="font-semibold">Eng kam</span><b class="num text-brand" x-text="stealMin + '%'"></b></div><input type="range" min="1" max="50" name="steal_min_percent" x-model.number="stealMin" @input="if (stealMin > stealMax) stealMax = stealMin" class="w-full accent-[#FFC83D]"></div>
+          <div><div class="flex justify-between text-sm"><span class="font-semibold">Eng ko'p</span><b class="num text-brand" x-text="stealMax + '%'"></b></div><input type="range" min="1" max="50" name="steal_max_percent" x-model.number="stealMax" @input="if (stealMax < stealMin) stealMin = stealMax" class="w-full accent-[#FFC83D]"></div>
+        </div>
+        <label class="flex items-center justify-between gap-4 cursor-pointer"><span><span class="font-bold">❄️ Muzlatish</span><br><span class="muted text-sm">Nishon ekrani tasodifiy soniyaga qotadi (umumiy taymer to'xtamaydi)</span></span>
+          <input type="checkbox" name="freeze_enabled" x-model="freeze" class="sr-only peer"><span class="w-12 h-7 rounded-full bg-line peer-checked:bg-ice relative transition flex-none after:content-[''] after:absolute after:top-1 after:left-1 after:w-5 after:h-5 after:rounded-full after:bg-white after:transition peer-checked:after:translate-x-5"></span></label>
+        <div x-show="freeze" class="grid grid-cols-2 gap-4">
+          <div><div class="flex justify-between text-sm"><span class="font-semibold">Eng kam</span><b class="num text-brand" x-text="freezeMin + ' s'"></b></div><input type="range" min="1" max="60" name="freeze_min_seconds" x-model.number="freezeMin" @input="if (freezeMin > freezeMax) freezeMax = freezeMin" class="w-full accent-[#38BDF8]"></div>
+          <div><div class="flex justify-between text-sm"><span class="font-semibold">Eng ko'p</span><b class="num text-brand" x-text="freezeMax + ' s'"></b></div><input type="range" min="1" max="60" name="freeze_max_seconds" x-model.number="freezeMax" @input="if (freezeMax < freezeMin) freezeMin = freezeMax" class="w-full accent-[#38BDF8]"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="font-bold mb-2">5 ballik baho chegaralari (% dan)</div>
+      <div class="grid grid-cols-3 gap-3">
+        <label class="text-sm font-bold"><span class="badge-grade g5">5</span> dan<input type="number" name="grade_5" x-model.number="g5" min="1" max="100" class="input mt-1"></label>
+        <label class="text-sm font-bold"><span class="badge-grade g4">4</span> dan<input type="number" name="grade_4" x-model.number="g4" min="1" max="100" class="input mt-1"></label>
+        <label class="text-sm font-bold"><span class="badge-grade g3">3</span> dan<input type="number" name="grade_3" x-model.number="g3" min="1" max="100" class="input mt-1"></label>
+      </div>
+      <p class="muted text-sm mt-1">Undan past — <span class="badge-grade g2 !w-6 !h-6 !text-xs">2</span></p>
+    </div>
+  </section>
+
+  <div class="flex justify-between mt-5">
+    <button type="button" class="btn-3d btn-ghost" x-show="step>1" @click="go(step-1)">← Orqaga</button><span x-show="step===1"></span>
+    <button type="button" class="btn-3d btn-brand" x-show="step<3" @click="go(step+1)">Keyingisi →</button>
+    <button type="submit" class="btn-3d btn-ok" x-show="step===3">✓ Xonani yaratish</button>
+  </div>
+</form>
+<script>
+function roomWizard() {
+  const sets = JSON.parse(document.getElementById('sets-data').textContent);
+  const tdata = JSON.parse(document.getElementById('topics-data').textContent);
+  const first = Object.keys(tdata)[0] || '';
+  const csrf = () => document.querySelector('[name=csrfmiddlewaretoken]').value;
+  return {
+    step: 1, err: '', sets, picked: {{ selected }} || null, search: '', typeF: '',
+    name: '{{ form.name.value|default:""|escapejs }}', password: '{{ form.password.value|default:""|escapejs }}',
+    duration: {{ form.duration_minutes.value|default:20 }}, interval: {{ form.interval_seconds.value|default:3 }},
+    powerups: {{ form.powerups_enabled.value|default_if_none:True|yesno:'true,false' }},
+    steal: {{ form.steal_enabled.value|default_if_none:True|yesno:'true,false' }},
+    freeze: {{ form.freeze_enabled.value|default_if_none:True|yesno:'true,false' }},
+    stealMin: {{ form.steal_min_percent.value|default:5 }}, stealMax: {{ form.steal_max_percent.value|default:20 }},
+    freezeMin: {{ form.freeze_min_seconds.value|default:5 }}, freezeMax: {{ form.freeze_max_seconds.value|default:15 }},
+    g5: {{ form.grade_5.value|default:86 }}, g4: {{ form.grade_4.value|default:71 }}, g3: {{ form.grade_3.value|default:56 }},
+    gen: { open: false, busy: false, err: '', subject: first, type: 'topic', size: 20, one: '', upto: 2, many: [] },
+    init() { this.genReset(); },
+    // tavsiya: har savolga ~30 soniya (slayder 1–90 daqiqa)
+    get pickedCount() { return (this.sets.find(s => s.id === this.picked) || {}).count || 0; },
+    get recommend() { return this.pickedCount ? Math.min(90, Math.max(1, Math.ceil(this.pickedCount * {{ seconds_per_question }} / 60))) : 0; },
+    get recommendText() { return `Tavsiya: ${this.pickedCount} ta savolga taxminan ${this.recommend} daqiqa (har savolga ~{{ seconds_per_question }} soniya).`; },
+    get genTopics() { return tdata[this.gen.subject] || []; },
+    genReset() { this.gen.one = this.genTopics[0]?.id || ''; this.gen.many = []; this.gen.upto = Math.min(Math.max(2, this.genTopics.length), 5); },
+    get filteredSets() {
+      const q = this.search.toLowerCase();
+      return this.sets.filter(s => (!this.typeF || s.type === this.typeF) && (!q || s.name.toLowerCase().includes(q)));
+    },
+    async generate() {
+      const g = this.gen; g.err = ''; g.busy = true;
+      const body = new URLSearchParams({ subject: g.subject, set_type: g.type, size: g.size, distribution: 'equal', mix_easy: 30, mix_medium: 50, mix_hard: 20, topic: g.one, upto: g.upto, csrfmiddlewaretoken: csrf() });
+      g.many.forEach(id => body.append('topics', id));
+      try {
+        const r = await fetch('{% url "set_generate" %}', { method: 'POST', headers: { 'X-Requested-With': 'fetch' }, body });
+        const d = await r.json();
+        if (!d.ok) { g.err = (d.errors || ['Xatolik']).join('. '); }
+        else { this.sets.unshift(d); this.picked = d.id; g.open = false; if (d.short) this.err = d.short + ' ta savol yetmadi — to\'plam kichikroq bo\'ladi'; }
+      } catch (e) { g.err = 'Aloqa xatosi, qayta urinib ko\'ring'; }
+      g.busy = false;
+    },
+    go(n) {
+      this.err = '';
+      if (n > this.step) {
+        if (this.step === 1 && (!this.name.trim() || this.password.length < 3 || !(this.duration >= 1))) { this.err = 'Xona nomi, kamida 3 belgili parol va vaqtni kiriting'; return; }
+        if (this.step === 2 && !this.picked) { this.err = 'To\'plamni tanlang'; return; }
+        if (this.step === 3 && !(this.g5 > this.g4 && this.g4 > this.g3)) { this.err = 'Chegaralar «5» > «4» > «3» tartibida bo\'lishi kerak'; return; }
+      }
+      this.step = n;
+    },
+  };
+}
+</script>
+{% endblock %}

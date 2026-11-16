@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Bilimdon{% endblock %}
+{% block body_class %}bg-student-anim kid{% endblock %}
+{% block body %}
+<div class="floaters" aria-hidden="true">
+  {% for s in "?★✦?◆●★?▲■" %}<span style="left:{% widthratio forloop.counter 10 100 %}%;top:{% widthratio forloop.counter0 6 80 %}%;animation-delay:-{{ forloop.counter }}s">{{ s }}</span>{% endfor %}
+</div>
+<div class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 page-in">
+  <div class="font-kid font-extrabold text-6xl drop-shadow-lg mb-6 flex items-center gap-2"><span class="anim-bob inline-block">🧠</span> Bilimdon</div>
+  <form method="get" class="bg-white text-slate-800 rounded-3xl shadow-2xl p-6 w-full max-w-sm space-y-4">
+    <label class="block font-extrabold text-slate-600">Xona raqamini kiriting</label>
+    <input name="code" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="123456" autofocus
+           class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-center text-4xl tracking-widest font-kid font-extrabold focus:border-brand outline-none" required>
+    <button class="btn-3d btn-brand w-full text-xl py-4">Kirish →</button>
+    <p class="text-center text-sm"><a href="{% url 'login' %}" class="text-slate-500 underline">O'qituvchi kirishi</a></p>
+  </form>
+  <a href="{% url 'pcep:home' %}" class="mt-4 btn-3d w-full max-w-sm text-center py-3 bg-white text-slate-800 rounded-2xl font-extrabold">🐍 PCEP tayyorgarlik</a>
+</div>
+{% endblock %}

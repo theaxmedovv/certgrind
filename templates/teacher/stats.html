@@ -1,0 +1,111 @@
+{% extends "teacher/base.html" %}
+{% block title %}Statistika — {{ room.name }}{% endblock %}
+{% block content %}
+{{ s|json_script:"stats-data" }}
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+  <h1 class="text-2xl font-extrabold">Statistika: {{ room.name }}</h1>
+  <div class="flex gap-2"><a href="{% url 'sets_stats' %}" class="btn-3d btn-ghost sm">To'plamlar kesimi</a><a href="{% url 'room_control' room.pk %}" class="btn-3d btn-ghost sm">← Xona</a><a href="{% url 'results' room.pk %}" class="btn-3d btn-ghost sm">Natijalar</a></div>
+</div>
+<div class="grid lg:grid-cols-2 gap-5" x-data="{ s: JSON.parse(document.getElementById('stats-data').textContent) }">
+  <section class="card p-5">
+    <h2 class="font-bold">Eng ko'p xato qilingan savollar</h2>
+    <p class="text-sm muted mb-2" id="sumQ"></p>
+    <div style="height: 320px"><canvas id="chQ"></canvas></div>
+  </section>
+  <section class="card p-5">
+    <h2 class="font-bold">Mavzular bo'yicha xato foizi</h2>
+    <p class="text-sm muted mb-2" id="sumT"></p>
+    <div style="height: 320px"><canvas id="chT"></canvas></div>
+  </section>
+  <section class="card p-5 lg:col-span-2">
+    <h2 class="font-bold">Sinflar solishtirmasi (o'rtacha ball)</h2>
+    <p class="text-sm muted mb-2" id="sumC"></p>
+    <div style="height: 240px"><canvas id="chC"></canvas></div>
+  </section>
+  <section class="card p-5 lg:col-span-2" x-show="s.topic_line.length > 1">
+    <h2 class="font-bold">Mavzu tartibi bo'yicha xato foizi</h2>
+    <p class="text-sm muted mb-2" id="sumL"></p>
+    <div style="height: 260px"><canvas id="chL"></canvas></div>
+    <div class="mt-3 text-sm" x-show="s.struggle.length">
+      <div class="font-bold mb-1">Qaysi mavzudan boshlab qiynalmoqda (≥50% xato):</div>
+      <div class="flex flex-wrap gap-2"><template x-for="x in s.struggle" :key="x.name"><span class="chip"><b x-text="x.name"></b>&nbsp;→ <span x-text="x.topic"></span> (<span x-text="x.error_percent"></span>%)</span></template></div>
+    </div>
+  </section>
+  <section class="card p-5 lg:col-span-2">
+    <h2 class="font-bold">O'rganish ko'rsatkichi (takroriy aylanalar)</h2>
+    <template x-if="s.learning.repeated === 0"><p class="muted text-sm mt-1">Hali xato qilingan savol ikkinchi marta berilmagan.</p></template>
+    <template x-if="s.learning.repeated > 0">
+      <div>
+        <p class="text-sm mt-1"><b>Xulosa:</b> xato qilingan savollarning <b class="text-brand num" x-text="s.learning.percent + '%'"></b> i ikkinchi urinishda to'g'ri topildi (<span x-text="s.learning.learned"></span>/<span x-text="s.learning.repeated"></span>).</p>
+        <div class="grid md:grid-cols-2 gap-4 mt-3">
+          <div><div class="font-semibold text-sm mb-1">O'quvchilar</div>
+            <template x-for="x in s.learning.students.slice(0, 10)" :key="x.name"><div class="flex justify-between text-sm py-0.5 border-t border-line"><span x-text="x.name"></span><b class="num" x-text="x.learned + '/' + x.repeated + ' · ' + x.percent + '%'"></b></div></template></div>
+          <div><div class="font-semibold text-sm mb-1">Mavzular (eng qiyin o'zlashtiriladigani yuqorida)</div>
+            <template x-for="x in s.learning.topics" :key="x.topic"><div class="flex justify-between text-sm py-0.5 border-t border-line"><span x-text="x.topic"></span><b class="num" x-text="x.learned + '/' + x.repeated + ' · ' + x.percent + '%'"></b></div></template></div>
+        </div>
+      </div>
+    </template>
+  </section>
+  <section class="card p-5 lg:col-span-2 overflow-x-auto">
+    <h2 class="font-bold">O'quvchi × mavzu (xato foizi — issiqlik xaritasi)</h2>
+    <p class="text-sm muted mb-3">Qizil — ko'p xato, yashil — kam xato.</p>
+    <table class="text-sm w-full">
+      <thead><tr class="text-left muted"><th class="py-1 pr-3">O'quvchi</th><template x-for="t in s.topic_names" :key="t"><th class="px-1" x-text="t"></th></template></tr></thead>
+      <tbody>
+        <template x-for="row in s.student_topic" :key="row.name">
+          <tr class="border-t border-line"><td class="py-1 pr-3 font-semibold whitespace-nowrap" x-text="row.name"></td>
+            <template x-for="(c, i) in row.cells" :key="i">
+              <td class="p-1"><div class="rounded-lg px-2 py-1.5 text-center font-bold num min-w-[70px]" :style="c ? `background:hsl(${120 - c.percent*1.2} 70% ${document.documentElement.classList.contains('dark') ? 30 : 82}%)` : ''" x-text="c ? c.percent + '%' : '—'" :title="c ? c.wrong + '/' + c.answered + ' xato' : ''"></div></td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <p class="muted text-center py-6" x-show="!s.student_topic.length">Hali ma'lumot yo'q.</p>
+  </section>
+  <section class="card p-5 lg:col-span-2 overflow-x-auto">
+    <h2 class="font-bold mb-2">Savollar jadvali</h2>
+    <table class="w-full text-sm"><thead><tr class="text-left muted"><th>#</th><th>Savol</th><th>Mavzu</th><th>Javoblar</th><th>Xato</th><th>Xato %</th></tr></thead>
+      {% for q in s.questions %}<tr class="border-t border-line"><td class="py-1.5">{{ q.order }}</td><td>{{ q.text|truncatechars:90 }}</td><td><span class="chip">{{ q.topic }}</span></td><td>{{ q.answered }}</td><td>{{ q.wrong }}</td><td class="font-extrabold {% if q.error_percent >= 50 %}text-bad-dark dark:text-bad{% endif %}">{{ q.error_percent }}%</td></tr>{% endfor %}
+    </table>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+const S = JSON.parse(document.getElementById('stats-data').textContent);
+const css = (n) => `rgb(${getComputedStyle(document.documentElement).getPropertyValue(n).trim().split(/\s+/).join(',')})`;
+const BRAND = css('--c-brand'), BAD = css('--c-bad'), SUN = css('--c-sun'), OK = css('--c-ok');
+const muted = css('--c-muted'), line = css('--c-line');
+Chart.defaults.color = muted; Chart.defaults.font.family = 'Inter, sans-serif';
+const col = (v) => (v >= 50 ? BAD : (v >= 30 ? SUN : OK));
+function bar(id, labels, data, colors, horizontal, max, label) {
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels, datasets: [{ label, data, backgroundColor: colors, borderRadius: 8, maxBarThickness: 36 }] },
+    options: { maintainAspectRatio: false, indexAxis: horizontal ? 'y' : 'x', plugins: { legend: { display: false } },
+      scales: { [horizontal ? 'x' : 'y']: { beginAtZero: true, max, grid: { color: line } }, [horizontal ? 'y' : 'x']: { grid: { display: false } } } },
+  });
+}
+const qs = S.questions.slice(0, 10);
+bar('chQ', qs.map(q => '#' + q.order + ' ' + q.text.slice(0, 28)), qs.map(q => q.error_percent), qs.map(q => col(q.error_percent)), true, 100, 'Xato %');
+bar('chT', S.topics.map(t => t.topic), S.topics.map(t => t.error_percent), S.topics.map(t => col(t.error_percent)), true, 100, 'Xato %');
+bar('chC', S.classes.map(c => c.name), S.classes.map(c => c.avg_score), S.classes.map(() => BRAND), false, undefined, "O'rtacha ball");
+if (S.topic_line.length > 1) {
+  new Chart(document.getElementById('chL'), {
+    type: 'line',
+    data: { labels: S.topic_line.map(t => (t.order ? t.order + '. ' : '') + t.topic), datasets: [{ label: 'Xato %', data: S.topic_line.map(t => t.error_percent), borderColor: BAD, backgroundColor: BAD, tension: .25, pointRadius: 5, fill: false }] },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, grid: { color: line } }, x: { grid: { display: false } } } },
+  });
+}
+const set = (id, t) => (document.getElementById(id).textContent = t);
+set('sumQ', S.questions.length ? `Eng qiyin savol: №${S.questions[0].order} — ${S.questions[0].error_percent}% xato` : "Ma'lumot yo'q");
+set('sumT', S.topics.length ? `Eng qiyin mavzu: ${S.topics[0].topic} — ${S.topics[0].error_percent}% xato` : "Ma'lumot yo'q");
+if (S.topic_line.length > 1) {
+  const worst = S.topic_line.reduce((a, b) => (b.error_percent > a.error_percent ? b : a));
+  set('sumL', S.class_struggle ? `Sinf ${S.class_struggle.topic} mavzusidan boshlab qiynalmoqda (${S.class_struggle.error_percent}% xato). Eng qiyin: ${worst.topic} — ${worst.error_percent}%` : `Eng qiyin mavzu: ${worst.topic} — ${worst.error_percent}% xato; umumiy qiynalish nuqtasi yo'q`);
+}
+set('sumC', S.classes.length ? `Eng yuqori o'rtacha ball: ${S.classes[0].name} (${S.classes[0].avg_score})` + (S.classes.length > 1 ? `, eng past: ${S.classes[S.classes.length-1].name} (${S.classes[S.classes.length-1].avg_score})` : '') : "Ma'lumot yo'q");
+</script>
+{% endblock %}

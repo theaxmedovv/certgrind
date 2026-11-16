@@ -1,0 +1,62 @@
+{% extends "teacher/base.html" %}
+{% block title %}Excel import — Bilimdon{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold mb-4">Excel'dan import qilish</h1>
+<div class="grid lg:grid-cols-3 gap-6">
+  <section class="card p-5 space-y-4 lg:col-span-1 h-fit">
+    <p class="text-sm muted">Bitta fayl, 3 ta varaq: <b class="text-ink">Savollar</b>, <b class="text-ink">To'plamlar</b>, <b class="text-ink">To'plam savollari</b>. Mavzular, savollar va to'plamlar avtomatik yaratiladi; takroriy importda mavjudlari qayta yaratilmaydi.</p>
+    <a href="{% url 'import_template' %}" class="btn-3d btn-ghost sm w-full"><i data-lucide="download" class="w-4 h-4"></i> Bo'sh shablonni yuklab olish</a>
+    <form method="post" enctype="multipart/form-data" x-data="{ over: false, name: '', busy: false }" @submit="busy = true">
+      {% csrf_token %}
+      <label class="block text-xs font-bold mb-1">Fan</label>
+      <select name="subject" class="input !py-2 mb-2">
+        {% for s in subjects %}<option value="{{ s.name }}">{{ s.name }}</option>{% endfor %}
+        {% if not subjects %}<option value="Python">Python</option>{% endif %}
+      </select>
+      <input name="subject_new" class="input !py-2 mb-3" placeholder="yoki yangi fan nomi">
+      <label @dragover.prevent="over=true" @dragleave="over=false" @drop.prevent="over=false; $refs.f.files = $event.dataTransfer.files; name=$refs.f.files[0].name"
+             class="block border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition" :class="over ? 'border-brand bg-brand/10' : 'border-line hover:border-brand'">
+        <i data-lucide="file-spreadsheet" class="w-10 h-10 mx-auto text-brand"></i>
+        <div class="font-bold mt-2">Faylni shu yerga tashlang</div>
+        <div class="text-sm muted" x-text="name || 'yoki bosib tanlang (.xlsx)'"></div>
+        <input x-ref="f" type="file" name="file" accept=".xlsx" class="hidden" required @change="name=$refs.f.files[0].name">
+      </label>
+      <button class="btn-3d btn-brand w-full mt-3" :class="busy && 'opacity-60 pointer-events-none'" x-text="busy ? 'Yuklanmoqda…' : 'Import qilish'"></button>
+    </form>
+  </section>
+
+  <section class="lg:col-span-2">
+    {% if report %}
+      {% if report.file_error %}
+        <div class="rounded-2xl bg-bad/10 border border-bad text-bad-dark dark:text-bad p-4 font-semibold">{{ report.file_error }}</div>
+      {% else %}
+        <div class="card p-5 mb-4">
+          <div class="text-3xl mb-1">🎉</div>
+          <h2 class="text-lg font-extrabold">«{{ report.subject }}» fani yuklandi</h2>
+          <div class="grid sm:grid-cols-3 gap-3 mt-3 text-center">
+            <div class="rounded-2xl bg-ok/15 p-3"><div class="text-2xl font-extrabold num">{{ report.questions_created }}</div><div class="text-xs muted">yangi savol{% if report.questions_existing %} · {{ report.questions_existing }} ta avvaldan bor{% endif %}</div></div>
+            <div class="rounded-2xl bg-brand/15 p-3"><div class="text-2xl font-extrabold num">{{ report.sets_created }}</div><div class="text-xs muted">yangi to'plam{% if report.sets_existing %} · {{ report.sets_existing }} ta avvaldan bor{% endif %}</div></div>
+            <div class="rounded-2xl bg-sun/20 p-3"><div class="text-2xl font-extrabold num">{{ report.topics_created }}</div><div class="text-xs muted">yangi mavzu</div></div>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <a href="{% url 'subject_list' %}" class="btn-3d btn-brand sm">Fanlar va mavzular</a>
+            <a href="{% url 'question_list' %}" class="btn-3d btn-ghost sm">Savollar bazasi</a>
+          </div>
+        </div>
+        {% if report.errors %}
+        <div class="card overflow-hidden">
+          <div class="p-4 border-b border-line font-bold text-bad-dark dark:text-bad">⚠ {{ report.errors|length }} ta xatoli qator o'tkazib yuborildi (qolganlari saqlandi)</div>
+          <div class="overflow-x-auto max-h-[50vh] scroll-thin">
+            <table class="w-full text-sm"><thead class="sticky top-0 bg-card"><tr class="text-left muted"><th class="p-2">Varaq</th><th>Qator</th><th>Sabab</th></tr></thead>
+              {% for e in report.errors %}<tr class="border-t border-line bg-bad/5"><td class="p-2">{{ e.sheet }}</td><td class="num">{{ e.row }}</td><td>{{ e.reason }}</td></tr>{% endfor %}
+            </table>
+          </div>
+        </div>
+        {% endif %}
+      {% endif %}
+    {% else %}
+    <div class="card p-10 text-center"><div class="text-6xl mb-2">📥</div><p class="font-bold">Faylni yuklang</p><p class="muted text-sm">Natija va xatoli qatorlar (qator raqami va sababi bilan) shu yerda ko'rinadi.</p></div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

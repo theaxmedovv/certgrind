@@ -1,0 +1,962 @@
+[
+ {
+  "bank": "practice",
+  "module": null,
+  "num": 1,
+  "section": "1.4",
+  "text": "Which of the following expressions evaluate to a non-zero result? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "4 / 2 - 2 ** 1",
+    "correct": false
+   },
+   {
+    "text": "4 / 2 + 2 ** 1",
+    "correct": true
+   },
+   {
+    "text": "1 // 2 + 3 * 4",
+    "correct": true
+   },
+   {
+    "text": "1 ** 2 - 4 // 3",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let us show you the actual results of each of the non-zero expressions: 1 // 2 + 3 * 4 evaluates to 12. 4 / 2 + 2 ** 1 evaluates to 4.0 (note – it's a float as a division operator always produces floats).",
+  "source_file": ".gitbook/assets/Practice Test (Solution 01)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": null,
+  "num": 2,
+  "section": "1.5",
+  "text": "Which line of code asks the user for an integer value and assigns it to the floor variable? (Original task: insert the code boxes in the correct positions.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "floor = int(input(\"Enter floor number:\"))",
+    "correct": true
+   },
+   {
+    "text": "floor = float(input(\"Enter floor number:\"))",
+    "correct": false
+   },
+   {
+    "text": "floor = int(print(\"Enter floor number:\"))",
+    "correct": false
+   },
+   {
+    "text": "floor = input(int(\"Enter floor number:\"))",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only correct answer looks as follows: floor = int(input(\"Enter floor number:\"))",
+  "source_file": ".gitbook/assets/Practice Test (Solution 02)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": null,
+  "num": 3,
+  "section": "1.3",
+  "text": "Match the given literals with the data types: \"\\\"\", False, -1, -.1. Which assignment is correct? (Original task: drag and drop the data type names to match the given literals.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "\"\\\"\" → String; False → Boolean; -1 → Integer; -.1 → Float",
+    "correct": true
+   },
+   {
+    "text": "\"\\\"\" → String; False → Integer; -1 → Boolean; -.1 → Float",
+    "correct": false
+   },
+   {
+    "text": "\"\\\"\" → Boolean; False → String; -1 → Float; -.1 → Integer",
+    "correct": false
+   },
+   {
+    "text": "\"\\\"\" → Float; False → Boolean; -1 → Integer; -.1 → String",
+    "correct": false
+   }
+  ],
+  "explanation_en": "\"\\\"\" is a string of length 1 – it contains one quotation mark only. False is one of two possible Boolean values. -1 is an integer value equal to minus one. -.1 is a float value equal to minus one tenth.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 03)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": null,
+  "num": 4,
+  "section": "1.5",
+  "text": "Which line of code asks the user for a string value and assigns it to the password variable? (Original task: insert the code boxes in the correct positions.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "password = input(\"Enter password: \")",
+    "correct": true
+   },
+   {
+    "text": "password == input(\"Enter password: \")",
+    "correct": false
+   },
+   {
+    "text": "password = str(\"Enter password: \")",
+    "correct": false
+   },
+   {
+    "text": "password = input(str(\"Enter password: \")",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only acceptable answer looks as follows: password = input(\"Enter password:\")",
+  "source_file": ".gitbook/assets/Practice Test (Solution 04)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": null,
+  "num": 5,
+  "section": "1.1",
+  "text": "A program which is used to transform a source file into an executable binary file is called:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "an interpreter.",
+    "correct": false
+   },
+   {
+    "text": "an IDE.",
+    "correct": false
+   },
+   {
+    "text": "a linker.",
+    "correct": false
+   },
+   {
+    "text": "a compiler.",
+    "correct": true
+   }
+  ],
+  "explanation_en": "A compiler (also known as a translator) is designed to translate a program written in a high-level programming language (like C++) into a binary code deployed inside an executable file.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 05)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": null,
+  "num": 6,
+  "section": "1.4",
+  "text": "Arrange the arithmetic operations in the order which reflects their priorities, where the top-most position has the highest priority and the bottom-most position has the lowest priority. (Operations: SUBTRACTION, EXPONENTATION, MULTIPLICATION.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "Exponentiation, Multiplication, Subtraction",
+    "correct": true
+   },
+   {
+    "text": "Multiplication, Exponentiation, Subtraction",
+    "correct": false
+   },
+   {
+    "text": "Subtraction, Multiplication, Exponentiation",
+    "correct": false
+   },
+   {
+    "text": "Exponentiation, Subtraction, Multiplication",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Python's arrangement of these three arithmetic operators is as follows: exponentiation (the power of) has the highest priority; multiplication and two kinds of division are in-betweens; addition along with subtraction take the lowest position.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 06)",
+  "converted_from": "ordering",
+  "note": "Tartiblash savoli variantli savolga aylantirildi",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": 1,
+  "num": 7,
+  "section": "1.1",
+  "text": "A syntax is a part of a language definition which describes the rules used to build:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "the sentences from a set of words.",
+    "correct": true
+   },
+   {
+    "text": "the symbols from a set of dots.",
+    "correct": false
+   },
+   {
+    "text": "the words from a set of symbols.",
+    "correct": false
+   },
+   {
+    "text": "the data from digits.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "A syntax is a set of rules which must be obeyed to build grammatically correct (not necessarily meaningful) sentences in any language.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 07)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 1-modul #4",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 8,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "power = 1\nwhile power != 10:\n    power *= 2\n    if power == 5:\n        continue\n    print(\"@\", end=\"\")\nelse:\n    print(\"@\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "The program outputs three at signs (@@@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs two at signs (@@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs one at sign (@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program enters an infinite loop.",
+    "correct": true
+   }
+  ],
+  "explanation_en": "As you can see, the power variable takes values which are subsequent powers of 2 (1, 2, 4, 8, 16, etc). 10 does not belong to this set and the continue statement does not change anything, either. Consequently, the loop has no chance to be terminated, and runs infinitely.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 08)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 2-modul #9",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 9,
+  "section": "2.2",
+  "text": "What is the expected output of the following code?",
+  "code": "others = -1\nfor i in range(1, 3):\n    for j in range(1, 2):\n        if i == j:\n            others += 1\n    else:\n        others += 1\nprint(others)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code outputs nothing.",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": true
+   }
+  ],
+  "explanation_en": "The sequence of values produced by the outer for loop contains two values: 1 and 2. The inner for loop covers one value only: 1. A common part of these two sets contains only one value: 1, so the others variable is incremented once inside the inner loop's body and twice inside the loop's else: branch. Considering that the initial variable's value is -1, it will leave the loops with 2.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 09)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 2-modul #16",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 10,
+  "section": "2.1",
+  "text": "Which expressions obtain a code which outputs ## to the screen? (Original task: drag and drop the conditional expressions into the two gaps; some boxes are not used. Boxes: shift = 2, shift < 0, shift > 2, shift =< 2.)",
+  "code": "shift = 1 + 2 * 3\nif <gap 1>:\n    print(\"#\")\nelif <gap 2>:\n    print(\"##\")\nelse:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "if shift < 0: ... elif shift > 2:",
+    "correct": true
+   },
+   {
+    "text": "if shift > 2: ... elif shift < 0:",
+    "correct": false
+   },
+   {
+    "text": "if shift = 2: ... elif shift > 2:",
+    "correct": false
+   },
+   {
+    "text": "if shift =< 2: ... elif shift < 0:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let's analyze all possibilities step by step: the shift variable is assigned with an integer value equal to 7 – by no means 9! The expression shift =< 2 cannot be taken into consideration as there is no operator like =< – such a phrase will provoke a SyntaxError exception. The expression shift = 2 looks better, but cannot be used in this context, as we want to perform a comparison, not an assignment – Python's reaction will be the same as described above. Putting the expression shift > 2 after the if keyword will cause the code to output only one hash, so the only location in which we should place it is the box after the elif keyword.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 10)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim) | modul testidagi savol bilan bir xil: 2-modul #5",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 11,
+  "section": "2.1",
+  "text": "Which line forms a conditional instruction that guarantees a certain statement is executed when the places_occupied variable is greater than 0? (Original task: arrange the code boxes 0, places_occupied, :, if, > in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "if places_occupied > 0:",
+    "correct": true
+   },
+   {
+    "text": "if 0 > places_occupied:",
+    "correct": false
+   },
+   {
+    "text": "places_occupied if > 0:",
+    "correct": false
+   },
+   {
+    "text": "if > places_occupied 0:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "This is the line of code we wanted you to build: if places_occupied > 0:",
+  "source_file": ".gitbook/assets/Practice Test (Solution 11)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim) | modul testidagi savol bilan bir xil: 2-modul #1",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 12,
+  "section": "2.1",
+  "text": "What is the expected output of the following code?",
+  "code": "planets = 1 + 1 // 2 * 3\nif planets > 0:\n    print(\"#\")\nelif planets > 1:\n    print(\"##\")\nelse:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "#",
+    "correct": true
+   },
+   {
+    "text": "##",
+    "correct": false
+   },
+   {
+    "text": "The code produces no output.",
+    "correct": false
+   },
+   {
+    "text": "###",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Hence the expression 1 + 1 // 2 * 3 evaluates to 1, and the control reaches the very first print() invocation.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 12)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 2-modul #3",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 13,
+  "section": "2.2",
+  "text": "Which line forms a loop that executes its body with the step variable going through the values 0, 2, and 4 (in that order)? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "for counter in range(0, 5, 2):",
+    "correct": true
+   },
+   {
+    "text": "for counter in range(5, 0, 2):",
+    "correct": false
+   },
+   {
+    "text": "for counter in range(0, 2, 5):",
+    "correct": false
+   },
+   {
+    "text": "for counter in range(2, 0, 5):",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only correct answer looks as follows: for counter in range(0, 5, 2):",
+  "source_file": ".gitbook/assets/Practice Test (Solution 13)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim). Savol matnida 'step' o'zgaruvchisi, javobda 'counter' (manbadagi nomuvofiqlik) | modul testidagi savol bilan bir xil: 2-modul #11",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 14,
+  "section": "2.2",
+  "text": "How many asterisks (*) does the code output to the screen?",
+  "code": "torque = 1\nwhile torque < 2:\n    torque *= 2\n    print(\"*\", end=\"\")\nelse:\n    print(\"*\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "two",
+    "correct": true
+   },
+   {
+    "text": "one",
+    "correct": false
+   },
+   {
+    "text": "three",
+    "correct": false
+   },
+   {
+    "text": "zero (the code outputs nothing)",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The while loop's body is executed only once, as the torque variable is set to 2 during the loop's first turn. This means that the loop will emit one asterisk. The second asterisk is emitted by the else: branch.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 14)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 2-modul #8",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 2,
+  "num": 15,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "angle = 1\nfor i in range(2, 5):\n    if 2 * i > 4:\n        angle += 1\nelse:\n    angle -= 1\nprint(angle)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code outputs 2.",
+    "correct": true
+   },
+   {
+    "text": "The code outputs 1.",
+    "correct": false
+   },
+   {
+    "text": "The code enters an infinite loop.",
+    "correct": false
+   },
+   {
+    "text": "The code outputs 3.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "In the sequence 2, 3, 4, which is passed through by the i variable, only the first value (2) doesn't satisfy the condition 2 * i > 4. In effect, the angle variable is incremented twice inside the loop's body and decremented once inside the else: branch, which finally sets it to 2.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 15)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 2-modul #14",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 3,
+  "num": 16,
+  "section": "3.3",
+  "text": "Assuming that the pizza_menu dictionary contains pizza:price pairs, which line of code retrieves the Margherita Pizza price and assigns it to the charge variable? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "charge = pizza_menu[\"Margherita Pizza\"]",
+    "correct": true
+   },
+   {
+    "text": "charge = pizza_menu(\"Margherita Pizza\")",
+    "correct": false
+   },
+   {
+    "text": "pizza_menu[\"Margherita Pizza\"] = charge",
+    "correct": false
+   },
+   {
+    "text": "charge[\"Margherita Pizza\"] = pizza_menu",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As retrieving a value from a dictionary resembles list indexing, where the index is actually a string, the only acceptable answer looks as follows: charge = pizza_menu[\"Margherita Pizza\"]",
+  "source_file": ".gitbook/assets/Practice Test (Solution 16)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim). Manbadagi izohda 'pizza' deb yozilgan (typo), to'g'risi 'pizza_menu' | modul testidagi savol bilan bir xil: 3-modul #12",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": 3,
+  "num": 17,
+  "section": "3.2",
+  "text": "What is the expected result of the following code?",
+  "code": "answers = (True, False, True)\nselection = answers[2:]\npoints = 0\nfor answer in selection[-1:]:\n    if answer:\n        points += 1\nprint(points)",
+  "type": "single",
+  "options": [
+   {
+    "text": "0",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": true
+   }
+  ],
+  "explanation_en": "Note: the selection has been created as a one-element slice of the answers list. Therefore, it is a separate, one-element list which contains True. The second slice (the one in the loop statement) changes nothing (the only list element is also its last element). In effect, points is incremented once inside the loop and its final value is 1.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 17)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 3-modul #10",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 3,
+  "num": 18,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, which of the following expressions evaluate to True? (Select two expressions.)",
+  "code": "the_data = ['data', -1, 2.718281828459]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "'data' in the_data",
+    "correct": true
+   },
+   {
+    "text": "int(the_data[2]) == len(the_data)",
+    "correct": false
+   },
+   {
+    "text": "the_data[1] not in the_data",
+    "correct": false
+   },
+   {
+    "text": "the_data.index(-1) > 0",
+    "correct": true
+   }
+  ],
+  "explanation_en": "'data' in the_data: the string 'data' is stored as the first element of the list, so the expression evaluates to True. int(the_data[2]) == len(the_data): int(the_data[2]) → 2, len(the_data) → 3; this evident difference must produce False as the result. the_data[1] not in the_data: False – it's impossible that a list's element is not contained in the list itself, wouldn't you agree? the_data.index(-1) > 0: True. The integer value -1 resides at index 1 in the list, which is greater then zero.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 18)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 3-modul #4",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 3,
+  "num": 19,
+  "section": "3.2",
+  "text": "What is true about tuples? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "All tuple elements must be of the same type.",
+    "correct": false
+   },
+   {
+    "text": "The phrase tuple() can be used to produce an empty tuple.",
+    "correct": true
+   },
+   {
+    "text": "The + operator can be applied to tuples and means concatenation.",
+    "correct": true
+   },
+   {
+    "text": "The phrase (1) describes a one-element tuple.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "All tuple elements must be of the same type – False: tuples of that kind would be very inflexible and of little use. tuple() – True: an empty pair of parentheses () will work, too. The + operator – True: for example, (1,) + (2,) evaluates to (1, 2). Note the commas – you're not allowed to omit them! The phrase (1) – False: it's a single integer value equal to one. To make it a tuple, you need to include the comma: (1,).",
+  "source_file": ".gitbook/assets/Practice Test (Solution 19)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 3-modul #8",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 3,
+  "num": 20,
+  "section": "3.3",
+  "text": "What is the expected output of the following code?",
+  "code": "train_speed = {\"FlyingScotsman\": 201, \"TGV\": 320, \"Shinkansen\": 320}\n\nfor train in train_speed.values():\n    print(str(train)[0], end=\"\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "FTS",
+    "correct": false
+   },
+   {
+    "text": "233",
+    "correct": true
+   },
+   {
+    "text": "201320320",
+    "correct": false
+   },
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As the .values() method returns a list of dictionary values (the keys are ignored!), the [0] index retrieves the first character of the string obtained from each value's integer number. This is where the answer came from.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 20)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 3-modul #14",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 3,
+  "num": 21,
+  "section": "3.1",
+  "text": "What is the expected output of the following code?",
+  "code": "list_one = [1,2]\nlist_two = list_one\nlist_two.append(3)\nprint(list_one[-1])",
+  "type": "single",
+  "options": [
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": true
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "The code raises an exception and outputs nothing.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As list_two originates from the direct assignment of list_one (no slice was used there!) both these names refer to the same data. Therefore, the element appended to the first of them exists in the second, and vice versa.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 21)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 3-modul #5",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 3,
+  "num": 22,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, select the expressions which will not raise any exception. (Select two expressions.)",
+  "code": "numbers = [4, 3, 2, 1]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "numbers[4]",
+    "correct": false
+   },
+   {
+    "text": "numbers[3:5]",
+    "correct": true
+   },
+   {
+    "text": "numbers[numbers[0]]",
+    "correct": false
+   },
+   {
+    "text": "numbers[numbers[3]]",
+    "correct": true
+   }
+  ],
+  "explanation_en": "numbers[4]: There is no element of index 4 in the list – expect the IndexError exception. numbers[3:5] produces the one-element slice [1] – no exception occurs. numbers[numbers[0]] is actually numbers[4] – an IndexError is knocking on your door. numbers[numbers[3]] is actually numbers[1], which results in 3 – no exception occurs.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 22)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 3-modul #1",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 23,
+  "section": "4.2",
+  "text": "Which of the following functions cannot be invoked with one argument?",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "def four():\n    pass",
+    "correct": true
+   },
+   {
+    "text": "def three(level, size = 0):\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def two(level):\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def one(level=100):\n    pass",
+    "correct": false
+   }
+  ],
+  "explanation_en": "def four(): The only number of arguments this function can accept is zero – this can be deduced from the meaningful emptiness between the parentheses. def three(level, size = 0): The function can be invoked with either one or two arguments. def two(level): The function can be invoked with one argument only. def one(level=100): the function can be invoked with zero or one argument.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 23)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 4-modul #5",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 24,
+  "section": "4.2",
+  "text": "What is the expected output of the following code?",
+  "code": "def combine(width, height=10, depth=0, is_3D=False):\n    return [is_3D, width, height, depth]\n\n\nprint(combine(height = 1, width = 2)[3])",
+  "type": "single",
+  "options": [
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": true
+   },
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let's follow the events step-by-step: two parameters are set during invocation: height=1 and width=2; two parameters retain their default values: depth=0 and is_3D=False; in effect, the function returns the following list: [False, 2, 1, 0]; the list's fourth element is zero; thus, you see it on the screen.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 24)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 4-modul #9",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 25,
+  "section": "4.2",
+  "text": "A user-defined function is invoked twice in the following line of code. What do you call the argument passing techniques which have been used here? (Select two answers.)",
+  "code": "result = function(function(parameter=0))",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "keyword",
+    "correct": true
+   },
+   {
+    "text": "positional",
+    "correct": true
+   },
+   {
+    "text": "reference",
+    "correct": false
+   },
+   {
+    "text": "indicatory",
+    "correct": false
+   }
+  ],
+  "explanation_en": "keyword: the inner invocation (the one with the phrase parameter=0) makes use of this technique. positional: the outer function invocation uses this technique. reference: there is no such phenomenon in Python as reference parameter passing. indicatory: we don't have any idea what this term would mean – do you?",
+  "source_file": ".gitbook/assets/Practice Test (Solution 25)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 4-modul #2",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 26,
+  "section": "4.3",
+  "text": "What is the expected output of the following code?",
+  "code": "def walk(top):\n    if top == 0:\n        return 0\n    return top + walk(top - 1)\n\n\nprint(walk(2))",
+  "type": "single",
+  "options": [
+   {
+    "text": "3",
+    "correct": true
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As walk() is a recursive function, we need to trace all its invocations. Note that the function returns the sum of its argument and the result returns by itself. 1. walk(2) which returns 2 + walk(1). 2. walk(1) which returns 1 + walk(0). 3. walk(0) which returns 0 and breaks the invocation chain. 4. consequently, the final result is 2 + 1 + 0.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 26)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 4-modul #12",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 27,
+  "section": "4.2",
+  "text": "What is the expected result of the following code?",
+  "code": "def sample(value):\n    return total + value\n\n\ntotal = 0\nnew_total = sample()\nnew_total = sample(total)\nprint(total)",
+  "type": "single",
+  "options": [
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": true
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "4",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The function tries to access a variable which is not known in the function's scope (total).",
+  "source_file": ".gitbook/assets/Practice Test (Solution 27)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 4-modul #4",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 28,
+  "section": "4.3",
+  "text": "Which program prints Mishit to the screen? (Original task: drag and drop the given code boxes into the two gaps; one box is not used.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "try:\n    character = \"ABC\"[3]\nexcept IndexError:\n    print(\"Mishit\")\nexcept:\n    print(\"Failure\")",
+    "correct": true
+   },
+   {
+    "text": "try:\n    character = \"ABC\"[3]\nexcept:\n    print(\"Mishit\")\nexcept IndexError:\n    print(\"Failure\")",
+    "correct": false
+   },
+   {
+    "text": "try:\n    character = \"ABC\"[3]\ndefault:\n    print(\"Mishit\")\nexcept:\n    print(\"Failure\")",
+    "correct": false
+   },
+   {
+    "text": "try:\n    character = \"ABC\"[3]\nexcept IndexError:\n    print(\"Mishit\")\ndefault:\n    print(\"Failure\")",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The code which meets our requirements should look as follows: try: character = \"ABC\"[3] / except IndexError: print(\"Mishit\") / except: print(\"Failure\")",
+  "source_file": ".gitbook/assets/Practice Test (Solution 28)",
+  "converted_from": "drag_drop",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim) | modul testidagi savol bilan bir xil: 4-modul #15",
+  "needs_review": true
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 29,
+  "section": "4.2",
+  "text": "What is the expected result of running the following code?",
+  "code": "def process(data):\n    data[1] = 2\n    return data[-2]\n\n\nmeasurements = [0 for i in range(3)]\nprocess(measurements)\nprint(measurements[-2])",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code prints 1.",
+    "correct": false
+   },
+   {
+    "text": "The code prints 2.",
+    "correct": true
+   },
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": false
+   },
+   {
+    "text": "The code prints 0.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Note: the process() function redefines (reassigns) the second element of its parameter, which means that the change affects the argument (which is visible globally). This is why the middle element of the measurements list (which can be indexed as [-2]) contains 2, not zero.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 29)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 4-modul #8",
+  "needs_review": false
+ },
+ {
+  "bank": "practice",
+  "module": 4,
+  "num": 30,
+  "section": "4.3",
+  "text": "What is false about exceptions in Python? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "If any of the raised exceptions remains unhandled, program execution is terminated and an error message is printed.",
+    "correct": false
+   },
+   {
+    "text": "Any code put inside the try branch is always fully executed.",
+    "correct": true
+   },
+   {
+    "text": "More than one except branch can be executed when an exception is raised.",
+    "correct": true
+   },
+   {
+    "text": "The code put inside the try branch may not be fully executed.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "If any of the raised exceptions remains unhandled… – True: you've experienced this many times, haven't you? Any code put inside the try branch is always fully executed – Wrong: the code can be broken and left when an error occurs. More than one except branch can be executed when an exception is raised – Wrong: not more than one except branch is executed in case of error. The code put inside the try branch may not be fully executed – Absolutely.",
+  "source_file": ".gitbook/assets/Practice Test (Solution 30)",
+  "converted_from": "",
+  "note": "modul testidagi savol bilan bir xil: 4-modul #14",
+  "needs_review": false
+ }
+]

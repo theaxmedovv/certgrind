@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Statistika — PCEP{% endblock %}
+{% block body_class %}bg-surface text-ink{% endblock %}
+{% block body %}
+<div class="max-w-3xl mx-auto p-4 sm:p-6 page-in">
+  <a href="{% url 'pcep:home' %}" class="text-sm text-muted hover:underline">← PCEP</a>
+  <h1 class="font-kid font-extrabold text-3xl mt-2">📊 Statistika</h1>
+
+  {% if not has_data %}
+  <p class="mt-6 text-muted">Hali tugatilgan test yo'q. Birinchi testni yechgach statistika shu yerda ko'rinadi.</p>
+  {% else %}
+  <div class="mt-5 rounded-2xl p-5 border-2 {% if ready and ready.pct > 70 %}border-ok bg-ok/10{% else %}border-line bg-card{% endif %}">
+    <div class="text-sm text-muted">Imtihonga tayyorlik (oxirgi {{ ready.n|default:0 }} ta aralash test o'rtachasi)</div>
+    {% if ready %}
+    <div class="font-kid font-extrabold text-4xl {% if ready.pct > 70 %}text-ok-dark{% endif %}">{{ ready.pct }}%</div>
+    <div class="text-sm">{% if ready.pct > 70 %}Yaxshi, imtihonga tayyor ko'rinasiz!{% else %}Tayyor deyish uchun 70% dan yuqori bo'lishi kerak.{% endif %}</div>
+    {% else %}
+    <div class="text-muted mt-1">Hisoblash uchun kamida bitta «Aralash test» yeching.</div>
+    {% endif %}
+  </div>
+
+  <h2 class="font-kid font-bold text-lg mt-8 mb-2">Modullar bo'yicha o'sish</h2>
+  <div class="bg-card border border-line rounded-2xl p-3"><canvas id="chart" height="220"></canvas></div>
+
+  <h2 class="font-kid font-bold text-lg mt-8 mb-2">Eng ko'p xato qilingan bo'limlar</h2>
+  {% if sections %}
+  <ul class="bg-card border border-line rounded-2xl divide-y divide-line">
+    {% for s in sections %}
+    <li class="p-3 flex justify-between gap-3 text-sm"><span><b>{{ s.section }}</b> {{ s.name }}</span><span class="font-bold {% if s.wrong_pct >= 40 %}text-bad-dark{% endif %}">{{ s.wrong_pct }}% xato</span></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="text-sm text-muted">Hozircha yetarli ma'lumot yo'q (har bir bo'limdan kamida 3 ta javob kerak).</p>{% endif %}
+
+  <h2 class="font-kid font-bold text-lg mt-8 mb-2">Urinishlar tarixi</h2>
+  <div class="bg-card border border-line rounded-2xl overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead><tr class="text-left text-muted"><th class="p-2">Sana</th><th class="p-2">Test</th><th class="p-2">Natija</th><th class="p-2">Vaqt</th><th></th></tr></thead>
+      <tbody>
+      {% for a in history %}
+      <tr class="border-t border-line">
+        <td class="p-2 whitespace-nowrap">{{ a.finished_at|date:"d.m H:i" }}</td>
+        <td class="p-2">{% if a.mode == "module" %}{{ a.module.number }}-modul{% else %}{{ a.get_mode_display }}{% endif %}</td>
+        <td class="p-2 font-bold {% if a.percent >= 70 %}text-ok-dark{% endif %}">{{ a.correct }}/{{ a.total }} · {{ a.percent|floatformat:0 }}%</td>
+        <td class="p-2">{% widthratio a.duration_seconds 60 1 %} daq</td>
+        <td class="p-2"><a class="underline" href="{% url 'pcep:review' a.id %}">Ko'rish</a></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{{ series|json_script:"series" }}
+{% endblock %}
+{% block scripts %}
+{% if has_data %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const series = JSON.parse(document.getElementById('series').textContent);
+const colors = ['#4f46e5', '#16a34a', '#f59e0b', '#ef4444', '#0ea5e9', '#a855f7', '#64748b'];
+new Chart(document.getElementById('chart'), {
+  type: 'line',
+  data: { datasets: Object.entries(series).map(([name, pts], i) => ({
+    label: name, data: pts.map((p, k) => ({ x: k + 1, y: p.y })), borderColor: colors[i % colors.length],
+    backgroundColor: colors[i % colors.length], tension: .25, pointRadius: 4 })) },
+  options: { responsive: true, scales: { y: { min: 0, max: 100, title: { display: true, text: '%' } }, x: { type: 'linear', title: { display: true, text: 'Urinish №' }, ticks: { precision: 0 } } },
+    plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+{% endif %}
+{% endblock %}

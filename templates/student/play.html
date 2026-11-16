@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+{% block title %}Test — Bilimdon{% endblock %}
+{% block body_class %}no-select bg-student kid overflow-x-hidden{% endblock %}
+{% block body %}
+<div x-data="student()" x-cloak class="min-h-screen flex flex-col relative" @click.once="Sfx.unlock()">
+
+  <!-- jiddiy xato -->
+  <div x-show="fatal" class="fixed inset-0 z-[200] bg-slate-900 flex flex-col items-center justify-center p-6 text-center gap-4">
+    <div class="text-6xl">🚫</div><p class="text-xl max-w-md font-bold" x-text="fatal"></p>
+    <a href="/" @click="localStorage.removeItem('pt')" class="btn-3d btn-sun">Bosh sahifa</a>
+  </div>
+
+  <!-- aloqa holati -->
+  <div x-show="banner==='lost'" x-transition class="fixed top-0 inset-x-0 z-[150] bg-sun text-[#281c00] text-center py-1.5 text-sm font-extrabold flex items-center justify-center gap-2">
+    <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3a9 9 0 1 0 9 9" stroke-linecap="round"/></svg>
+    Aloqa uzildi, qayta ulanmoqda...
+  </div>
+  <div x-show="banner==='back'" x-transition class="fixed top-0 inset-x-0 z-[150] bg-ok-dark text-white text-center py-1.5 text-sm font-extrabold">Ulandi ✓</div>
+
+  <!-- yuqori panel -->
+  <header class="relative z-20 bg-black/25 backdrop-blur px-3 sm:px-5 py-2" x-show="st && ['question','interval','paused','frozen','locked','ready','needfs'].includes(screen)">
+    <div class="max-w-4xl mx-auto flex items-center gap-2 sm:gap-3">
+      <div class="w-10 h-10 rounded-full overflow-hidden flex-none" x-avatar="st && st.me.avatar"></div>
+      <div class="flex-1 min-w-0 leading-tight hidden sm:block"><div class="font-extrabold truncate" x-text="st && st.me.name"></div><div class="text-xs opacity-80" x-text="st && st.me.school_class"></div></div>
+      <div class="flex-1 sm:hidden"></div>
+      <div class="text-center px-2 rounded-xl bg-white/10" title="Ball">
+        <div class="text-[10px] uppercase opacity-80 font-extrabold">Ball</div>
+        <div class="font-kid font-extrabold text-xl num leading-5" :class="scoreFlash && 'flash-red'" x-countup="st ? st.me.score : 0">0</div>
+      </div>
+      <div class="px-2 rounded-xl bg-white/10 text-center" title="Streak">
+        <div class="text-[10px] uppercase opacity-80 font-extrabold">Streak</div>
+        <div class="font-kid font-extrabold text-xl num leading-5">🔥<span x-text="st ? st.me.streak : 0"></span>/<span x-text="st ? st.me.streak_target : 3"></span></div>
+      </div>
+      <div x-show="codes.length" class="relative text-3xl anim-glow gift-shake" title="Maxfiy kod" aria-label="Maxfiy kod bor">🎁<span class="absolute -top-1 -right-2 bg-bad text-white text-xs rounded-full w-5 h-5 grid place-items-center font-extrabold" x-text="codes.length"></span></div>
+      <div class="rounded-xl px-3 py-1 font-kid font-extrabold text-xl num transition" role="timer"
+           :class="{'bg-white/15': timerState==='ok', 'bg-sun text-[#281c00]': timerState==='warn', 'bg-bad text-white anim-flash': timerState==='danger'}" x-text="fmt(remaining)"></div>
+      <button @click="toggleMusic()" class="text-xl w-9 h-9 rounded-xl bg-white/10" :aria-label="music ? 'Musiqani o\'chirish' : 'Musiqani yoqish'" x-text="music && !muted ? '🎵' : '🔇'"></button>
+    </div>
+  </header>
+
+  <main class="relative z-10 flex-1 flex flex-col items-center justify-center p-4 w-full max-w-3xl mx-auto">
+
+    <div x-show="screen==='loading'" class="text-center space-y-3">
+      <div class="w-24 h-24 mx-auto rounded-full skeleton opacity-30"></div>
+      <div class="text-lg font-bold opacity-80">Ulanmoqda...</div>
+    </div>
+
+    <!-- 3. KUTISH XONASI -->
+    <div x-show="screen==='lobby'" class="w-full text-center space-y-5 page-in">
+      <div class="relative w-40 h-40 mx-auto">
+        <span class="absolute inset-0 rounded-full bg-white/10 anim-breathe"></span>
+        <div class="relative w-40 h-40 rounded-full overflow-hidden anim-bob ring-4 ring-white/70" x-avatar="st && st.me.avatar"></div>
+      </div>
+      <div class="font-kid font-extrabold text-3xl" x-text="st && st.me.name"></div>
+      <div class="opacity-80 font-bold" x-text="st && st.me.school_class"></div>
+      <div class="inline-flex items-center gap-2 text-xl sm:text-2xl bg-white/15 rounded-3xl px-6 py-4 font-extrabold">
+        <span class="anim-breathe">⏳</span> O'qituvchi testni boshlashini kuting<span class="anim-flash">...</span>
+      </div>
+      <div class="h-12 flex items-center justify-center">
+        <template x-for="(f, i) in FACTS" :key="i">
+          <p x-show="factIdx===i" x-transition.opacity.duration.500ms class="absolute text-base sm:text-lg font-bold text-sun px-4" x-text="f"></p>
+        </template>
+      </div>
+      <div>
+        <div class="text-sm opacity-80 font-bold mb-2">Kirganlar: <span x-text="st && st.players ? st.players.length : 0"></span></div>
+        <div class="flex flex-wrap justify-center gap-2 max-h-40 overflow-y-auto scroll-thin">
+          <template x-for="p in (st && st.players ? st.players : [])" :key="p.id">
+            <div class="flex flex-col items-center w-14 anim-pop" :title="p.name">
+              <div class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/50" x-avatar="p.avatar"></div>
+              <span class="text-[11px] truncate w-full" x-text="p.name"></span>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- kech kirish: ruxsat kutish -->
+    <div x-show="screen==='pending'" class="text-center space-y-4 page-in">
+      <div class="text-7xl anim-breathe">🕒</div>
+      <div class="font-kid font-extrabold text-3xl">O'qituvchi ruxsatini kut</div>
+      <p class="opacity-90 font-bold max-w-sm mx-auto">Test allaqachon boshlangan. O'qituvchi so'rovingni ko'rib chiqmoqda.</p>
+    </div>
+
+    <!-- 4. START -->
+    <div x-show="screen==='ready'" class="text-center space-y-5 page-in">
+      <div class="text-7xl anim-bob">🚀</div>
+      <h2 class="font-kid font-extrabold text-4xl">Test boshlandi!</h2>
+      <p class="opacity-90 font-bold max-w-sm mx-auto">Test to'liq ekranda o'tadi. Ekrandan chiqsang yoki boshqa oynaga o'tsang, testdan chetlatilasan.</p>
+      <button @click="startTest()" class="btn-3d btn-sun text-3xl sm:text-4xl px-10 py-7 rounded-3xl anim-pulse w-full max-w-md">▶ Testni boshlash</button>
+      <p class="text-sun font-bold" x-text="powerMsg" x-show="powerMsg"></p>
+    </div>
+
+    <!-- 3-2-1 sanoq -->
+    <div x-show="screen==='countdown'" class="fixed inset-0 z-[100] bg-student grid place-items-center">
+      <template x-if="cd"><div :key="cd" class="count-num text-sun drop-shadow-2xl" :class="cdText.length>1 ? 'text-5xl sm:text-7xl' : 'text-[10rem]'" x-text="cdText"></div></template>
+    </div>
+
+    <!-- fullscreen'ga qaytish -->
+    <div x-show="screen==='needfs'" class="text-center space-y-4 page-in">
+      <template x-if="lockedOnce">
+        <div class="space-y-3">
+          <div class="text-7xl anim-pop">✅</div>
+          <div class="font-kid font-extrabold text-3xl text-ok">Ruxsat berildi!</div>
+          <p class="font-bold opacity-90">Javoblaring saqlangan. To'liq ekranga qaytib, davom et.</p>
+        </div>
+      </template>
+      <template x-if="!lockedOnce"><div class="space-y-3"><div class="text-6xl">🖥️</div><p class="text-xl font-extrabold">Davom etish uchun to'liq ekranga qayt</p></div></template>
+      <button @click="resumeAfterLock()" class="btn-3d btn-ok text-2xl px-8 py-5">▶ Davom etish</button>
+      <p class="text-sun font-bold" x-text="powerMsg" x-show="powerMsg"></p>
+    </div>
+
+    <!-- yangi aylana banneri -->
+    <div x-show="roundBanner" x-transition.opacity class="fixed inset-x-0 top-20 z-40 grid place-items-center pointer-events-none" role="status">
+      <div class="rounded-3xl bg-sun text-slate-900 font-kid font-extrabold text-4xl px-8 py-4 shadow-2xl anim-pop">🔄 <span x-text="roundBanner"></span>-aylana!</div>
+    </div>
+
+    <!-- 5. SAVOL -->
+    <div x-show="screen==='question' && q" class="w-full space-y-4">
+      <div>
+        <div class="flex justify-between text-sm font-extrabold mb-1"><span x-text="q ? (q.round > 1 ? '🔄 ' + q.round + '-aylana · ' : '') + 'Savol ' + q.number + ' / ' + q.total : ''"></span><span class="opacity-80 hidden sm:inline">1–<span x-text="q ? q.options.length : 4"></span> tugmalari bilan ham javob bering</span></div>
+        <div class="h-3 rounded-full bg-white/15 overflow-hidden"><div class="h-full rounded-full bg-sun transition-all duration-500" :style="q ? `width:${(q.number/q.total)*100}%` : ''"></div></div>
+      </div>
+      <div class="bg-white text-slate-900 rounded-3xl p-5 sm:p-7 shadow-2xl text-center anim-slide" style="box-shadow:0 8px 0 rgba(0,0,0,.25)">
+        <div x-show="q && q.image" class="mb-4 inline-block p-2 bg-slate-100 rounded-2xl border-4 border-brand/30"><img :src="q && q.image" class="max-h-56 rounded-xl" draggable="false" alt=""></div>
+        <p class="font-kid font-extrabold text-2xl sm:text-3xl leading-snug" x-text="q && q.text"></p>
+        <div x-show="codeLines.length" class="code-block mt-4 text-left" aria-label="Kod">
+          <template x-for="(ln, i) in codeLines" :key="i"><div class="code-line"><span class="code-no" x-text="i + 1"></span><span class="code-txt hljs" x-html="ln"></span></div></template>
+        </div>
+        <p x-show="q && q.input_values" class="mt-3 text-sm font-bold text-slate-600">⌨️ Kiritiladigan qiymatlar: <span class="font-mono" x-text="q && q.input_values"></span></p>
+      </div>
+      <div class="grid gap-3" :class="q && q.options.length > 2 ? 'sm:grid-cols-2' : ''">
+        <template x-for="(o, i) in (q ? q.options : [])" :key="o.id">
+          <button @click="choose(o)" :disabled="!!pending" class="ans anim-slide" :class="['c'+i, pending && selected!==o.id ? 'dim' : '', selected===o.id ? 'chosen' : '']" :style="`animation-delay:${i*60}ms`">
+            <span class="shape" aria-hidden="true" x-text="SHAPES[i]"></span>
+            <span class="flex-1" x-text="o.text"></span>
+            <span class="opacity-70 text-sm hidden sm:inline" x-text="i+1"></span>
+          </button>
+        </template>
+      </div>
+      <p class="text-center font-bold opacity-90 text-sm" x-show="pending">Javob yuborilmoqda...</p>
+      <p class="text-center text-sun font-bold" x-text="powerMsg" x-show="powerMsg"></p>
+    </div>
+
+    <!-- 6. ORALIQ EKRAN -->
+    <div x-show="screen==='interval' && result" class="fixed inset-0 z-40 overflow-y-auto" :class="result && result.correct ? 'bg-gradient-to-b from-[#16a34a] to-[#0f6b34]' : 'bg-gradient-to-b from-[#ff4d6d] to-[#b3203f]'">
+      <div class="min-h-full flex flex-col items-center justify-center p-4 max-w-xl mx-auto space-y-3 pt-6 pb-10">
+        <div class="text-center">
+          <template x-if="result && result.correct">
+            <svg class="w-32 h-32 mx-auto anim-pop" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="24" fill="rgba(255,255,255,.2)"/><path class="draw" d="M14 27 L23 36 L39 17" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" pathLength="100"/></svg>
+          </template>
+          <template x-if="result && !result.correct">
+            <svg class="w-32 h-32 mx-auto anim-shake" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="24" fill="rgba(255,255,255,.2)"/><path class="draw" d="M16 16 L36 36 M36 16 L16 36" stroke="#fff" stroke-width="5" stroke-linecap="round" pathLength="100"/></svg>
+          </template>
+          <div class="font-kid font-extrabold text-4xl mt-1" x-text="result && result.correct ? 'To\'g\'ri!' : 'Noto\'g\'ri'"></div>
+          <div x-show="result && result.correct" class="font-kid font-extrabold text-6xl text-sun num drop-shadow">+<span x-countup="pointsShown">0</span></div>
+          <p x-show="result && !result.correct" class="font-extrabold text-lg mt-1" x-text="encourage"></p>
+        </div>
+
+        <!-- streak -->
+        <div class="flex items-center gap-2 bg-black/20 rounded-2xl px-4 py-2" :class="result && result.new_code ? 'flame-burst' : ''">
+          <template x-for="n in 3" :key="n"><span class="text-4xl transition" :class="streakShown>=n ? '' : 'grayscale opacity-40'" :style="streakShown>=n ? 'filter:drop-shadow(0 0 8px #ffc83d)' : ''">🔥</span></template>
+          <span class="font-kid font-extrabold text-xl ml-1 num"><span x-text="streakShown"></span>/<span x-text="result ? result.streak_target : 3"></span></span>
+        </div>
+        <div x-show="result && result.new_code" class="bg-sun text-[#281c00] rounded-2xl px-5 py-3 text-center font-kid font-extrabold text-2xl flame-burst">🎁 MAXFIY KOD OLDING!</div>
+
+        <!-- reyting -->
+        <div class="w-full bg-black/20 rounded-3xl p-3">
+          <div class="text-sm font-extrabold opacity-90 mb-2">🏆 Top 5</div>
+          <div class="rank-list" :style="`height:${Math.max(shownTop.length,1)*58}px`">
+            <template x-for="(p, i) in shownTop" :key="p.id">
+              <div class="rank-row flex items-center gap-2 rounded-2xl px-3 h-[52px]" :style="`transform:translateY(${i*58}px)`" :class="st && p.id===st.me.id ? 'bg-sun text-[#281c00] font-extrabold' : 'bg-white/15'">
+                <span class="w-6 font-kid font-extrabold text-lg" x-text="p.rank"></span>
+                <span class="w-9 h-9 rounded-full overflow-hidden flex-none" x-avatar="p.avatar"></span>
+                <span class="flex-1 truncate font-bold" x-text="p.name"></span>
+                <span class="font-kid font-extrabold num" x-text="p.score"></span>
+              </div>
+            </template>
+          </div>
+          <div x-show="result && !meInTop" class="mt-2 flex items-center gap-2 rounded-2xl px-3 h-[48px] bg-sun text-[#281c00] font-extrabold">
+            <span>Sen: <span x-text="result && result.rank"></span>-o'rin</span><span class="ml-auto font-kid num" x-text="result && result.score"></span>
+          </div>
+        </div>
+
+        <!-- super-kuch -->
+        <button x-show="codes.length && result && !result.finished && (flags.steal || flags.freeze)" @click="openGift()" class="btn-3d btn-sun text-xl w-full max-w-sm gift-shake">🎁 Maxfiy kodni ishlat (<span x-text="codes.length"></span>)</button>
+        <p class="text-sun font-bold text-center" x-text="powerMsg" x-show="powerMsg"></p>
+        <div class="w-full max-w-xs h-1.5 bg-white/25 rounded-full overflow-hidden"><div class="h-full bg-white" :style="`width:${(intervalLeft/intervalTotal)*100}%`"></div></div>
+      </div>
+    </div>
+
+    <!-- 7. SOVG'A QUTISI va NISHON TANLASH -->
+    <div x-show="picker" x-transition.opacity class="fixed inset-0 z-[90] bg-black/75 backdrop-blur-sm flex items-center justify-center p-3">
+      <div class="bg-[#251563] border border-white/20 rounded-3xl w-full max-w-lg max-h-[92vh] overflow-y-auto p-5 text-center">
+        <div class="flex justify-end"><button @click="closePicker()" class="w-9 h-9 rounded-xl bg-white/10 text-xl" aria-label="Yopish">✕</button></div>
+        <template x-if="picker && picker.stage==='gift'">
+          <div class="space-y-4">
+            <div x-show="!giftOpened" class="text-[8rem] gift-shake leading-none">🎁</div>
+            <div x-show="giftOpened" class="space-y-4">
+              <div class="font-kid font-extrabold text-2xl">Qaysi kuchni tanlaysan?</div>
+              <p class="text-sun font-bold text-sm" x-show="pickerMsg" x-text="pickerMsg"></p>
+              <div class="grid grid-cols-2 gap-3">
+                <button id="gift-card-steal" @click="chooseCard('steal')" :disabled="!flags.steal" class="card-in rounded-3xl p-4 border-4 border-yellow-200 text-[#3b2600] disabled:opacity-40" style="background:linear-gradient(160deg,#ffe27a,#f59e0b);box-shadow:0 8px 0 #a86a00">
+                  <div class="text-6xl">💰</div><div class="font-kid font-extrabold text-xl">Ball o'g'irlash</div><div class="text-sm font-bold">nishon tasodifiy · <span x-text="flags.steal_min"></span>–<span x-text="flags.steal_max"></span>% ball</div>
+                </button>
+                <button id="gift-card-freeze" @click="chooseCard('freeze')" :disabled="!flags.freeze" class="card-in rounded-3xl p-4 border-4 border-sky-100 text-[#06324f] disabled:opacity-40" style="animation-delay:.15s;background:linear-gradient(160deg,#d7f1ff,#38bdf8);box-shadow:0 8px 0 #1478a8">
+                  <div class="text-6xl">❄️</div><div class="font-kid font-extrabold text-xl">Muzlatish</div><div class="text-sm font-bold">nishon tasodifiy · <span x-text="flags.freeze_min"></span>–<span x-text="flags.freeze_max"></span> soniya</div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template x-if="picker && (picker.stage==='wait' || picker.stage==='reel')">
+          <div class="space-y-4 py-2" aria-live="polite">
+            <div class="font-kid font-extrabold text-2xl" x-text="picker.kind==='steal' ? '💰 Kimdan ball olamiz?' : '❄️ Kimni muzlatamiz?'"></div>
+            <p class="opacity-80 font-bold" x-show="picker.stage==='wait'">Tizim nishonni tanlamoqda<span class="anim-flash">...</span></p>
+            <div id="reel-target" class="mx-auto w-40 h-40 rounded-full overflow-hidden ring-4 transition" :class="reel.locked ? 'ring-yellow-300 scale-110 shadow-[0_0_40px_rgba(255,200,61,.8)]' : 'ring-white/30'" style="background:rgba(255,255,255,.08)">
+              <div x-show="reel.person" class="w-full h-full" x-avatar="reel.person && reel.person.avatar"></div>
+              <div x-show="!reel.person" class="w-full h-full grid place-items-center text-6xl anim-breathe">🎲</div>
+            </div>
+            <div class="font-kid font-extrabold text-2xl h-8" x-text="reel.person ? reel.person.name : ''"></div>
+            <div x-show="reel.number !== null" class="rounded-3xl bg-black/30 py-3">
+              <div class="font-kid font-extrabold text-6xl num" :class="reel.numLocked ? (picker.kind==='steal' ? 'text-yellow-300' : 'text-sky-300') : ''" x-text="(picker.kind==='steal' ? '−' : '') + reel.number"></div>
+              <div class="font-bold opacity-80" x-text="reel.label"></div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- 8. CHETLATILDI -->
+    <div x-show="screen==='locked'" class="text-center space-y-4 page-in max-w-md">
+      <div class="text-8xl anim-breathe">🔒</div>
+      <div class="font-kid font-extrabold text-3xl">Sen testdan chiqib ketding</div>
+      <div class="bg-black/30 rounded-3xl px-6 py-4 text-xl font-extrabold">O'qituvchi ruxsatini kut<span class="anim-flash">...</span></div>
+      <p class="opacity-80 font-bold text-sm">Umumiy vaqt to'xtamaydi. Javoblaring saqlangan.</p>
+    </div>
+
+    <!-- 9. PAUZA -->
+    <div x-show="screen==='paused'" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-md grid place-items-center text-center p-6">
+      <div class="space-y-3"><div class="text-9xl anim-breathe">⏸</div><div class="font-kid font-extrabold text-3xl">O'qituvchi testni to'xtatdi</div><p class="font-bold opacity-80">Davom ettirilishini kut</p></div>
+    </div>
+
+    <div x-show="screen==='kicked'" class="text-center space-y-4 page-in">
+      <div class="text-8xl">🚪</div>
+      <div class="font-kid font-extrabold text-3xl">Sen testdan chiqarilding</div>
+      <button @click="leave()" class="btn-3d btn-sun">Bosh sahifa</button>
+    </div>
+
+    <div x-show="screen==='rejected'" class="text-center space-y-4 page-in">
+      <div class="text-8xl">🙅</div>
+      <div class="font-kid font-extrabold text-3xl">Kirishga ruxsat berilmadi</div>
+      <p class="opacity-90 font-semibold">O'qituvchi bu safar kech kirishga ruxsat bermadi. Savol bo'lsa, o'qituvchiga murojaat qil.</p>
+      <button @click="leave()" class="btn-3d btn-sun">Bosh sahifa</button>
+    </div>
+
+    <!-- 11. YAKUN -->
+    <div x-show="screen==='finished'" class="w-full py-4">
+      <!-- sarlavha + baraban -->
+      <div x-show="finStage==='title'" class="min-h-[70vh] grid place-items-center text-center">
+        <div><div class="text-8xl anim-pop">🎉</div><h2 class="font-kid font-extrabold text-5xl mt-2 anim-pop">Test yakunlandi!</h2><p class="font-bold opacity-80 mt-2 anim-flash">Natijalar hisoblanmoqda...</p></div>
+      </div>
+
+      <!-- podium -->
+      <div x-show="finStage==='podium'" class="min-h-[70vh] flex flex-col justify-end text-center">
+        <h2 class="font-kid font-extrabold text-4xl mb-4">🏆 G'oliblar</h2>
+        <div class="flex items-end justify-center gap-2 sm:gap-5">
+          <template x-for="slot in [{r:2,h:'h-32',c:'#cbd5e1',m:'🥈',s:2},{r:1,h:'h-48',c:'#ffc83d',m:'🥇',s:3},{r:3,h:'h-24',c:'#fdba74',m:'🥉',s:1}]" :key="slot.r">
+            <div class="w-28 sm:w-40 flex flex-col items-center" x-show="podiumStep>=slot.s">
+              <template x-if="podiumPerson(slot.r)">
+                <div class="podium-person flex flex-col items-center">
+                  <div x-show="slot.r===1" class="crown text-5xl -mb-2">👑</div>
+                  <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden ring-4 ring-white" x-avatar="podiumPerson(slot.r).avatar"></div>
+                  <div class="font-extrabold truncate max-w-full text-sm sm:text-base mt-1" x-text="podiumPerson(slot.r).name"></div>
+                  <div class="text-xs opacity-80" x-text="podiumPerson(slot.r).school_class"></div>
+                  <div class="font-kid font-extrabold text-xl num" x-text="podiumPerson(slot.r).score"></div>
+                </div>
+              </template>
+              <div class="podium-bar w-full rounded-t-3xl flex items-start justify-center pt-2 text-4xl text-slate-800" :class="slot.h" :style="`background:${slot.c}`" x-text="slot.m"></div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- natija kartasi -->
+      <template x-if="finStage==='card' && st && st.result">
+        <div class="space-y-5 page-in">
+          <div class="bg-white text-slate-900 rounded-3xl p-5 shadow-2xl text-center" style="box-shadow:0 8px 0 rgba(0,0,0,.25)">
+            <div class="w-24 h-24 mx-auto rounded-full overflow-hidden ring-4 ring-brand" x-avatar="st.me.avatar"></div>
+            <div class="font-kid font-extrabold text-2xl mt-2" x-text="st.me.name"></div>
+            <div class="text-sm font-bold text-slate-500" x-text="st.me.school_class"></div>
+            <div class="grid grid-cols-3 gap-3 my-4">
+              <div class="rounded-2xl bg-brand/10 p-3"><div class="text-xs font-extrabold text-slate-500">O'RIN</div><div class="font-kid font-extrabold text-4xl text-brand num" x-text="st.result.rank || '—'"></div></div>
+              <div class="rounded-2xl bg-sun/30 p-3"><div class="text-xs font-extrabold text-slate-500">BALL</div><div class="font-kid font-extrabold text-4xl num" x-countup="st.result.score">0</div></div>
+              <div class="rounded-2xl bg-ok/20 p-3"><div class="text-xs font-extrabold text-slate-500">BAHO</div><div class="font-kid font-extrabold text-5xl text-ok-dark num" x-text="st.result.grade"></div></div>
+            </div>
+            <div class="flex items-center justify-center gap-4">
+              <svg viewBox="0 0 100 100" class="w-28 h-28 -rotate-90"><circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7f0" stroke-width="12"/><circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="12" stroke-linecap="round" :stroke-dasharray="ringDash" style="transition:stroke-dasharray 1.2s ease"/></svg>
+              <div class="text-left"><div class="font-kid font-extrabold text-3xl num"><span x-text="st.result.correct"></span>/<span x-text="st.result.total"></span></div><div class="font-bold text-slate-500">to'g'ri javob (<span x-text="st.result.percent"></span>%)</div></div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2 mt-4">
+              <template x-for="b in badges" :key="b.t"><span class="rounded-full bg-slate-100 px-3 py-1 font-extrabold text-sm"><span x-text="b.i"></span> <span x-text="b.t"></span></span></template>
+            </div>
+          </div>
+          <div x-show="!st.room_finished" class="text-center bg-white/10 rounded-2xl p-4 font-bold anim-breathe">⏳ Boshqa o'quvchilar tugatishini kut — keyin g'oliblar e'lon qilinadi</div>
+          <div class="flex flex-wrap justify-center gap-3">
+            <button @click="saveCard()" class="btn-3d btn-sun">📸 Rasm sifatida saqlash</button>
+            <button @click="leave()" class="btn-3d btn-glass">Bosh sahifa</button>
+          </div>
+          <p x-show="st.room_finished && !st.review" class="text-center text-sm font-bold opacity-90">O'qituvchi ruxsat bergach xatolaringni ko'ra olasan 👀</p>
+
+          <!-- 12. XATOLARNI KO'RISH -->
+          <div x-show="st.review" class="space-y-3">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <h3 class="font-kid font-extrabold text-2xl">📝 Javoblaring tahlili</h3>
+              <div class="flex gap-2">
+                <button @click="reviewFilter='all'" class="btn-3d sm" :class="reviewFilter==='all' ? 'btn-sun' : 'btn-glass'">Hammasi</button>
+                <button @click="reviewFilter='wrong'" class="btn-3d sm" :class="reviewFilter==='wrong' ? 'btn-sun' : 'btn-glass'">Faqat xatolarim</button>
+              </div>
+            </div>
+            <div class="bg-black/25 rounded-2xl p-3 text-sm font-bold" x-show="st.weak_topics && st.weak_topics.length">
+              <template x-for="w in (st.weak_topics || [])" :key="w.topic"><div>📚 <span x-text="w.topic"></span> mavzusini takrorlash kerak (<span x-text="w.wrong"></span>/<span x-text="w.total"></span> xato)</div></template>
+            </div>
+            <div class="bg-ok/20 rounded-2xl p-3 text-center font-bold" x-show="reviewFilter==='wrong' && !reviewItems.length">Hech qanday xato yo'q — ajoyib! 🎉</div>
+            <template x-for="r in reviewItems" :key="r.number">
+              <div class="bg-white text-slate-900 rounded-3xl p-4">
+                <div class="flex items-start gap-2 mb-2">
+                  <span class="text-2xl" x-text="r.is_correct ? '✅' : '❌'"></span>
+                  <div class="flex-1"><div class="text-xs font-extrabold text-slate-400" x-text="(r.round > 1 ? r.round + '-aylana · ' : '') + r.number + '-javob · ' + r.topic"></div><div class="font-extrabold" x-text="r.text"></div></div>
+                </div>
+                <img x-show="r.image" :src="r.image" class="max-h-40 mb-2 rounded-xl" draggable="false" alt="">
+                <template x-for="o in r.options">
+                  <div class="rounded-xl px-3 py-2 mb-1.5 border-2 flex items-center gap-2 font-bold"
+                       :class="o.correct ? 'bg-green-50 border-green-500' : (o.selected ? 'bg-rose-50 border-rose-500' : 'border-transparent bg-slate-100')">
+                    <span x-text="o.correct ? '✓' : (o.selected ? '✗' : '')" class="w-5 font-extrabold" :class="o.correct ? 'text-green-600' : 'text-rose-600'"></span>
+                    <span class="flex-1" x-text="o.text"></span>
+                    <span x-show="o.selected" class="text-xs bg-slate-800 text-white rounded-full px-2 py-0.5">sening javobing</span>
+                  </div>
+                </template>
+                <pre x-show="r.code" class="code-block text-xs overflow-x-auto" x-text="r.code"></pre>
+                <div class="text-sm text-slate-500 font-bold" x-show="!r.answered">Javob berilmagan</div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+  </main>
+
+  <!-- MUZLATILGAN EKRAN -->
+  <div x-show="iceShown" class="ice-overlay" :class="iceBreaking && 'shatter'" role="alert">
+    <div class="ice-block">
+      <div class="text-8xl">❄️</div>
+      <div class="font-kid font-extrabold text-6xl num my-1" x-text="Math.max(0, Math.ceil(frozenLeft))"></div>
+      <div class="font-kid font-extrabold text-2xl" x-text="notice && notice.kind==='freeze' ? notice.text : '❄️ Sen muzlatilding!'"></div>
+      <div class="font-bold mt-1">Umumiy vaqt to'xtamayapti</div>
+    </div>
+  </div>
+
+  <!-- jabrlanuvchi xabari (o'g'irlash) -->
+  <div x-show="notice && notice.kind==='steal'" x-transition class="fixed top-20 inset-x-0 z-[140] flex justify-center px-4 pointer-events-none">
+    <div class="bg-black/85 text-white font-kid font-extrabold text-2xl rounded-3xl px-6 py-4 shadow-2xl anim-pop text-center" x-text="notice && notice.text"></div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script src="/static/js/protect.js"></script>
+<script src="/static/js/student.js"></script>
+{% endblock %}

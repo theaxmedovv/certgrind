@@ -1,0 +1,550 @@
+[
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 1,
+  "section": "1.1",
+  "text": "A program which is used to transform a source file into an executable binary file is called:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "an IDE.",
+    "correct": false
+   },
+   {
+    "text": "a compiler.",
+    "correct": true
+   },
+   {
+    "text": "a linker.",
+    "correct": false
+   },
+   {
+    "text": "an interpreter.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "A compiler (also known as a translator) is designed to translate a program written in a high-level programming language (like C++) into a binary code deployed inside an executable file.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 01)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 2,
+  "section": "1.1",
+  "text": "A process in which the source code is immediately executed without translating it into a machine code is called:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "debugging.",
+    "correct": false
+   },
+   {
+    "text": "interpretation.",
+    "correct": true
+   },
+   {
+    "text": "linking.",
+    "correct": false
+   },
+   {
+    "text": "compilation.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Interpretation (in the IT/programming sense) is a process in which the source code is executed on-the-fly, and this process is not accompanied by the creation of the machine code.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 02)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 3,
+  "section": "1.1",
+  "text": "A code written in a high-level programming language is called:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "the ASCII code.",
+    "correct": false
+   },
+   {
+    "text": "a source code.",
+    "correct": true
+   },
+   {
+    "text": "machine code.",
+    "correct": false
+   },
+   {
+    "text": "a binary code.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "A source code is a code written (usually by humans) in a programming language. This code needs either a compiler or an interpreter to be run.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 03)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 4,
+  "section": "1.1",
+  "text": "A syntax is a part of a language definition which describes the rules used to build:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "the sentences from a set of words.",
+    "correct": true
+   },
+   {
+    "text": "the symbols from a set of dots.",
+    "correct": false
+   },
+   {
+    "text": "the words from a set of symbols.",
+    "correct": false
+   },
+   {
+    "text": "the data from digits.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "A syntax is a set of rules which must be obeyed to build grammatically correct (not necessarily meaningful) sentences in any language.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 04)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 5,
+  "section": "1.3",
+  "text": "Match the given literals with the data type names. Which assignment is correct? (Original task: drag and drop the data type names to match the literals \"False\", True, 1_000_000, 1.41421356237.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "\"False\" → String; True → Boolean; 1_000_000 → Integer; 1.41421356237 → Float",
+    "correct": true
+   },
+   {
+    "text": "\"False\" → Boolean; True → Boolean; 1_000_000 → Integer; 1.41421356237 → Float",
+    "correct": false
+   },
+   {
+    "text": "\"False\" → String; True → String; 1_000_000 → Float; 1.41421356237 → Integer",
+    "correct": false
+   },
+   {
+    "text": "\"False\" → Boolean; True → String; 1_000_000 → Float; 1.41421356237 → Integer",
+    "correct": false
+   }
+  ],
+  "explanation_en": "\"False\" is a string, despite its somewhat confusing contents. True is one of two possible Boolean values. 1_000_000 is an integer value – underscores are here to make the number (one million in this case) easier to read. 1.41421356237 is a float – to be precise, it's an approximation of the square root of 2.0.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 05)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop moslashtirish savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 6,
+  "section": "1.3",
+  "text": "Match the given literals with the data types: \"\\\"\", False, -1, -.1. Which assignment is correct? (Original task: drag and drop the data type names to match the given literals.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "\"\\\"\" → String; False → Boolean; -1 → Integer; -.1 → Float",
+    "correct": true
+   },
+   {
+    "text": "\"\\\"\" → String; False → Integer; -1 → Boolean; -.1 → Float",
+    "correct": false
+   },
+   {
+    "text": "\"\\\"\" → Boolean; False → String; -1 → Float; -.1 → Integer",
+    "correct": false
+   },
+   {
+    "text": "\"\\\"\" → Float; False → Boolean; -1 → Integer; -.1 → String",
+    "correct": false
+   }
+  ],
+  "explanation_en": "\"\\\"\" is a string of length 1 – it contains one quotation mark only. False is one of two possible Boolean values. -1 is an integer value equal to minus one. -.1 is a float value equal to minus one tenth.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 06)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 7,
+  "section": "1.4",
+  "text": "Arrange the arithmetic operations in the order which reflects their priorities, where the top-most position has the highest priority and the bottom-most position has the lowest priority. (Operations: EXPONENTATION, ADDITION, DIVISION.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "Exponentiation, Division, Addition",
+    "correct": true
+   },
+   {
+    "text": "Exponentiation, Addition, Division",
+    "correct": false
+   },
+   {
+    "text": "Division, Exponentiation, Addition",
+    "correct": false
+   },
+   {
+    "text": "Addition, Division, Exponentiation",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Python's arrangement of these three arithmetic operators is as follows: exponentiation (the power of) has the highest priority; multiplication and two kinds of division are in-betweens; addition along with subtraction take the lowest position.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 07)",
+  "converted_from": "ordering",
+  "note": "Tartiblash savoli variantli savolga aylantirildi",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 8,
+  "section": "1.4",
+  "text": "Arrange the arithmetic operations in the order which reflects their priorities, where the top-most position has the highest priority and the bottom-most position has the lowest priority. (Operations: SUBTRACTION, EXPONENTATION, MULTIPLICATION.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "Exponentiation, Multiplication, Subtraction",
+    "correct": true
+   },
+   {
+    "text": "Multiplication, Exponentiation, Subtraction",
+    "correct": false
+   },
+   {
+    "text": "Subtraction, Multiplication, Exponentiation",
+    "correct": false
+   },
+   {
+    "text": "Exponentiation, Subtraction, Multiplication",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Python's arrangement of these three arithmetic operators is as follows: exponentiation (the power of) has the highest priority; multiplication and two kinds of division are in-betweens; addition along with subtraction take the lowest position.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 08)",
+  "converted_from": "ordering",
+  "note": "Tartiblash savoli variantli savolga aylantirildi",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 9,
+  "section": "1.4",
+  "text": "Which of the following expressions evaluate to a non-zero result? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "4 / 2 + 2 ** 1",
+    "correct": true
+   },
+   {
+    "text": "4 / 2 - 2 ** 1",
+    "correct": false
+   },
+   {
+    "text": "1 // 2 + 3 * 4",
+    "correct": true
+   },
+   {
+    "text": "1 ** 2 - 4 // 3",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let us show you the actual results of each of the non-zero expressions: 1 // 2 + 3 * 4 evaluates to 12. 4 / 2 + 2 ** 1 evaluates to 4.0 (note – it's a float as a division operator always produces floats).",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 09)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 10,
+  "section": "1.4",
+  "text": "Which of the following expressions evaluate to zero? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "1 // 3 * 3 ** 0",
+    "correct": true
+   },
+   {
+    "text": "1 - 2 // 3 + 4",
+    "correct": false
+   },
+   {
+    "text": "1 ** 2 / 2 // 3",
+    "correct": true
+   },
+   {
+    "text": "4 - 3 // 2 + 1",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Here are the actual values of each of the non-zero expressions: 1 - 2 // 3 + 4 evaluates to 5. 4 / 2 + 2 ** 1 evaluates to 4.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 10)",
+  "converted_from": "",
+  "note": "Manbadagi izohda xato bor: 2-chi ifoda '4 / 2 + 2 ** 1' deb yozilgan, aslida '4 - 3 // 2 + 1' (=4)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 11,
+  "section": "1.3",
+  "text": "Which of the following are legal variable names in Python? (Select all that apply.) (Original task: drag and drop the names into \"Legal names\" and \"Illegal names\".)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "i_am_a_variable",
+    "correct": true
+   },
+   {
+    "text": "for",
+    "correct": false
+   },
+   {
+    "text": "2nd_class",
+    "correct": false
+   },
+   {
+    "text": "_fun",
+    "correct": true
+   },
+   {
+    "text": "For",
+    "correct": true
+   }
+  ],
+  "explanation_en": "i_am_a_variable – correct (begins with a letter, can contain underscores). samplevariable – correct (begins with a letter). For – correct (begins with a letter; variable names are case-sensitive, so for ≠ For). _fun – correct (begins with the underscore character). 2nd_class – incorrect (begins with a number). @home – incorrect (begins with and contains a symbol that is not allowed: @). for – incorrect (for is a reserved word in Python).",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 11)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 13,
+  "section": "1.2",
+  "text": "What is the expected output of the following code?",
+  "code": "a = 5\n# a = a + a\nprint(a)",
+  "type": "single",
+  "options": [
+   {
+    "text": "55",
+    "correct": false
+   },
+   {
+    "text": "Error message",
+    "correct": false
+   },
+   {
+    "text": "5",
+    "correct": true
+   },
+   {
+    "text": "10",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The a = a + a part of code is commented, and the interpreter ignores this line.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 13)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 14,
+  "section": "1.2",
+  "text": "What is the expected output of the following code?",
+  "code": "a = 1# + 5\na = a + a\n# a = a + 1\nprint(a) # Line 4",
+  "type": "single",
+  "options": [
+   {
+    "text": "12",
+    "correct": false
+   },
+   {
+    "text": "Error message",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": true
+   }
+  ],
+  "explanation_en": "The interpreter ignores the code lines preceded by the # symbol.",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 14)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 15,
+  "section": "1.5",
+  "text": "Which line of code asks the user for an integer value and assigns it to the floor variable? (Original task: insert the code boxes in the correct positions.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "floor = int(input(\"Enter floor number:\"))",
+    "correct": true
+   },
+   {
+    "text": "floor = float(input(\"Enter floor number:\"))",
+    "correct": false
+   },
+   {
+    "text": "floor = int(print(\"Enter floor number:\"))",
+    "correct": false
+   },
+   {
+    "text": "floor = input(int(\"Enter floor number:\"))",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only correct answer looks as follows: floor = int(input(\"Enter floor number:\"))",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 15)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 16,
+  "section": "1.5",
+  "text": "Which line of code prints the values assigned to the width and height variables separated by a multiplication sign (×)? (Original task: insert the code boxes in the correct positions. Before it: width, height = 100, 120)",
+  "code": "width, height = 100, 120",
+  "type": "single",
+  "options": [
+   {
+    "text": "print(width, height, sep=\"×\")",
+    "correct": true
+   },
+   {
+    "text": "print(width, height, end=\"×\")",
+    "correct": false
+   },
+   {
+    "text": "print(input(width, height, sep=\"×\"))",
+    "correct": false
+   },
+   {
+    "text": "print(width, height; \"×\")",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only correct answer looks as follows: print(width, height, sep=\"×\")",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 16)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 17,
+  "section": "1.5",
+  "text": "Which line of code asks the user for a string value and assigns it to the password variable? (Original task: insert the code boxes in the correct positions.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "password = input(\"Enter password: \")",
+    "correct": true
+   },
+   {
+    "text": "password == input(\"Enter password: \")",
+    "correct": false
+   },
+   {
+    "text": "password = str(\"Enter password: \")",
+    "correct": false
+   },
+   {
+    "text": "password = input(str(\"Enter password: \")",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only acceptable answer looks as follows: password = input(\"Enter password:\")",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 17)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "num": 18,
+  "section": "1.5",
+  "text": "Which line of code asks the user for a float value and assigns it to the price variable? (Original task: insert the code boxes in the correct positions.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "price = float(input(\"Enter item price: \"))",
+    "correct": true
+   },
+   {
+    "text": "price = int(input(\"Enter item price: \"))",
+    "correct": false
+   },
+   {
+    "text": "price == float(input(\"Enter item price: \"))",
+    "correct": false
+   },
+   {
+    "text": "price = input(float(\"Enter item price: \"))",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only acceptable answer looks as follows: price = float(input(\"Enter item price: \"))",
+  "source_file": ".gitbook/assets/Exam Block #1 Practice Questions (Solution 18)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ }
+]

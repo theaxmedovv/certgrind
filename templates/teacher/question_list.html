@@ -1,0 +1,74 @@
+{% extends "teacher/base.html" %}
+{% block title %}Savollar bazasi — Bilimdon{% endblock %}
+{% block content %}
+<div x-data="{ view: localStorage.getItem('qview') || 'cards', set(v){ this.view=v; localStorage.setItem('qview', v) } }">
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+  <h1 class="text-2xl font-extrabold">Savollar bazasi <span class="muted text-base font-semibold">({{ page.paginator.count }})</span></h1>
+  <div class="flex flex-wrap gap-2">
+    <div class="card !rounded-xl flex p-1">
+      <button @click="set('cards')" class="px-3 py-1.5 rounded-lg" :class="view==='cards' && 'bg-brand text-white'" aria-label="Kartalar"><i data-lucide="layout-grid" class="w-4 h-4"></i></button>
+      <button @click="set('table')" class="px-3 py-1.5 rounded-lg" :class="view==='table' && 'bg-brand text-white'" aria-label="Jadval"><i data-lucide="list" class="w-4 h-4"></i></button>
+    </div>
+    <a href="{% url 'question_import' %}" class="btn-3d btn-ghost sm"><i data-lucide="upload" class="w-4 h-4"></i> Excel import</a>
+    <a href="{% url 'question_create' %}" class="btn-3d btn-brand sm"><i data-lucide="plus" class="w-4 h-4"></i> Savol</a>
+  </div>
+</div>
+
+<form class="card p-3 mb-3 flex flex-wrap gap-2 items-center">
+  <input name="q" value="{{ q }}" placeholder="Savol yoki variant bo'yicha qidirish..." class="input flex-1 min-w-[200px]">
+  <select name="difficulty" class="input !w-auto">
+    <option value="">Qiyinlik</option>
+    {% for v, l in difficulties %}<option value="{{ v }}" {% if sel_diff == v %}selected{% endif %}>{{ l }}</option>{% endfor %}
+  </select>
+  {% if sel_topic %}<input type="hidden" name="topic" value="{{ sel_topic }}">{% endif %}
+  <button class="btn-3d btn-brand sm">Qidirish</button>
+</form>
+
+<div class="flex flex-wrap gap-2 mb-4">
+  <a href="?q={{ q }}&difficulty={{ sel_diff }}" class="chip {% if not sel_topic %}on{% endif %}">Hammasi</a>
+  {% for t in topics %}<a href="?topic={{ t.id }}&q={{ q }}&difficulty={{ sel_diff }}" class="chip {% if sel_topic == t.id|stringformat:'s' %}on{% endif %}">{{ t.name }} <span class="opacity-70">{{ t.n }}</span></a>{% endfor %}
+</div>
+
+{% if not page.paginator.count %}
+<div class="card p-10 text-center"><div class="text-6xl mb-2">📝</div><p class="font-extrabold">Hali savol yo'q — birinchisini qo'shing</p>
+  <div class="flex justify-center gap-3 mt-4"><a href="{% url 'question_create' %}" class="btn-3d btn-brand sm">+ Savol qo'shish</a><a href="{% url 'question_import' %}" class="btn-3d btn-ghost sm">Excel import</a></div></div>
+{% endif %}
+
+<div x-show="view==='cards'" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+  {% for qu in page %}
+  <div class="card p-4 flex flex-col gap-2">
+    <div class="flex gap-2 flex-wrap"><span class="chip">{{ qu.topic.name }}</span>
+      <span class="chip {% if qu.difficulty == 'easy' %}!bg-ok/20 !text-ok-dark{% elif qu.difficulty == 'hard' %}!bg-bad/15 !text-bad-dark{% else %}!bg-sun/30 !text-sun-dark{% endif %}">{{ qu.get_difficulty_display }}</span>
+      {% if qu.image %}<span class="chip">🖼</span>{% endif %}</div>
+    <p class="font-bold flex-1">{{ qu.text|truncatechars:140 }}</p>
+    <div class="grid grid-cols-2 gap-1 text-xs">
+      {% for o in qu.options.all %}<div class="rounded-lg px-2 py-1 truncate {% if o.is_correct %}bg-ok/20 text-ok-dark font-bold{% else %}bg-line/60{% endif %}">{% if o.is_correct %}✓ {% endif %}{{ o.text }}</div>{% endfor %}
+    </div>
+    <div class="flex justify-end gap-2 pt-1">
+      <a href="{% url 'question_edit' qu.pk %}" class="btn-3d btn-ghost sm">Tahrirlash</a>
+      <form method="post" action="{% url 'question_delete' qu.pk %}" onsubmit="return confirm('O\'chirilsinmi?')">{% csrf_token %}<button class="btn-3d btn-ghost sm !text-bad-dark">O'chirish</button></form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div x-show="view==='table'" class="card overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead><tr class="text-left muted"><th class="p-3">Savol</th><th>Mavzu</th><th>Qiyinlik</th><th>Variant</th><th></th></tr></thead>
+    <tbody>{% for qu in page %}
+      <tr class="border-t border-line"><td class="p-3 font-semibold">{{ qu.text|truncatechars:100 }}</td><td><span class="chip">{{ qu.topic.name }}</span></td><td>{{ qu.get_difficulty_display }}</td><td>{{ qu.options.all|length }}</td>
+        <td class="whitespace-nowrap p-2"><a href="{% url 'question_edit' qu.pk %}" class="text-brand font-semibold">Tahrirlash</a>
+          <form method="post" action="{% url 'question_delete' qu.pk %}" class="inline" onsubmit="return confirm('O\'chirilsinmi?')">{% csrf_token %}<button class="text-bad-dark font-semibold ml-3">O'chirish</button></form></td></tr>
+    {% endfor %}</tbody>
+  </table>
+</div>
+
+{% if page.has_other_pages %}
+<div class="flex gap-2 mt-5 justify-center items-center">
+  {% if page.has_previous %}<a class="btn-3d btn-ghost sm" href="?page={{ page.previous_page_number }}&q={{ q }}&topic={{ sel_topic }}&difficulty={{ sel_diff }}">←</a>{% endif %}
+  <span class="px-3 num font-semibold">{{ page.number }} / {{ page.paginator.num_pages }}</span>
+  {% if page.has_next %}<a class="btn-3d btn-ghost sm" href="?page={{ page.next_page_number }}&q={{ q }}&topic={{ sel_topic }}&difficulty={{ sel_diff }}">→</a>{% endif %}
+</div>
+{% endif %}
+</div>
+{% endblock %}

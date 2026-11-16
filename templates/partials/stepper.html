@@ -1,0 +1,10 @@
+{# step — Alpine ifodasi yoki raqam #}
+<ol class="flex items-center gap-2 mb-6 text-sm font-bold">
+  <template x-for="(l, i) in ['Asosiy', 'Toʻplam','O\'yin sozlamalari', 'Tayyor']" :key="i">
+    <li class="flex items-center gap-2 flex-1 last:flex-none">
+      <span class="w-8 h-8 rounded-full grid place-items-center flex-none transition" :class="({{ step }}) > i+1 ? 'bg-ok-dark text-white' : (({{ step }}) === i+1 ? 'bg-brand text-white shadow-lg shadow-brand/40' : 'bg-line muted')" x-text="({{ step }}) > i+1 ? '✓' : i+1"></span>
+      <span class="hidden sm:inline" :class="({{ step }}) === i+1 ? '' : 'muted'" x-text="l"></span>
+      <span class="flex-1 h-1 rounded-full bg-line overflow-hidden hidden sm:block" x-show="i < 3"><span class="block h-full bg-brand transition-all duration-500" :style="({{ step }}) > i+1 ? 'width:100%' : 'width:0'"></span></span>
+    </li>
+  </template>
+</ol>

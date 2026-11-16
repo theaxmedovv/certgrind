@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Xonaga kirish — Bilimdon{% endblock %}
+{% block body_class %}bg-student-anim kid overflow-x-hidden{% endblock %}
+{% block body %}
+<div class="floaters" aria-hidden="true">
+  {% for s in "?★✦?◆●★?▲■✦?" %}<span style="left:{% widthratio forloop.counter 12 100 %}%;top:{% widthratio forloop.counter0 7 80 %}%;animation-delay:-{{ forloop.counter }}s;font-size:{% widthratio forloop.counter 12 4 %}rem">{{ s }}</span>{% endfor %}
+</div>
+
+<div class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 page-in" x-data="joinForm()" x-cloak>
+  <div class="text-center mb-5">
+    <div class="inline-flex items-center gap-2 font-kid font-extrabold text-5xl sm:text-6xl drop-shadow-lg">
+      <span class="anim-bob inline-block">🧠</span><span>Bilimdon</span>
+    </div>
+    <p class="opacity-90 font-semibold">Bilimingni sinab ko'r, g'olib bo'l! 🏆</p>
+  </div>
+
+  <div class="bg-white text-slate-800 rounded-3xl shadow-2xl p-5 sm:p-7 w-full max-w-md" :class="shaking ? 'anim-shake' : ''" @animationend="shaking=false">
+    <!-- 1-qadam -->
+    <form x-show="step===1" @submit.prevent="next" class="space-y-4">
+      {% csrf_token %}
+      <div x-show="hasToken" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-sm font-semibold">
+        Sen avval kirgansan. <a href="/play/" class="underline text-brand font-extrabold">Testga qaytish →</a>
+      </div>
+      <div>
+        <label class="font-extrabold text-sm text-slate-600">Xona raqami</label>
+        <div class="flex justify-between gap-1.5 mt-1" @paste.prevent="pasteCode($event)">
+          <template x-for="i in 6" :key="i">
+            <input class="otp" inputmode="numeric" maxlength="1" :id="'otp'+i" :value="digits[i-1]"
+                   @input="onDigit($event, i-1)" @keydown.backspace="onBack($event, i-1)" :aria-label="'Raqam '+i">
+          </template>
+        </div>
+      </div>
+      <div>
+        <label class="font-extrabold text-sm text-slate-600">Xona paroli</label>
+        <input x-model="password" type="password" autocomplete="off" placeholder="••••" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-lg font-bold focus:border-brand outline-none">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="font-extrabold text-sm text-slate-600">Ism</label>
+          <input x-model="first_name" maxlength="60" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-lg font-bold focus:border-brand outline-none"></div>
+        <div><label class="font-extrabold text-sm text-slate-600">Familiya</label>
+          <input x-model="last_name" maxlength="60" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-lg font-bold focus:border-brand outline-none"></div>
+      </div>
+      <div>
+        <label class="font-extrabold text-sm text-slate-600">Sinfing</label>
+        <div class="flex flex-wrap gap-2 mt-1">
+          {% for c in classes %}
+          <button type="button" @click="school_class='{{ c.id }}'; Sfx.play('click')"
+                  class="px-4 py-2 rounded-2xl font-extrabold border-2 min-w-[3.5rem] transition"
+                  :class="school_class==='{{ c.id }}' ? 'bg-brand text-white border-brand-dark scale-105 shadow-lg' : 'bg-slate-50 border-slate-200 hover:border-brand'">{{ c.name }}</button>
+          {% empty %}<span class="text-sm text-slate-500">Sinflar hali qo'shilmagan</span>{% endfor %}
+        </div>
+      </div>
+      <p class="text-bad-dark font-bold text-sm min-h-[1.25rem]" x-text="error" x-show="error"></p>
+      <button class="btn-3d btn-brand w-full text-xl py-4">Davom etish →</button>
+      <p class="text-center text-sm"><a href="{% url 'login' %}" class="text-slate-500 underline">O'qituvchi kirishi</a></p>
+    </form>
+
+    <!-- 2-qadam: avatar -->
+    <div x-show="step===2" class="space-y-4">
+      <h2 class="font-kid font-extrabold text-2xl text-center">Qahramoningni tanla!</h2>
+      <div class="mx-auto w-28 h-28 rounded-full overflow-hidden bg-slate-100 anim-glow" :class="bounce ? 'anim-pop' : ''" x-html="Avatar.svg(avatar)"></div>
+      <div class="grid grid-cols-6 gap-2">
+        <template x-for="k in Avatar.keys" :key="k">
+          <button type="button" @click="pickAvatar(k)" class="aspect-square rounded-full overflow-hidden border-4 transition hover:scale-110"
+                  :class="avatar===k ? 'border-brand scale-110 shadow-[0_0_18px_rgba(108,59,255,.7)]' : 'border-transparent'" x-html="Avatar.svg(k)" :aria-label="'Avatar '+k"></button>
+        </template>
+      </div>
+      <p class="text-bad-dark font-bold text-sm" x-text="error" x-show="error"></p>
+      <div class="flex gap-3">
+        <button type="button" @click="step=1" class="btn-3d btn-ghost">←</button>
+        <button @click="submit" :disabled="busy" class="btn-3d btn-ok flex-1 text-xl py-4">Tayyorman! 🚀</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function joinForm() {
+  return {
+    step: 1, digits: '{{ code }}'.padEnd(6, ' ').slice(0, 6).split('').map(d => d.trim()),
+    password: '', first_name: '', last_name: '', school_class: '', avatar: Avatar.keys[0],
+    error: '', busy: false, shaking: false, bounce: false, hasToken: !!localStorage.getItem('pt'),
+    get code() { return this.digits.join(''); },
+    onDigit(e, i) {
+      const v = e.target.value.replace(/\D/g, '').slice(-1);
+      e.target.value = v; this.digits[i] = v;
+      if (v && i < 5) document.getElementById('otp' + (i + 2)).focus();
+    },
+    onBack(e, i) {
+      if (!e.target.value && i > 0) document.getElementById('otp' + i).focus();
+    },
+    pasteCode(e) {
+      const t = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+      this.digits = t.padEnd(6, ' ').split('').map(d => d.trim());
+      document.querySelectorAll('.otp').forEach((el, i) => (el.value = this.digits[i] || ''));
+    },
+    fail(msg) { this.error = msg; this.shaking = false; this.$nextTick(() => (this.shaking = true)); },
+    next() {
+      this.error = '';
+      if (this.code.length < 6) return this.fail("Xona raqami 6 ta raqamdan iborat 🙂");
+      if (!this.password) return this.fail("Xona parolini kiriting 🙂");
+      if (!this.first_name.trim() || !this.last_name.trim()) return this.fail("Ism va familiyangni yozib qo'y 🙂");
+      if (!this.school_class) return this.fail("Sinfingni tanla 🙂");
+      Sfx.play('select'); this.step = 2;
+    },
+    pickAvatar(k) {
+      this.avatar = k; this.bounce = false; Sfx.play('click');
+      this.$nextTick(() => (this.bounce = true));
+    },
+    async submit() {
+      this.busy = true; this.error = '';
+      try {
+        const r = await fetch('{% url "join_api" %}', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },
+          body: JSON.stringify({ code: this.code, password: this.password, first_name: this.first_name, last_name: this.last_name, school_class: this.school_class, avatar: this.avatar }),
+        });
+        const d = await r.json();
+        if (!d.ok) {
+          this.busy = false; this.step = 1;
+          const friendly = { auth: "Parol yoki xona raqami noto'g'ri, yana urinib ko'r 🙂", finished: 'Bu test allaqachon tugagan 🙂' };
+          return this.fail(friendly[d.code] || d.message);
+        }
+        localStorage.setItem('pt', d.token);
+        localStorage.removeItem('queue');
+        location.href = '/play/';
+      } catch (e) { this.busy = false; this.fail("Aloqa xatosi, qayta urinib ko'r 🙂"); }
+    },
+  };
+}
+</script>
+{% endblock %}

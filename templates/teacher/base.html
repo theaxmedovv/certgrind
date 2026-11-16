@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block body_class %}bg-surface text-ink font-ui{% endblock %}
+{% block body %}
+{% with n=request.resolver_match.url_name %}
+<div x-data="{ collapsed: localStorage.getItem('sb')==='1', mobile: false, profile: false, dark: Theme.isDark(),
+               toggleSb(){ this.collapsed=!this.collapsed; localStorage.setItem('sb', this.collapsed?'1':'0') } }" class="min-h-screen flex">
+
+  <!-- sidebar -->
+  <div x-show="mobile" @click="mobile=false" class="fixed inset-0 bg-black/40 z-30 lg:hidden" x-transition.opacity></div>
+  <aside class="fixed lg:sticky top-0 h-screen z-40 flex flex-col bg-card border-r border-line transition-all duration-200"
+         :class="[collapsed ? 'lg:w-[76px]' : 'lg:w-64', mobile ? 'w-64 translate-x-0' : '-translate-x-full lg:translate-x-0 w-64']">
+    <div class="h-16 flex items-center gap-2 px-4 border-b border-line">
+      <span class="text-2xl">🧠</span>
+      <span class="font-kid font-extrabold text-xl text-brand" x-show="!collapsed || mobile">Bilimdon</span>
+    </div>
+    <nav class="flex-1 p-3 space-y-1 text-sm font-semibold">
+      <a href="{% url 'dashboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'dashboard' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="layout-dashboard" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Bosh sahifa</span></a>
+      <a href="{% url 'subject_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'subject_list' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="folder-tree" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Fanlar va mavzular</span></a>
+      <a href="{% url 'set_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'set_list' or n == 'set_generate' or n == 'set_detail' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="layers" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">To'plamlar</span></a>
+      <a href="{% url 'question_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'question_list' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="library" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Savollar bazasi</span></a>
+      <a href="{% url 'room_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'room_list' or n == 'room_create' or n == 'room_control' or n == 'room_ready' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="door-open" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Xonalar</span></a>
+      <a href="{% url 'results_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'results_list' or n == 'results' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="trophy" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Natijalar</span></a>
+      <a href="{% url 'stats_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'stats_list' or n == 'room_stats' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="chart-pie" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Statistika</span></a>
+      <a href="{% url 'classes' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'classes' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="graduation-cap" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Sinflar</span></a>
+      <a href="{% url 'pcep:home' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition hover:bg-brand/10"><i data-lucide="code" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">PCEP tayyorgarlik</span></a>
+      <a href="{% url 'settings' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition {% if n == 'settings' or n == 'password_change' %}bg-brand text-white shadow-lg shadow-brand/30{% else %}hover:bg-brand/10{% endif %}"><i data-lucide="settings" class="w-5 h-5 flex-none"></i><span x-show="!collapsed || mobile">Sozlamalar</span></a>
+    </nav>
+    <button @click="toggleSb()" class="hidden lg:flex items-center gap-3 m-3 px-3 py-2 rounded-xl hover:bg-brand/10 text-sm text-muted"><i data-lucide="panel-left" class="w-5 h-5"></i><span x-show="!collapsed">Yig'ish</span></button>
+  </aside>
+
+  <div class="flex-1 min-w-0 flex flex-col">
+    <!-- yuqori panel -->
+    <header class="h-16 sticky top-0 z-20 bg-card/90 backdrop-blur border-b border-line flex items-center gap-3 px-4">
+      <button class="lg:hidden p-2 rounded-xl hover:bg-brand/10" @click="mobile=true" aria-label="Menyu"><i data-lucide="menu" class="w-5 h-5"></i></button>
+      <form action="{% url 'question_list' %}" class="flex-1 max-w-md relative">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted"></i>
+        <input name="q" placeholder="Savollarni qidirish..." class="input !pl-9 !py-2" aria-label="Qidirish">
+      </form>
+      <div class="ml-auto flex items-center gap-2">
+        <button @click="Theme.toggle(); dark=Theme.isDark()" class="p-2 rounded-xl hover:bg-brand/10" :aria-label="dark ? 'Kunduzgi rejim' : 'Tungi rejim'">
+          <span x-show="!dark"><i data-lucide="moon" class="w-5 h-5"></i></span><span x-show="dark">☀️</span>
+        </button>
+        <div class="relative">
+          <button @click="profile=!profile" @click.outside="profile=false" class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full hover:bg-brand/10">
+            <span class="w-8 h-8 rounded-full bg-brand text-white grid place-items-center font-extrabold">{{ request.user.username|slice:":1"|upper }}</span>
+            <span class="text-sm font-semibold hidden sm:inline">{{ request.user.first_name|default:request.user.username }}</span>
+          </button>
+          <div x-show="profile" x-transition class="absolute right-0 mt-2 w-48 card p-1 text-sm z-50">
+            <a href="{% url 'settings' %}" class="block px-3 py-2 rounded-lg hover:bg-brand/10">Sozlamalar</a>
+            {% if request.user.is_staff %}<a href="/admin/" class="block px-3 py-2 rounded-lg hover:bg-brand/10">Admin panel</a>{% endif %}
+            <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="w-full text-left px-3 py-2 rounded-lg hover:bg-bad/10 text-bad-dark dark:text-bad">Chiqish</button></form>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="p-4 sm:p-6 max-w-7xl w-full mx-auto page-in">
+      {% for m in messages %}
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show" x-transition class="mb-4 rounded-2xl px-4 py-3 font-semibold border {% if m.tags == 'error' %}bg-bad/10 border-bad text-bad-dark dark:text-bad{% else %}bg-ok/10 border-ok text-ok-dark dark:text-ok{% endif %}">{{ m }}</div>
+      {% endfor %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}

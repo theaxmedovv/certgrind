@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}PCEP tayyorgarlik{% endblock %}
+{% block body_class %}bg-surface text-ink{% endblock %}
+{% block head %}
+<style>
+  .ring { --p: 0; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; flex: none;
+    background: conic-gradient(rgb(var(--c-ok)) calc(var(--p) * 1%), rgb(var(--c-line)) 0); }
+  .ring > span { width: 50px; height: 50px; border-radius: 50%; background: rgb(var(--c-card)); display: grid; place-items: center; font-weight: 800; font-size: .8rem; }
+  .ring.low { background: conic-gradient(rgb(var(--c-sun)) calc(var(--p) * 1%), rgb(var(--c-line)) 0); }
+</style>
+{% endblock %}
+{% block body %}
+<div x-data="{ open:false, kind:'', title:'', size:30, timed:false, exam:false, forced:false,
+               pick(k,t,forced){ this.kind=k; this.title=t; this.forced=!!forced; this.timed=!!forced; this.open=true; } }"
+     class="max-w-5xl mx-auto p-4 sm:p-6 page-in">
+  <a href="/" class="text-sm text-muted hover:underline">← Bosh sahifa</a>
+  <h1 class="font-kid font-extrabold text-3xl sm:text-4xl mt-2">🐍 PCEP-30-02 tayyorgarlik</h1>
+  <p class="text-muted mt-1">O'z tezligingizda mashq qiling. Javoblar test tugagach tekshiriladi va tushuntiriladi. <a href="{% url 'pcep:stats' %}" class="underline font-semibold">📊 Statistika</a></p>
+
+  <h2 class="font-kid font-bold text-xl mt-8 mb-3">Modullar</h2>
+  <div class="grid gap-4 sm:grid-cols-2">
+    {% for x in modules %}
+    <div class="bg-card border border-line rounded-2xl p-4 flex gap-4 items-center shadow-sm">
+      {% if x.st %}
+      <div class="ring {% if x.st.last < 70 %}low{% endif %}" style="--p: {{ x.st.last }}"><span>{{ x.st.last }}%</span></div>
+      {% else %}
+      <div class="ring"><span class="text-muted">—</span></div>
+      {% endif %}
+      <div class="flex-1 min-w-0">
+        <div class="font-extrabold">{{ x.m.number }}-modul</div>
+        <div class="text-sm text-muted leading-snug">{{ x.m.title }}</div>
+        <div class="text-xs text-muted mt-1">Imtihonda {{ x.m.exam_weight }}% · {{ x.n }} ta savol{% if x.st %} · eng yaxshi {{ x.st.best }}%{% endif %}</div>
+      </div>
+      <button type="button" class="btn-3d btn-brand sm" @click="pick('{{ x.m.number }}', '{{ x.m.number }}-modul')">Boshlash</button>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-4 rounded-2xl border-2 border-dashed border-brand/50 bg-brand/5 p-4 flex gap-4 items-center">
+    {% if mixed_st %}
+    <div class="ring {% if mixed_st.last < 70 %}low{% endif %}" style="--p: {{ mixed_st.last }}"><span>{{ mixed_st.last }}%</span></div>
+    {% else %}<div class="ring"><span class="text-2xl">🎲</span></div>{% endif %}
+    <div class="flex-1">
+      <div class="font-extrabold text-lg">🎲 Aralash test</div>
+      <div class="text-sm text-muted">4 ta moduldan imtihon nisbatida (5 / 9 / 8 / 8 ta savol, 30 tada).{% if mixed_st %} Eng yaxshi: {{ mixed_st.best }}%.{% endif %}</div>
+    </div>
+    <button type="button" class="btn-3d btn-brand sm" @click="pick('mixed', 'Aralash test')">Boshlash</button>
+  </div>
+
+  <h2 class="font-kid font-bold text-xl mt-10 mb-1">Alohida testlar</h2>
+  <p class="text-sm text-muted mb-3">Modullardan tashqari, 40 daqiqalik to'liq namunaviy testlar.</p>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="bg-card border border-line rounded-2xl p-4 flex gap-4 items-center shadow-sm">
+      <div class="text-4xl">📝</div>
+      <div class="flex-1"><div class="font-extrabold">Practice Test</div>
+        <div class="text-xs text-muted">{{ practice.n }} ta savol · 40 daqiqa{% if practice.st %} · oxirgi {{ practice.st.last }}%{% endif %}</div></div>
+      <button type="button" class="btn-3d btn-brand sm" @click="pick('practice','Practice Test', true)">Boshlash</button>
+    </div>
+    <div class="bg-card border border-line rounded-2xl p-4 flex gap-4 items-center shadow-sm">
+      <div class="text-4xl">🏁</div>
+      <div class="flex-1"><div class="font-extrabold">Final Practice Test</div>
+        <div class="text-xs text-muted">{{ final.n }} ta savol · 40 daqiqa{% if final.st %} · oxirgi {{ final.st.last }}%{% endif %}</div></div>
+      <button type="button" class="btn-3d btn-brand sm" @click="pick('final','Final Practice Test', true)">Boshlash</button>
+    </div>
+  </div>
+
+  <p class="mt-10 text-xs text-muted">Savollar manbasi: <a class="underline" href="https://github.com/Python-Institute-Materials/PCEP-30-0x" target="_blank" rel="noopener">OpenEDG Python Institute materiallari</a> (MIT License, © 2022 OpenEDG). Variantlarning bir qismi dars uchun qayta tuzilgan.</p>
+
+  <!-- Sozlamalar oynasi -->
+  <div x-show="open" x-cloak class="fixed inset-0 z-50 grid place-items-center p-4 bg-black/50" @keydown.escape.window="open=false">
+    <form method="post" :action="'/pcep/start/' + kind + '/'" @click.outside="open=false"
+          class="bg-card text-ink rounded-3xl shadow-2xl p-6 w-full max-w-md space-y-4">
+      {% csrf_token %}
+      <div class="flex justify-between items-center">
+        <h3 class="font-kid font-extrabold text-2xl" x-text="title"></h3>
+        <button type="button" class="text-muted text-2xl leading-none" @click="open=false" aria-label="Yopish">×</button>
+      </div>
+      <div x-show="kind !== 'practice' && kind !== 'final'">
+        <div class="font-bold text-sm mb-2">Savollar soni</div>
+        <div class="grid grid-cols-4 gap-2">
+          <template x-for="s in [10,20,30,0]" :key="s">
+            <label class="cursor-pointer">
+              <input type="radio" name="size" :value="s" x-model.number="size" class="sr-only peer">
+              <span class="block text-center py-2 rounded-xl border-2 border-line font-bold peer-checked:border-brand peer-checked:bg-brand/10" x-text="s === 0 ? 'Hammasi' : s"></span>
+            </label>
+          </template>
+        </div>
+      </div>
+      <label class="flex items-center gap-3" :class="forced && 'opacity-60'">
+        <input type="checkbox" name="timed" value="1" x-model="timed" :disabled="forced" class="w-5 h-5">
+        <span><b>Taymer</b> <span class="text-muted text-sm" x-text="forced ? '(40 daqiqa, majburiy)' : '(savol boshiga ~80 soniya)'"></span></span>
+      </label>
+      <input type="hidden" name="timed" value="1" x-bind:disabled="!forced">
+      <p class="text-xs text-muted">Savollar va variantlar tartibi tasodifiy. Ko'p xato qilgan savollar kamroq takrorlanishi uchun ustuvor chiqadi. Javoblar test tugagach ko'rsatiladi.</p>
+      <div class="flex flex-col gap-2">
+        <button class="btn-3d btn-brand w-full">Testni boshlash →</button>
+        <button type="submit" formaction="/pcep/start/exam/" x-show="kind === 'mixed'" class="btn-3d btn-sun w-full">🎓 Imtihon rejimi (30 savol, 40 daqiqa)</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

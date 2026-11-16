@@ -1,0 +1,450 @@
+[
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 1,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, select the expressions which will not raise any exception. (Select two expressions.)",
+  "code": "numbers = [4, 3, 2, 1]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "numbers[4]",
+    "correct": false
+   },
+   {
+    "text": "numbers[3:5]",
+    "correct": true
+   },
+   {
+    "text": "numbers[numbers[0]]",
+    "correct": false
+   },
+   {
+    "text": "numbers[numbers[3]]",
+    "correct": true
+   }
+  ],
+  "explanation_en": "numbers[4]: There is no element of index 4 in the list – expect the IndexError exception. numbers[3:5] produces the one-element slice [1] – no exception occurs. numbers[numbers[0]] is actually numbers[4] – an IndexError is knocking on your door. numbers[numbers[3]] is actually numbers[1], which results in 3 – no exception occurs.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 01)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 2,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, select the expressions which will not raise any exception. (Select two expressions.)",
+  "code": "numbers = [2, 3, 5, 8]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "numbers[-numbers[3]]",
+    "correct": false
+   },
+   {
+    "text": "numbers[3:3]",
+    "correct": true
+   },
+   {
+    "text": "numbers[numbers[3]]",
+    "correct": false
+   },
+   {
+    "text": "numbers[numbers[1]]",
+    "correct": true
+   }
+  ],
+  "explanation_en": "numbers[-numbers[3]] tries to access a list element of the index -8, which definitely will raise an exception. numbers[3:3]: such a slice produces an empty list and causes no exception. numbers[numbers[3]] is actually numbers[8], which cannot end well, sorry. numbers[numbers[1]] is actually numbers[3], which evaluates to 8 and no exception is raised.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 02)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 3,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, which of the following expressions evaluate to False? (Select two expressions.)",
+  "code": "the_data = [0, .0, True]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "len(the_data) == the_data[0]",
+    "correct": true
+   },
+   {
+    "text": "the_data.index(True) == 0",
+    "correct": true
+   },
+   {
+    "text": "0.0 in the_data",
+    "correct": false
+   },
+   {
+    "text": "len(sorted(the_data)) == len(the_data)",
+    "correct": false
+   }
+  ],
+  "explanation_en": "len(the_data) == the_data[0]: len(the_data) → 3, the_data[0] → 0. These values are obviously different, and therefore their comparison must equate to False. the_data.index(True) == 0: the_data.index(True) → 2; 2 is different than 0, and hence the result of the comparison is False. 0.0 in the_data: the floating-point zero value resides at index 1 in the list, and hence the result is True. len(sorted(the_data)) == len(the_data): sorting a list doesn't affect its length, so both lengths are the same.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 03)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 4,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, which of the following expressions evaluate to True? (Select two expressions.)",
+  "code": "the_data = ['data', -1, 2.718281828459]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "'data' in the_data",
+    "correct": true
+   },
+   {
+    "text": "int(the_data[2]) == len(the_data)",
+    "correct": false
+   },
+   {
+    "text": "the_data[1] not in the_data",
+    "correct": false
+   },
+   {
+    "text": "the_data.index(-1) > 0",
+    "correct": true
+   }
+  ],
+  "explanation_en": "'data' in the_data: the string 'data' is stored as the first element of the list, so the expression evaluates to True. int(the_data[2]) == len(the_data): int(the_data[2]) → 2, len(the_data) → 3; this evident difference must produce False as the result. the_data[1] not in the_data: False – it's impossible that a list's element is not contained in the list itself, wouldn't you agree? the_data.index(-1) > 0: True. The integer value -1 resides at index 1 in the list, which is greater then zero.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 04)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 5,
+  "section": "3.1",
+  "text": "What is the expected output of the following code?",
+  "code": "list_one = [1,2]\nlist_two = list_one\nlist_two.append(3)\nprint(list_one[-1])",
+  "type": "single",
+  "options": [
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": true
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "The code raises an exception and outputs nothing.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As list_two originates from the direct assignment of list_one (no slice was used there!) both these names refer to the same data. Therefore, the element appended to the first of them exists in the second, and vice versa.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 05)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 6,
+  "section": "3.1",
+  "text": "What is the expected output of the following code?",
+  "code": "list_one = [1,2]\nlist_two = list_one[:]\nlist_two.append(3)\nprint(list_one[-1])",
+  "type": "single",
+  "options": [
+   {
+    "text": "2",
+    "correct": true
+   },
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "The code raises an exception and outputs nothing.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As list_two originates from a slice of list_one, both these names refer to different (separate) data. Therefore, the element appended to the first of them doesn't exist in the second, and vice versa.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 06)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 7,
+  "section": "3.2",
+  "text": "What is true about tuples? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "The .append() method can be used to extend any tuple.",
+    "correct": false
+   },
+   {
+    "text": "The del keyword can be applied to a single tuple element in order to remove it.",
+    "correct": false
+   },
+   {
+    "text": "You can use indexing in order to get any tuple's element.",
+    "correct": true
+   },
+   {
+    "text": "Tuples are immutable, which means that you're not allowed to change their contents.",
+    "correct": true
+   }
+  ],
+  "explanation_en": "The .append() method can be used to extend any tuple – False: the only outcome you may expect here is the AttributeError exception – tuples don't have the .append() method. The del keyword can be applied to a single tuple element – False: immutable beings (including tuples) can't be objects to mutate. You can use the del keyword to remove a tuple as a whole, but not to change its contents. Indexing – True: in this case tuples behave like lists. Immutability – True: it can be said that immutability is the key difference between tuples and lists.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 07)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 8,
+  "section": "3.2",
+  "text": "What is true about tuples? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "All tuple elements must be of the same type.",
+    "correct": false
+   },
+   {
+    "text": "The phrase tuple() can be used to produce an empty tuple.",
+    "correct": true
+   },
+   {
+    "text": "The + operator can be applied to tuples and means concatenation.",
+    "correct": true
+   },
+   {
+    "text": "The phrase (1) describes a one-element tuple.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "All tuple elements must be of the same type – False: tuples of that kind would be very inflexible and of little use. tuple() – True: an empty pair of parentheses () will work, too. The + operator – True: for example, (1,) + (2,) evaluates to (1, 2). Note the commas – you're not allowed to omit them! The phrase (1) – False: it's a single integer value equal to one. To make it a tuple, you need to include the comma: (1,).",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 08)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 9,
+  "section": "3.2",
+  "text": "What is the expected result of the following code?",
+  "code": "answers = (True, True, False)\nselection = answers[3:]\npoints = 0\nfor answer in selection[-2:]:\n    if answer:\n        points += 1\nprint(points)",
+  "type": "single",
+  "options": [
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": true
+   },
+   {
+    "text": "1",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Note: the selection has been created as a zero-element slice of answers (the slice starts beyond the list!). The second slice (the one in the loop statement) changes nothing (the empty list remains empty), and therefore points is not incremented even once inside the loop, and its final value is 0.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 09)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 10,
+  "section": "3.2",
+  "text": "What is the expected result of the following code?",
+  "code": "answers = (True, False, True)\nselection = answers[2:]\npoints = 0\nfor answer in selection[-1:]:\n    if answer:\n        points += 1\nprint(points)",
+  "type": "single",
+  "options": [
+   {
+    "text": "0",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": true
+   }
+  ],
+  "explanation_en": "Note: the selection has been created as a one-element slice of the answers list. Therefore, it is a separate, one-element list which contains True. The second slice (the one in the loop statement) changes nothing (the only list element is also its last element). In effect, points is incremented once inside the loop and its final value is 1.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 10)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 11,
+  "section": "3.3",
+  "text": "Assuming that a Pepperoni Pizza costs $2.99, which line of code makes a relevant pizzeria's menu entry within the pizza_menu dictionary (note: \"Pepperoni Pizza\" is the key)? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "pizza_menu = {\"Pepperoni Pizza\": 2.99}",
+    "correct": true
+   },
+   {
+    "text": "pizza_menu = {2.99: \"Pepperoni Pizza\"}",
+    "correct": false
+   },
+   {
+    "text": "pizza_menu = [\"Pepperoni Pizza\": 2.99]",
+    "correct": false
+   },
+   {
+    "text": "pizza_menu = {\"Pepperoni Pizza\", 2.99}",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As initiating a new dictionary needs its specific syntax where key:value pairs are separated by commas and surrounded by braces, the answer we've been waiting for is as follows: pizza_menu = {\"Pepperoni Pizza\": 2.99}",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 11)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 12,
+  "section": "3.3",
+  "text": "Assuming that the pizza_menu dictionary contains pizza:price pairs, which line of code retrieves the Margherita Pizza price and assigns it to the charge variable? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "charge = pizza_menu[\"Margherita Pizza\"]",
+    "correct": true
+   },
+   {
+    "text": "charge = pizza_menu(\"Margherita Pizza\")",
+    "correct": false
+   },
+   {
+    "text": "pizza_menu[\"Margherita Pizza\"] = charge",
+    "correct": false
+   },
+   {
+    "text": "charge[\"Margherita Pizza\"] = pizza_menu",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As retrieving a value from a dictionary resembles list indexing, where the index is actually a string, the only acceptable answer looks as follows: charge = pizza_menu[\"Margherita Pizza\"]",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 12)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim). Manbadagi izohda 'pizza' deb yozilgan (typo), to'g'risi 'pizza_menu'",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 13,
+  "section": "3.3",
+  "text": "What is the expected output of the following code?",
+  "code": "train_speed = {\"FlyingScotsman\": 201, \"TGV\": 320, \"Shinkansen\": 320}\n\nfor train in train_speed:\n    print(train[0], end=\"\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": false
+   },
+   {
+    "text": "FTS",
+    "correct": true
+   },
+   {
+    "text": "233",
+    "correct": false
+   },
+   {
+    "text": "FlyingScotsmanTGVShinkansen",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Iterating through a dictionary is actually iterating through a list of all the dictionary's keys. The [0] index retrieves the first character of each key so we won't expect any other answer.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 13)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "num": 14,
+  "section": "3.3",
+  "text": "What is the expected output of the following code?",
+  "code": "train_speed = {\"FlyingScotsman\": 201, \"TGV\": 320, \"Shinkansen\": 320}\n\nfor train in train_speed.values():\n    print(str(train)[0], end=\"\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "FTS",
+    "correct": false
+   },
+   {
+    "text": "233",
+    "correct": true
+   },
+   {
+    "text": "201320320",
+    "correct": false
+   },
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As the .values() method returns a list of dictionary values (the keys are ignored!), the [0] index retrieves the first character of the string obtained from each value's integer number. This is where the answer came from.",
+  "source_file": ".gitbook/assets/Exam Block 3 Practice Questions (Solution 14)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ }
+]

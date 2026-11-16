@@ -1,0 +1,25 @@
+{% extends "teacher/base.html" %}
+{% block title %}Xona tayyor — Bilimdon{% endblock %}
+{% block content %}
+<div class="max-w-4xl" x-data="{ copied: false }">
+  {% include "partials/stepper.html" with step="4" %}
+  <div class="card p-6 sm:p-10 text-center space-y-6" x-init="setTimeout(() => FX.confetti(false), 300)">
+    <div class="text-6xl anim-pop">🎉</div>
+    <h1 class="text-2xl sm:text-3xl font-extrabold">Xona tayyor: {{ room.name }}</h1>
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <div class="muted font-semibold">Xona raqami</div>
+        <div class="font-kid font-extrabold text-6xl sm:text-7xl tracking-[.18em] text-brand num">{{ room.code }}</div>
+        <button class="btn-3d btn-ghost sm mt-3" @click="navigator.clipboard.writeText('{{ room.code }}'); copied=true; setTimeout(()=>copied=false,1500)"><span x-text="copied ? '✓ Nusxalandi' : '📋 Nusxalash'"></span></button>
+        <p class="muted text-sm mt-4 break-all">{{ join_url }}</p>
+      </div>
+      <div class="inline-block mx-auto p-3 bg-white rounded-3xl shadow-xl border border-line"><img src="{% url 'room_qr' room.pk %}" alt="QR-kod" class="w-56 h-56"></div>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="{% url 'room_screen' room.pk %}" target="_blank" class="btn-3d btn-sun text-lg"><i data-lucide="monitor-play" class="w-5 h-5"></i> Proyektorda ochish</a>
+      <a href="{% url 'room_control' room.pk %}" class="btn-3d btn-brand text-lg"><i data-lucide="gamepad-2" class="w-5 h-5"></i> Boshqaruv paneliga o'tish</a>
+    </div>
+    <p class="muted text-sm">O'quvchilar parolni o'zlari kiritadi. Parolni ularga og'zaki ayting.</p>
+  </div>
+</div>
+{% endblock %}

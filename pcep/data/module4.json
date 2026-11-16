@@ -1,0 +1,514 @@
+[
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 1,
+  "section": "4.1",
+  "text": "Which of the following snippets correctly define a function? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "def 0_effects(parameter):\n    return parameter + 0",
+    "correct": false
+   },
+   {
+    "text": "def no_operation(parameter):\n    return parameter",
+    "correct": true
+   },
+   {
+    "text": "def do_not_touch:\n    parameter *= 1",
+    "correct": false
+   },
+   {
+    "text": "def do_eval(parameter):\n    variable = parameter\n    return variable",
+    "correct": true
+   }
+  ],
+  "explanation_en": "def 0_effects(parameter): The function name is incorrect – it must not begin with a digit. def do_not_touch: The declaration is erroneous – it lacks a pair of parentheses right after the function name. The other two snippets are correct function definitions.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 01)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 2,
+  "section": "4.2",
+  "text": "A user-defined function is invoked twice in the following line of code. What do you call the argument passing techniques which have been used here? (Select two answers.)",
+  "code": "result = function(function(parameter=0))",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "keyword",
+    "correct": true
+   },
+   {
+    "text": "positional",
+    "correct": true
+   },
+   {
+    "text": "reference",
+    "correct": false
+   },
+   {
+    "text": "indicatory",
+    "correct": false
+   }
+  ],
+  "explanation_en": "keyword: the inner invocation (the one with the phrase parameter=0) makes use of this technique. positional: the outer function invocation uses this technique. reference: there is no such phenomenon in Python as reference parameter passing. indicatory: we don't have any idea what this term would mean – do you?",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 02)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 3,
+  "section": "4.2",
+  "text": "What is the expected result of the following code?",
+  "code": "def sample(value):\n    return value + value\n\n\nx = sample(value = 1)\ny = sample(x)\nprint(y)",
+  "type": "single",
+  "options": [
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": false
+   },
+   {
+    "text": "4",
+    "correct": true
+   },
+   {
+    "text": "2",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The function returns its argument doubled. Although each of the invocations makes use of different argument passing techniques, the effect remains the same and this is why the initial argument value equal to 1 turns into 4.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 03)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 4,
+  "section": "4.2",
+  "text": "What is the expected result of the following code?",
+  "code": "def sample(value):\n    return total + value\n\n\ntotal = 0\nnew_total = sample()\nnew_total = sample(total)\nprint(total)",
+  "type": "single",
+  "options": [
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": true
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "4",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The function tries to access a variable which is not known in the function's scope (total).",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 04)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 5,
+  "section": "4.2",
+  "text": "Which of the following functions cannot be invoked with one argument?",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "def four():\n    pass",
+    "correct": true
+   },
+   {
+    "text": "def three(level, size = 0):\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def two(level):\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def one(level=100):\n    pass",
+    "correct": false
+   }
+  ],
+  "explanation_en": "def four(): The only number of arguments this function can accept is zero – this can be deduced from the meaningful emptiness between the parentheses. def three(level, size = 0): The function can be invoked with either one or two arguments. def two(level): The function can be invoked with one argument only. def one(level=100): the function can be invoked with zero or one argument.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 05)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 6,
+  "section": "4.2",
+  "text": "Which of the following functions can be invoked with one argument?",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "def one(zeroes=0):\n    pass",
+    "correct": true
+   },
+   {
+    "text": "def four():\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def two(first, second):\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def three(vertex_1, vertex_2, vertex_3 = 0):\n    pass",
+    "correct": false
+   }
+  ],
+  "explanation_en": "def one(zeroes=0): Yes, it can. Moreover, it can be invoked without any arguments – the default parameter value will be used then. def four(): You are not allowed to pass arguments to this function. def two(first, second): This function demands two arguments and this is an indisputable requirement. def three(vertex_1, vertex_2, vertex_3 = 0): This function needs either two or three arguments.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 06)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 7,
+  "section": "4.2",
+  "text": "What is the expected result of running the following code?",
+  "code": "def process(data):\n    data = [1, 2, 3]\n    return data[-2]\n\n\nmeasurements = [0 for i in range(3)]\nprocess(measurements)\nprint(measurements[-2])",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": false
+   },
+   {
+    "text": "The code prints 1.",
+    "correct": false
+   },
+   {
+    "text": "The code prints 0.",
+    "correct": true
+   },
+   {
+    "text": "The code prints 2.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Note: the process() function redefines (reassigns) its parameters, which means that the parameter visible locally (in the function's scope) refers to different data than the argument used globally. It also means that this change doesn't affect global data. Therefore the measurements list still contains zeros.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 07)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 8,
+  "section": "4.2",
+  "text": "What is the expected result of running the following code?",
+  "code": "def process(data):\n    data[1] = 2\n    return data[-2]\n\n\nmeasurements = [0 for i in range(3)]\nprocess(measurements)\nprint(measurements[-2])",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code prints 1.",
+    "correct": false
+   },
+   {
+    "text": "The code prints 2.",
+    "correct": true
+   },
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": false
+   },
+   {
+    "text": "The code prints 0.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Note: the process() function redefines (reassigns) the second element of its parameter, which means that the change affects the argument (which is visible globally). This is why the middle element of the measurements list (which can be indexed as [-2]) contains 2, not zero.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 08)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 9,
+  "section": "4.2",
+  "text": "What is the expected output of the following code?",
+  "code": "def combine(width, height=10, depth=0, is_3D=False):\n    return [is_3D, width, height, depth]\n\n\nprint(combine(height = 1, width = 2)[3])",
+  "type": "single",
+  "options": [
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": true
+   },
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let's follow the events step-by-step: two parameters are set during invocation: height=1 and width=2; two parameters retain their default values: depth=0 and is_3D=False; in effect, the function returns the following list: [False, 2, 1, 0]; the list's fourth element is zero; thus, you see it on the screen.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 09)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 10,
+  "section": "4.2",
+  "text": "What is the expected output of the following code?",
+  "code": "def combine(width, height=2, depth=0, is_3D=False):\n    return (is_3D, width, height, depth)\n\n\nprint(combine(1)[2])",
+  "type": "single",
+  "options": [
+   {
+    "text": "0",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": true
+   },
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let's investigate the case: only one parameter is explicitly set during invocation: it's width, which gets 2 (note: the argument is passed using the positional style); all remaining parameters retain their default values: height=2, depth=0, and is_3D=False; consequently, the function returns the following tuple: [False, 1, 2, 0]; the tuple's third element is 2 and this is the output that goes to the screen.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 10)",
+  "converted_from": "",
+  "note": "Manbadagi izohda 'width gets 2' deb yozilgan, aslida kodda width=1 beriladi (manbadagi nomuvofiqlik); javob (2) to'g'ri",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 11,
+  "section": "4.3",
+  "text": "What is the expected output of the following code?",
+  "code": "def walk(stop, start=1):\n    print(start, end=\" \")\n    if start + 1 < stop:\n        walk(stop, start + 1)\n\n\nwalk(3)",
+  "type": "single",
+  "options": [
+   {
+    "text": "1 2",
+    "correct": true
+   },
+   {
+    "text": "0 1 2 3",
+    "correct": false
+   },
+   {
+    "text": "1 2 3",
+    "correct": false
+   },
+   {
+    "text": "2 3",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As you can see, it's an example of a recursive function. Let's follow all its invocations: 1. walk(3) which is in fact executed as walk(3, 1). 2. walk(3, 2) (1 is printed in this cycle). 3. no invocation occurs now as the condition is not met, but 2 is printed.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 11)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 12,
+  "section": "4.3",
+  "text": "What is the expected output of the following code?",
+  "code": "def walk(top):\n    if top == 0:\n        return 0\n    return top + walk(top - 1)\n\n\nprint(walk(2))",
+  "type": "single",
+  "options": [
+   {
+    "text": "3",
+    "correct": true
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As walk() is a recursive function, we need to trace all its invocations. Note that the function returns the sum of its argument and the result returns by itself. 1. walk(2) which returns 2 + walk(1). 2. walk(1) which returns 1 + walk(0). 3. walk(0) which returns 0 and breaks the invocation chain. 4. consequently, the final result is 2 + 1 + 0.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 12)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 13,
+  "section": "4.3",
+  "text": "What is true about exceptions in Python? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "IndexError may be raised when you try to access a nonexistent list element.",
+    "correct": true
+   },
+   {
+    "text": "Slicing a list can raise an exception.",
+    "correct": false
+   },
+   {
+    "text": "An unhandled exception causes the program to terminate.",
+    "correct": true
+   },
+   {
+    "text": "IndexError may be raised when you try to access a nonexistent dictionary key.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "IndexError may be raised when you try to access a nonexistent list element – True: this is what the exception is intended for. Slicing a list can raise an exception – False: even the craziest slicing is not able to induce an exception. If all slice indices are integers, nothing bad will happen. An unhandled exception causes the program to terminate – True: you've experienced this many times, haven't you? IndexError for a nonexistent dictionary key – False: this kind of problem is served by the KeyError exception.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 13)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 14,
+  "section": "4.3",
+  "text": "What is false about exceptions in Python? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "If any of the raised exceptions remains unhandled, program execution is terminated and an error message is printed.",
+    "correct": false
+   },
+   {
+    "text": "Any code put inside the try branch is always fully executed.",
+    "correct": true
+   },
+   {
+    "text": "More than one except branch can be executed when an exception is raised.",
+    "correct": true
+   },
+   {
+    "text": "The code put inside the try branch may not be fully executed.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "If any of the raised exceptions remains unhandled… – True: you've experienced this many times, haven't you? Any code put inside the try branch is always fully executed – Wrong: the code can be broken and left when an error occurs. More than one except branch can be executed when an exception is raised – Wrong: not more than one except branch is executed in case of error. The code put inside the try branch may not be fully executed – Absolutely.",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 14)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 15,
+  "section": "4.3",
+  "text": "Which program prints Mishit to the screen? (Original task: drag and drop the given code boxes into the two gaps; one box is not used.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "try:\n    character = \"ABC\"[3]\nexcept IndexError:\n    print(\"Mishit\")\nexcept:\n    print(\"Failure\")",
+    "correct": true
+   },
+   {
+    "text": "try:\n    character = \"ABC\"[3]\nexcept:\n    print(\"Mishit\")\nexcept IndexError:\n    print(\"Failure\")",
+    "correct": false
+   },
+   {
+    "text": "try:\n    character = \"ABC\"[3]\ndefault:\n    print(\"Mishit\")\nexcept:\n    print(\"Failure\")",
+    "correct": false
+   },
+   {
+    "text": "try:\n    character = \"ABC\"[3]\nexcept IndexError:\n    print(\"Mishit\")\ndefault:\n    print(\"Failure\")",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The code which meets our requirements should look as follows: try: character = \"ABC\"[3] / except IndexError: print(\"Mishit\") / except: print(\"Failure\")",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 15)",
+  "converted_from": "drag_drop",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "num": 16,
+  "section": "4.3",
+  "text": "Which program prints Not a number to the screen? (Original task: drag and drop the given code boxes into the two gaps; one box is not used.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "try:\n    width = float('width')\nexcept ValueError:\n    print(\"Not a number\")\nexcept:\n    print(\"Bad luck\")",
+    "correct": true
+   },
+   {
+    "text": "try:\n    width = float('width')\nexcept:\n    print(\"Not a number\")\nexcept ValueError:\n    print(\"Bad luck\")",
+    "correct": false
+   },
+   {
+    "text": "except ValueError:\n    width = float('width')\ntry:\n    print(\"Not a number\")\nexcept:\n    print(\"Bad luck\")",
+    "correct": false
+   },
+   {
+    "text": "try:\n    width = float('width')\ntry:\n    print(\"Not a number\")\nexcept:\n    print(\"Bad luck\")",
+    "correct": false
+   }
+  ],
+  "explanation_en": "This is the code which meets our expectations: try: width = float('width') / except ValueError: print(\"Not a number\") / except: print(\"Bad luck\")",
+  "source_file": ".gitbook/assets/Exam Block 4 Practice Questions (Solution 16)",
+  "converted_from": "drag_drop",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ }
+]

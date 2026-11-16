@@ -1,0 +1,40 @@
+{% extends "teacher/base.html" %}
+{% block title %}{{ title }} — Bilimdon{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+  <h1 class="text-2xl font-extrabold">{{ title }}</h1>
+  {% if mode == 'rooms' %}<a href="{% url 'room_create' %}" class="btn-3d btn-brand"><i data-lucide="plus" class="w-5 h-5"></i> Yangi xona</a>{% endif %}
+  {% if mode == 'stats' %}<a href="{% url 'sets_stats' %}" class="btn-3d btn-ghost">To'plamlar bo'yicha qiyinlik</a>{% endif %}
+</div>
+<div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+  {% for r in rooms %}
+  <div class="card p-5 space-y-2 hover:-translate-y-0.5 transition">
+    <div class="flex justify-between items-start gap-2">
+      <h2 class="font-extrabold text-lg">{{ r.name }}</h2>
+      <span class="chip {% if r.status == 'finished' %}!bg-line !text-muted{% elif r.status == 'waiting' %}!bg-sun/30 !text-sun-dark{% else %}!bg-ok/20 !text-ok-dark{% endif %}">{{ r.get_status_display }}</span>
+    </div>
+    <div class="font-kid font-extrabold text-3xl tracking-widest text-brand num">{{ r.code }}</div>
+    <div class="text-xs muted">{{ r.created_at|date:"d.m.Y H:i" }} · {{ r.duration_minutes }} daq. · {{ r.n_students }} o'quvchi</div>
+    <div class="flex flex-wrap gap-2 pt-2">
+      {% if mode == 'results' %}
+        <a href="{% url 'results' r.pk %}" class="btn-3d btn-brand sm">Natijalar</a>
+        <a href="{% url 'results_export' r.pk %}" class="btn-3d btn-ghost sm">Excel</a>
+      {% elif mode == 'stats' %}
+        <a href="{% url 'room_stats' r.pk %}" class="btn-3d btn-brand sm">Statistika</a>
+      {% else %}
+        <a href="{% url 'room_control' r.pk %}" class="btn-3d btn-brand sm">Boshqarish</a>
+        <a href="{% url 'room_screen' r.pk %}" target="_blank" class="btn-3d btn-ghost sm">Ekran</a>
+        <a href="{% url 'results' r.pk %}" class="btn-3d btn-ghost sm">Natijalar</a>
+        <form method="post" action="{% url 'room_delete' r.pk %}" onsubmit="return confirm('Xona va natijalar o\'chiriladi. Davom etasizmi?')">{% csrf_token %}<button class="px-2 py-1 text-sm text-bad-dark dark:text-bad font-semibold">O'chirish</button></form>
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <div class="card p-10 text-center sm:col-span-2 xl:col-span-3">
+    <div class="text-6xl mb-2">{% if mode == 'rooms' %}🚪{% else %}📈{% endif %}</div>
+    <p class="font-bold">{% if mode == 'rooms' %}Hali xona yo'q{% else %}Yakunlangan test yo'q{% endif %}</p>
+    <p class="muted text-sm">{% if mode == 'rooms' %}Birinchi xonangizni yarating.{% else %}Test tugagach natijalar shu yerda paydo bo'ladi.{% endif %}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

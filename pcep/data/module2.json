@@ -1,0 +1,514 @@
+[
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 1,
+  "section": "2.1",
+  "text": "Which line forms a conditional instruction that guarantees a certain statement is executed when the places_occupied variable is greater than 0? (Original task: arrange the code boxes 0, places_occupied, :, if, > in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "if places_occupied > 0:",
+    "correct": true
+   },
+   {
+    "text": "if 0 > places_occupied:",
+    "correct": false
+   },
+   {
+    "text": "places_occupied if > 0:",
+    "correct": false
+   },
+   {
+    "text": "if > places_occupied 0:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "This is the line of code we wanted you to build: if places_occupied > 0:",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 01)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 2,
+  "section": "2.1",
+  "text": "Which line forms a conditional instruction that guarantees a certain statement is executed when the discount variable is less than or equal to 15.0? (Original task: arrange the code boxes <=, discount, :, 15.0, if in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "if discount <= 15.0:",
+    "correct": true
+   },
+   {
+    "text": "if 15.0 <= discount:",
+    "correct": false
+   },
+   {
+    "text": "if discount < 15.0:",
+    "correct": false
+   },
+   {
+    "text": "discount if <= 15.0:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "This is what we expected from you: if discount <= 15.0:",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 02)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 3,
+  "section": "2.1",
+  "text": "What is the expected output of the following code?",
+  "code": "planets = 1 + 1 // 2 * 3\nif planets > 0:\n    print(\"#\")\nelif planets > 1:\n    print(\"##\")\nelse:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "#",
+    "correct": true
+   },
+   {
+    "text": "##",
+    "correct": false
+   },
+   {
+    "text": "The code produces no output.",
+    "correct": false
+   },
+   {
+    "text": "###",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Hence the expression 1 + 1 // 2 * 3 evaluates to 1, and the control reaches the very first print() invocation.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 03)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 4,
+  "section": "2.1",
+  "text": "What is the expected output of the following code?",
+  "code": "planets = 4 - 3 // 2 + -1\nif planets < 0:\n    print(\"#\")\nelif planets >= 2:\n    print(\"##\")\nelse:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "#",
+    "correct": false
+   },
+   {
+    "text": "###",
+    "correct": false
+   },
+   {
+    "text": "The code produces no output.",
+    "correct": false
+   },
+   {
+    "text": "##",
+    "correct": true
+   }
+  ],
+  "explanation_en": "The expression 4 - 3 // 2 + -1 evaluates to 2 – this is why the control reaches the second print() invocation only.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 04)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 5,
+  "section": "2.1",
+  "text": "Which expressions obtain a code which outputs ## to the screen? (Original task: drag and drop the conditional expressions into the two gaps; some boxes are not used. Boxes: shift = 2, shift < 0, shift > 2, shift =< 2.)",
+  "code": "shift = 1 + 2 * 3\nif <gap 1>:\n    print(\"#\")\nelif <gap 2>:\n    print(\"##\")\nelse:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "if shift < 0: ... elif shift > 2:",
+    "correct": true
+   },
+   {
+    "text": "if shift > 2: ... elif shift < 0:",
+    "correct": false
+   },
+   {
+    "text": "if shift = 2: ... elif shift > 2:",
+    "correct": false
+   },
+   {
+    "text": "if shift =< 2: ... elif shift < 0:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let's analyze all possibilities step by step: the shift variable is assigned with an integer value equal to 7 – by no means 9! The expression shift =< 2 cannot be taken into consideration as there is no operator like =< – such a phrase will provoke a SyntaxError exception. The expression shift = 2 looks better, but cannot be used in this context, as we want to perform a comparison, not an assignment – Python's reaction will be the same as described above. Putting the expression shift > 2 after the if keyword will cause the code to output only one hash, so the only location in which we should place it is the box after the elif keyword.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 05)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 6,
+  "section": "2.1",
+  "text": "Which expressions obtain a code which outputs # to the screen? (Original task: drag and drop the conditional expressions into the two gaps; some boxes are not used. Boxes: shift => 0, shift >= 2, shift = 0, shift <= 0.)",
+  "code": "shift = 3 // 2 - 2\nif <gap 1>:\n    print(\"#\")\nelif <gap 2>:\n    print(\"##\")\nelse:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "if shift <= 0: ... elif shift >= 2:",
+    "correct": true
+   },
+   {
+    "text": "if shift >= 2: ... elif shift <= 0:",
+    "correct": false
+   },
+   {
+    "text": "if shift => 0: ... elif shift >= 2:",
+    "correct": false
+   },
+   {
+    "text": "if shift = 0: ... elif shift >= 2:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let's take a closer look at the case: the shift variable is assigned with an integer value equal to -1 – do you agree? Both the expressions shift =< 2 and shift = 2 are syntactically incorrect – don't upset Python and don't try to use them here. If we want the code to output just one hash, we have to direct the control to the branch located beyond the if keyword – only the shift <= 0 put inside the top-most box can fulfill this task.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 06)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 7,
+  "section": "2.2",
+  "text": "How many asterisks (*) does the code output to the screen?",
+  "code": "torque = 5\nwhile torque > 0:\n    torque -= 3\n    print(\"*\", end=\"\")\nelse:\n    print(\"*\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "three",
+    "correct": true
+   },
+   {
+    "text": "zero (the code outputs nothing)",
+    "correct": false
+   },
+   {
+    "text": "one",
+    "correct": false
+   },
+   {
+    "text": "two",
+    "correct": false
+   }
+  ],
+  "explanation_en": "To find the answer, we need to analyze the sequence of values the torque variable takes: it starts with 5 and goes through 2 and -1. This means that the while loop's body is responsible for the first two asterisks. The third asterisk comes from the else: branch.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 07)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 8,
+  "section": "2.2",
+  "text": "How many asterisks (*) does the code output to the screen?",
+  "code": "torque = 1\nwhile torque < 2:\n    torque *= 2\n    print(\"*\", end=\"\")\nelse:\n    print(\"*\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "two",
+    "correct": true
+   },
+   {
+    "text": "one",
+    "correct": false
+   },
+   {
+    "text": "three",
+    "correct": false
+   },
+   {
+    "text": "zero (the code outputs nothing)",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The while loop's body is executed only once, as the torque variable is set to 2 during the loop's first turn. This means that the loop will emit one asterisk. The second asterisk is emitted by the else: branch.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 08)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 9,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "power = 1\nwhile power != 10:\n    power *= 2\n    if power == 5:\n        continue\n    print(\"@\", end=\"\")\nelse:\n    print(\"@\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "The program outputs three at signs (@@@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs two at signs (@@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs one at sign (@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program enters an infinite loop.",
+    "correct": true
+   }
+  ],
+  "explanation_en": "As you can see, the power variable takes values which are subsequent powers of 2 (1, 2, 4, 8, 16, etc). 10 does not belong to this set and the continue statement does not change anything, either. Consequently, the loop has no chance to be terminated, and runs infinitely.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 09)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 10,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "power = 1\nwhile power < 5:\n    power += 1\n    print(\"@\", end=\"\")\n    if power == 3:\n        break\nelse:\n    print(\"@\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "The program outputs one at sign (@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program enters an infinite loop.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs three at signs (@@@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs two at signs (@@) to the screen.",
+    "correct": true
+   }
+  ],
+  "explanation_en": "As the power variable begins its life with the value of 1, the control smoothly enters the while loop. Next, the power variable is incremented (it's 2 at the moment) and one @ is emitted. The loop's second turn causes the variable to be incremented again, and this is the moment when the break instruction goes onto the stage – the loop is terminated and the else: branch is executed. In effect, the second (and at the same time the last) @ is printed.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 10)",
+  "converted_from": "",
+  "note": "Rasmdagi javob 'one at sign' edi; kod @@ beradi — real natijaga moslandi",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 11,
+  "section": "2.2",
+  "text": "Which line forms a loop that executes its body with the step variable going through the values 0, 2, and 4 (in that order)? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "for counter in range(0, 5, 2):",
+    "correct": true
+   },
+   {
+    "text": "for counter in range(5, 0, 2):",
+    "correct": false
+   },
+   {
+    "text": "for counter in range(0, 2, 5):",
+    "correct": false
+   },
+   {
+    "text": "for counter in range(2, 0, 5):",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only correct answer looks as follows: for counter in range(0, 5, 2):",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 11)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim). Savol matnida 'step' o'zgaruvchisi, javobda 'counter' (manbadagi nomuvofiqlik)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 12,
+  "section": "2.2",
+  "text": "Which line forms a loop that executes its body with the level variable going through the values 5, 4, and 3 (in that order)? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "for level in range(5, 2, -1):",
+    "correct": true
+   },
+   {
+    "text": "for level in range(2, 5, -1):",
+    "correct": false
+   },
+   {
+    "text": "for level in range(5, 3, -1):",
+    "correct": false
+   },
+   {
+    "text": "for level in range(-1, 5, 2):",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only answer that can satisfy Python is: for level in range(5, 2, -1):",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 12)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 13,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "angle = 0\nfor i in range(5):\n    if i % 2 == 1:\n        angle += 1\nelse:\n    angle -= 1\nprint(angle)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code outputs 1.",
+    "correct": true
+   },
+   {
+    "text": "The code enters an infinite loop.",
+    "correct": false
+   },
+   {
+    "text": "The code outputs 2.",
+    "correct": false
+   },
+   {
+    "text": "The code outputs 3.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "A close look at the inside of the for loop's body shows that the angle variable is incremented twice: when the i variable is either 1 or 3 (these are the two cases when i % 2 == 1 is true). The decrement occurs once – inside the else: branch. That's why the final variable value is 1.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 13)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 14,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "angle = 1\nfor i in range(2, 5):\n    if 2 * i > 4:\n        angle += 1\nelse:\n    angle -= 1\nprint(angle)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code outputs 2.",
+    "correct": true
+   },
+   {
+    "text": "The code outputs 1.",
+    "correct": false
+   },
+   {
+    "text": "The code enters an infinite loop.",
+    "correct": false
+   },
+   {
+    "text": "The code outputs 3.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "In the sequence 2, 3, 4, which is passed through by the i variable, only the first value (2) doesn't satisfy the condition 2 * i > 4. In effect, the angle variable is incremented twice inside the loop's body and decremented once inside the else: branch, which finally sets it to 2.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 14)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 15,
+  "section": "2.2",
+  "text": "What is the expected output of the following code?",
+  "code": "others = 0\nfor i in range(2):\n    for j in range(2):\n        if i != j:\n            others += 1\nelse:\n    others += 1\nprint(others)",
+  "type": "single",
+  "options": [
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "The code outputs nothing.",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": true
+   }
+  ],
+  "explanation_en": "Both loops, the outer and the inner, go through the same, two-element set of values which consists of 0 and 1. This means that the condition i != j will be satisfied twice, which results in two increments performed inside the loops' body and an additional one in the outer loop's else: branch. That's why the final others value is equal to 3.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 15)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "num": 16,
+  "section": "2.2",
+  "text": "What is the expected output of the following code?",
+  "code": "others = -1\nfor i in range(1, 3):\n    for j in range(1, 2):\n        if i == j:\n            others += 1\n    else:\n        others += 1\nprint(others)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code outputs nothing.",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": true
+   }
+  ],
+  "explanation_en": "The sequence of values produced by the outer for loop contains two values: 1 and 2. The inner for loop covers one value only: 1. A common part of these two sets contains only one value: 1, so the others variable is incremented once inside the inner loop's body and twice inside the loop's else: branch. Considering that the initial variable's value is -1, it will leave the loops with 2.",
+  "source_file": ".gitbook/assets/Exam Block #2 Practice Questions (Solution 16)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ }
+]

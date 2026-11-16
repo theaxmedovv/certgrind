@@ -1,0 +1,65 @@
+{% extends "teacher/base.html" %}
+{% block title %}{{ qset.name }} — Bilimdon{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+  <div class="min-w-0">
+    <div class="muted text-sm">{{ qset.get_set_type_display }} · {{ qset.subject.name }}</div>
+    <form method="post" action="{% url 'set_rename' qset.pk %}" class="flex gap-2 items-center">{% csrf_token %}
+      <input name="name" value="{{ qset.name }}" class="input !text-xl !font-extrabold !py-1.5 !bg-transparent !border-transparent hover:!border-line focus:!border-brand">
+      <button class="btn-3d btn-ghost sm">Saqlash</button>
+    </form>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    <a href="{% url 'set_list' %}" class="btn-3d btn-ghost sm">← Kutubxona</a>
+    <form method="post" action="{% url 'set_reshuffle' qset.pk %}">{% csrf_token %}<button class="btn-3d btn-sun sm">🔄 Qayta aralashtirish</button></form>
+    <form method="post" action="{% url 'set_copy' qset.pk %}">{% csrf_token %}<button class="btn-3d btn-ghost sm">Nusxa</button></form>
+    <a href="{% url 'set_export' qset.pk %}" class="btn-3d btn-ghost sm">📥 Excel</a>
+    <a href="{% url 'room_create' %}?set={{ qset.pk }}" class="btn-3d btn-ok sm">Xona yaratish →</a>
+    <form method="post" action="{% url 'set_delete' qset.pk %}" onsubmit="return confirm('To\'plam o\'chirilsinmi?')">{% csrf_token %}<button class="btn-3d btn-ghost sm text-bad-dark">O'chirish</button></form>
+  </div>
+</div>
+
+{% if st.missing %}
+<div class="rounded-2xl border-2 border-sun bg-sun/15 p-4 mb-4">
+  <span class="font-bold">⚠ So'ralgan {{ qset.size }} tadan {{ st.missing }} tasi yetmadi (tanlangan mavzularda savol kam). Mavzu qo'shing yoki bazaga savol qo'shing.</span>
+</div>
+{% endif %}
+
+<div class="grid lg:grid-cols-3 gap-5 mb-5">
+  <section class="card p-5 lg:col-span-2">
+    <h2 class="font-bold mb-3">Mavzular bo'yicha taqsimot <span class="muted font-normal">· jami {{ st.count }} ta</span></h2>
+    {% for t in st.topics %}
+    <div class="mb-2"><div class="flex justify-between text-sm"><span>{{ t.order }}. {{ t.name }}</span><span class="num font-bold">{{ t.n }} ta · {{ t.pct }}%</span></div>
+      <div class="h-3 rounded-full bg-line overflow-hidden"><div class="h-full bg-brand" style="width:{{ t.pct }}%"></div></div></div>
+    {% empty %}<p class="muted">To'plam bo'sh.</p>{% endfor %}
+  </section>
+  <section class="card p-5">
+    <h2 class="font-bold mb-3">Qiyinlik</h2>
+    <div class="flex h-4 rounded-full overflow-hidden bg-line"><div class="bg-ok" style="width:{{ st.diff_pct.easy }}%"></div><div class="bg-sun" style="width:{{ st.diff_pct.medium }}%"></div><div class="bg-bad" style="width:{{ st.diff_pct.hard }}%"></div></div>
+    <ul class="mt-3 text-sm space-y-1">
+      <li class="flex justify-between"><span><span class="inline-block w-3 h-3 rounded-full bg-ok"></span> Oson</span><b class="num">{{ st.diff.easy }}</b></li>
+      <li class="flex justify-between"><span><span class="inline-block w-3 h-3 rounded-full bg-sun"></span> O'rta</span><b class="num">{{ st.diff.medium }}</b></li>
+      <li class="flex justify-between"><span><span class="inline-block w-3 h-3 rounded-full bg-bad"></span> Qiyin</span><b class="num">{{ st.diff.hard }}</b></li>
+    </ul>
+    <p class="text-xs muted mt-3">Maqsad: {{ mix.easy }}/{{ mix.medium }}/{{ mix.hard }} · taqsimot: {{ qset.get_distribution_display }}</p>
+  </section>
+</div>
+
+<section class="card overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="text-left muted"><tr><th class="p-3 w-10">#</th><th>Savol</th><th>Mavzu</th><th>Qiyinlik</th><th class="text-right pr-3">Amal</th></tr></thead>
+    {% for it in st.items %}
+    <tr class="border-t border-line">
+      <td class="p-3 muted num">{{ forloop.counter }}</td>
+      <td class="max-w-[420px]"><div class="truncate">{{ it.question.text }}</div>{% if it.question.code %}<code class="text-xs muted">‹kod›</code>{% endif %}</td>
+      <td><span class="chip !py-0">{{ it.question.topic.name }}</span></td>
+      <td>{{ it.question.get_difficulty_display }}</td>
+      <td class="text-right pr-3 whitespace-nowrap">
+        <form method="post" action="{% url 'set_item_replace' qset.pk it.pk %}" class="inline">{% csrf_token %}<button class="text-brand font-bold" title="Shu mavzudan boshqa savol">almashtirish</button></form>
+        <form method="post" action="{% url 'set_item_remove' qset.pk it.pk %}" class="inline ml-3">{% csrf_token %}<button class="text-bad-dark font-bold">o'chirish</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

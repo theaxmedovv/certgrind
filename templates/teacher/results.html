@@ -1,0 +1,56 @@
+{% extends "teacher/base.html" %}
+{% block title %}Natijalar — {{ room.name }}{% endblock %}
+{% block content %}
+{{ rows|json_script:"rows-data" }}
+<div x-data="{
+    rows: JSON.parse(document.getElementById('rows-data').textContent), cls: '', sortBy: 'rank', dir: 1,
+    get classes() { return [...new Set(this.rows.map(r => r.school_class))].sort(); },
+    get list() {
+      let l = this.rows.filter(r => !this.cls || r.school_class === this.cls);
+      const k = this.sortBy;
+      return l.sort((a, b) => { const x = a[k] ?? 9999, y = b[k] ?? 9999; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * this.dir; });
+    },
+    sort(k) { this.dir = this.sortBy === k ? -this.dir : 1; this.sortBy = k; },
+    fmt(s) { return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); },
+  }">
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <div><h1 class="text-2xl font-extrabold">Natijalar: {{ room.name }}</h1><span class="muted font-mono">{{ room.code }}</span></div>
+    <div class="flex flex-wrap gap-2">
+      <a href="{% url 'room_control' room.pk %}" class="btn-3d btn-ghost sm">← Xona</a>
+      <a href="{% url 'room_stats' room.pk %}" class="btn-3d btn-ghost sm">📈 Statistika</a>
+      <a href="{% url 'results_export' room.pk %}" class="btn-3d btn-ok"><i data-lucide="download" class="w-4 h-4"></i> Excel'ga yuklash</a>
+      <form method="post" action="{% url 'room_results_visible' room.pk %}">{% csrf_token %}
+        {% if room.results_visible %}<input type="hidden" name="value" value="0"><button class="btn-3d btn-ghost">✓ O'quvchilarga ochiq (yopish)</button>
+        {% else %}<input type="hidden" name="value" value="1"><button class="btn-3d btn-sun"><i data-lucide="eye" class="w-4 h-4"></i> O'quvchilarga natijalarni ochish</button>{% endif %}
+      </form>
+    </div>
+  </div>
+  <div class="flex flex-wrap gap-2 mb-3">
+    <button class="chip" :class="!cls && 'on'" @click="cls=''">Hamma sinflar</button>
+    <template x-for="c in classes" :key="c"><button class="chip" :class="cls===c && 'on'" @click="cls=c" x-text="c"></button></template>
+  </div>
+  <div class="card overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="text-left muted select-none"><tr>
+        <th class="p-3 cursor-pointer" @click="sort('rank')">O'rin ↕</th><th class="cursor-pointer" @click="sort('last_name')">Ism Familiya ↕</th><th class="cursor-pointer" @click="sort('school_class')">Sinf ↕</th>
+        <th class="cursor-pointer" @click="sort('correct')">To'g'ri/jami ↕</th><th class="cursor-pointer" @click="sort('score')">Ball ↕</th><th class="cursor-pointer" @click="sort('percent')">Foiz ↕</th>
+        <th class="cursor-pointer" @click="sort('grade')">Baho ↕</th><th class="cursor-pointer" @click="sort('rounds')">Aylana ↕</th><th>⚠</th><th>Vaqt</th><th>Kech</th><th>Kodlar</th><th>O'g'irlagan</th><th>Yo'qotgan</th><th>Muzlagan</th></tr></thead>
+      <tbody>
+        <template x-for="r in list" :key="r.id">
+          <tr class="border-t border-line" :class="r.status==='kicked' && 'bg-bad/10 muted'">
+            <td class="p-3 font-extrabold" x-text="r.rank || '—'"></td>
+            <td><span x-text="r.first_name + ' ' + r.last_name"></span> <span x-show="r.status==='kicked'" class="chip !bg-bad/15 !text-bad-dark !py-0">chiqarilgan</span></td>
+            <td x-text="r.school_class"></td><td class="num"><span x-text="r.correct"></span>/<span x-text="r.total"></span></td>
+            <td class="font-bold num" x-text="r.score"></td><td class="num" x-text="r.percent + '%'"></td>
+            <td><span class="badge-grade" :class="'g'+r.grade" x-text="r.grade"></span></td>
+            <td class="num" x-text="r.rounds || '—'"></td><td x-text="r.violations"></td><td class="num" x-text="fmt(r.spent_seconds)"></td>
+            <td><span x-show="r.is_late" class="chip">kech kirgan</span></td>
+            <td x-text="r.codes"></td><td x-text="r.stolen"></td><td x-text="r.lost"></td><td class="num" x-text="r.frozen_seconds ? r.frozen_seconds + ' s' : '—'"></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <p class="muted text-center py-8" x-show="!list.length">Hali natija yo'q.</p>
+  </div>
+</div>
+{% endblock %}

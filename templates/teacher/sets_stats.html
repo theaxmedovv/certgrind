@@ -1,0 +1,48 @@
+{% extends "teacher/base.html" %}
+{% block title %}To'plamlar statistikasi — Bilimdon{% endblock %}
+{% block content %}
+{{ sets|json_script:"sets-data" }}
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+  <h1 class="text-2xl font-extrabold">To'plamlar bo'yicha qiyinlik</h1>
+  <a href="{% url 'stats_list' %}" class="btn-3d btn-ghost sm">← Statistika</a>
+</div>
+{% if not sets %}
+<div class="card p-10 text-center"><div class="text-5xl mb-2">📊</div><p class="font-bold">Hali ma'lumot yo'q</p><p class="muted text-sm">To'plam bilan xona o'tkazilib, o'quvchilar javob bergach bu yerda ko'rinadi.</p></div>
+{% else %}
+<section class="card p-5 mb-5">
+  <h2 class="font-bold">Eng qiyin to'plamlar (xato foizi)</h2>
+  <p class="text-sm muted mb-2" id="sumS"></p>
+  <div style="height: {{ sets|length|add:'2' }}0px; min-height: 200px"><canvas id="chS"></canvas></div>
+</section>
+<div class="grid lg:grid-cols-2 gap-4">
+  {% for s in sets %}
+  <section class="card p-4">
+    <div class="flex justify-between gap-2"><div><div class="muted text-xs">{{ s.type_label }} · {{ s.rooms }} ta xona · {{ s.answered }} ta javob</div><div class="font-bold">{{ s.name }}</div></div>
+      <div class="font-kid font-extrabold text-2xl num {% if s.error_percent >= 50 %}text-bad-dark dark:text-bad{% endif %}">{{ s.error_percent }}%</div></div>
+    <div class="mt-2 space-y-1">
+      {% for t in s.topics %}<div class="flex items-center gap-2 text-sm"><span class="w-40 truncate">{% if t.order %}{{ t.order }}. {% endif %}{{ t.topic }}</span>
+        <div class="flex-1 h-3 rounded-full bg-line overflow-hidden"><div class="h-full {% if t.error_percent >= 50 %}bg-bad{% elif t.error_percent >= 30 %}bg-sun{% else %}bg-ok{% endif %}" style="width:{{ t.error_percent }}%"></div></div>
+        <b class="num w-14 text-right">{{ t.error_percent }}%</b></div>{% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+{% if sets %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+const SETS = JSON.parse(document.getElementById('sets-data').textContent);
+const css = (n) => `rgb(${getComputedStyle(document.documentElement).getPropertyValue(n).trim().split(/\s+/).join(',')})`;
+const BAD = css('--c-bad'), SUN = css('--c-sun'), OK = css('--c-ok');
+Chart.defaults.color = css('--c-muted'); Chart.defaults.font.family = 'Inter, sans-serif';
+new Chart(document.getElementById('chS'), {
+  type: 'bar',
+  data: { labels: SETS.map(s => s.name), datasets: [{ data: SETS.map(s => s.error_percent), backgroundColor: SETS.map(s => (s.error_percent >= 50 ? BAD : (s.error_percent >= 30 ? SUN : OK))), borderRadius: 8, maxBarThickness: 32 }] },
+  options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, max: 100, grid: { color: css('--c-line') } }, y: { grid: { display: false } } } },
+});
+document.getElementById('sumS').textContent = `Eng qiyin to'plam: ${SETS[0].name} — ${SETS[0].error_percent}% xato` + (SETS.length > 1 ? `; eng oson: ${SETS[SETS.length - 1].name} — ${SETS[SETS.length - 1].error_percent}%` : '');
+</script>
+{% endif %}
+{% endblock %}

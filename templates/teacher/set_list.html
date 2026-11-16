@@ -1,0 +1,42 @@
+{% extends "teacher/base.html" %}
+{% block title %}To'plamlar — Bilimdon{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+  <h1 class="text-2xl font-extrabold">To'plamlar kutubxonasi</h1>
+  <div class="flex flex-wrap gap-2">
+    {% if subjects %}
+    <form method="post" action="{% url 'set_auto_all' %}" class="flex gap-1">{% csrf_token %}
+      <select name="subject" class="input !py-2 !w-auto">{% for s in subjects %}<option value="{{ s.pk }}">{{ s.name }}</option>{% endfor %}</select>
+      <button class="btn-3d btn-ghost sm" title="Har mavzuga 15 talik to'plam va yig'ma zinapoya">✨ Barcha to'plamlarni yaratish</button>
+    </form>
+    {% endif %}
+    <a href="{% url 'set_generate' %}" class="btn-3d btn-brand sm">+ Yangi to'plam</a>
+  </div>
+</div>
+
+<form method="get" class="card p-3 mb-4 flex flex-wrap gap-2 items-center">
+  <select name="subject" class="input !py-2 !w-auto" onchange="this.form.submit()"><option value="">Barcha fanlar</option>{% for s in subjects %}<option value="{{ s.pk }}" {% if f.subject == s.pk|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>{% endfor %}</select>
+  <select name="type" class="input !py-2 !w-auto" onchange="this.form.submit()"><option value="">Barcha turlar</option>{% for v, l in types %}<option value="{{ v }}" {% if f.type == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+  <select name="size" class="input !py-2 !w-auto" onchange="this.form.submit()"><option value="">Har qanday hajm</option>{% for n in sizes %}<option value="{{ n }}" {% if f.size == n|stringformat:"s" %}selected{% endif %}>{{ n }} ta</option>{% endfor %}</select>
+  <select name="topic" class="input !py-2 !w-auto max-w-[220px]" onchange="this.form.submit()"><option value="">Barcha mavzular</option>{% for t in topics %}<option value="{{ t.pk }}" {% if f.topic == t.pk|stringformat:"s" %}selected{% endif %}>{{ t.order }}. {{ t.name }}</option>{% endfor %}</select>
+  {% if f.subject or f.type or f.size or f.topic %}<a href="{% url 'set_list' %}" class="text-sm font-bold text-brand">Tozalash</a>{% endif %}
+</form>
+
+<div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+  {% for c in cards %}
+  <a href="{% url 'set_detail' c.set.pk %}" class="card p-4 block hover:-translate-y-0.5 transition">
+    <div class="flex items-start justify-between gap-2">
+      <div class="font-bold leading-snug">{{ c.set.get_set_type_display }}<br><span class="text-base">{{ c.set.name }}</span></div>
+      <span class="chip num">{{ c.stats.count }} ta</span>
+    </div>
+    <div class="flex flex-wrap gap-1 mt-2">{% for t in c.topics|slice:":4" %}<span class="chip !py-0 !text-[11px]">{{ t.order }}. {{ t.name }}</span>{% endfor %}{% if c.topics|length > 4 %}<span class="chip !py-0 !text-[11px]">+{{ c.topics|length|add:"-4" }}</span>{% endif %}</div>
+    <div class="flex h-2 rounded-full overflow-hidden bg-line mt-3">
+      <div class="bg-ok" style="width:{{ c.stats.diff_pct.easy }}%"></div><div class="bg-sun" style="width:{{ c.stats.diff_pct.medium }}%"></div><div class="bg-bad" style="width:{{ c.stats.diff_pct.hard }}%"></div>
+    </div>
+    <div class="text-xs muted mt-2">{% if c.set.last_used_at %}Oxirgi marta: {{ c.set.last_used_at|date:"d.m.Y H:i" }}{% else %}Hali ishlatilmagan{% endif %}{% if c.stats.missing %} · <span class="text-sun-dark font-bold">⚠ {{ c.stats.missing }} ta yetmaydi</span>{% endif %}</div>
+  </a>
+  {% empty %}
+  <div class="card p-10 text-center sm:col-span-2 xl:col-span-3"><div class="text-5xl mb-2">🗂️</div><p class="font-bold">To'plam topilmadi</p><p class="muted text-sm">«Barcha to'plamlarni yaratish» tugmasi har mavzuga to'plam yaratadi, yoki o'zingiz yangisini yarating.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block title %}PCEP test{% endblock %}
+{% block body_class %}bg-surface text-ink{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<style>
+  .codebox { display: flex; background: #f6f8fa; border: 1px solid rgb(var(--c-line)); border-radius: 14px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: .85rem; line-height: 1.6; }
+  .codebox .nums { padding: .75rem .6rem; text-align: right; color: #8b949e; user-select: none; border-right: 1px solid rgb(var(--c-line)); flex: none; }
+  .codebox pre { margin: 0; padding: .75rem 1rem; flex: 1 0 auto; white-space: pre; }
+  .opt { display: flex; gap: .75rem; align-items: flex-start; width: 100%; text-align: left; padding: .8rem 1rem; border: 2px solid rgb(var(--c-line)); border-radius: 16px; background: rgb(var(--c-card)); cursor: pointer; transition: border-color .15s, background .15s; }
+  .opt:hover { border-color: rgb(var(--c-brand) / .6); }
+  .opt.on { border-color: rgb(var(--c-brand)); background: rgb(var(--c-brand) / .08); }
+  .opt .mark { width: 22px; height: 22px; border: 2px solid rgb(var(--c-muted)); flex: none; margin-top: 2px; display: grid; place-items: center; font-size: .75rem; color: #fff; }
+  .opt .mark.r { border-radius: 50%; } .opt .mark.c { border-radius: 6px; }
+  .opt.on .mark { background: rgb(var(--c-brand)); border-color: rgb(var(--c-brand)); }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: .85rem; white-space: pre-wrap; }
+  .qbtn { width: 36px; height: 36px; border-radius: 10px; font-weight: 700; font-size: .85rem; border: 2px solid rgb(var(--c-line)); background: rgb(var(--c-card)); }
+  .qbtn.ans { background: rgb(var(--c-brand) / .15); border-color: rgb(var(--c-brand) / .5); }
+  .qbtn.flag { background: rgb(var(--c-sun) / .35); border-color: rgb(var(--c-sun)); }
+  .qbtn.cur { outline: 3px solid rgb(var(--c-brand)); outline-offset: 1px; }
+  .qbtn.part { background: rgb(var(--c-sun) / .35); border-color: rgb(var(--c-sun)); }
+
+  /* ---- interaktiv savollar ---- */
+  .blk { display: inline-block; padding: .3rem .7rem; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: .85rem;
+         background: rgb(var(--c-brand) / .14); border: 2px solid rgb(var(--c-brand) / .65); cursor: grab; user-select: none; touch-action: none; white-space: pre; }
+  .blk.sel { outline: 3px solid rgb(var(--c-sun)); outline-offset: 1px; }
+  .blk.lock { cursor: default; opacity: .75; background: rgb(var(--c-muted) / .15); border-color: rgb(var(--c-muted) / .6); }
+  .bank { min-height: 56px; display: flex; flex-wrap: wrap; gap: .5rem; padding: .75rem; border: 2px solid rgb(var(--c-line)); border-radius: 16px; background: rgb(var(--c-card)); }
+  .bank.hot, .slot.hot, .cat.hot, .orow.hot { border-color: rgb(var(--c-sun)); background: rgb(var(--c-sun) / .15); }
+  .slot { display: inline-flex; min-width: 2.6rem; min-height: 2rem; align-items: center; justify-content: center; vertical-align: middle; margin: 0 2px;
+          border: 2px dashed rgb(var(--c-muted)); border-radius: 10px; padding: 1px; cursor: pointer; }
+  .slot.full { border-style: solid; border-color: rgb(var(--c-brand)); }
+  .slot .blk { padding: .15rem .5rem; }
+  .cline { font-family: 'JetBrains Mono', monospace; font-size: .9rem; line-height: 2.5; white-space: pre; }
+  .gapcode { background: #f6f8fa; border: 1px solid rgb(var(--c-line)); border-radius: 14px; padding: .5rem 1rem; overflow-x: auto; }
+  .mrow { display: flex; align-items: center; gap: .75rem; padding: .5rem; }
+  .cat { border: 2px dashed rgb(var(--c-muted)); border-radius: 16px; padding: .6rem; min-height: 90px; }
+  .orow { display: flex; align-items: center; gap: .5rem; padding: .5rem .75rem; border: 2px solid rgb(var(--c-line)); border-radius: 14px; background: rgb(var(--c-card)); margin-top: .5rem; }
+  .ghost { position: fixed; z-index: 9999; pointer-events: none; opacity: .9; transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 10px 25px rgb(0 0 0 / .25); }
+  body.dragging { user-select: none; cursor: grabbing; }
+</style>
+{% endblock %}
+{% block body %}
+{{ data|json_script:"pcep-data" }}
+<div x-data="attemptApp()" x-init="init()" class="max-w-3xl mx-auto p-3 sm:p-5 pb-24" x-cloak>
+  <!-- Yuqori panel -->
+  <div class="flex items-center gap-3">
+    <div class="text-sm font-bold whitespace-nowrap">Savol <span x-text="i+1"></span>/<span x-text="items.length"></span></div>
+    <div class="flex-1 h-2.5 rounded-full bg-line overflow-hidden"><div class="h-full bg-brand transition-all" :style="'width:' + (answeredCount/items.length*100) + '%'"></div></div>
+    <div x-show="remaining !== null" class="font-mono font-extrabold px-3 py-1 rounded-xl border-2" :class="remaining < 300 ? 'border-bad text-bad' : 'border-line'" x-text="fmt(remaining)"></div>
+  </div>
+
+  <template x-if="cur">
+    <div class="mt-4 bg-card border border-line rounded-3xl p-4 sm:p-6 shadow-sm">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-brand/10 text-brand-dark" x-text="cur.module ? cur.module + '-modul' : 'PCEP'"></span>
+        <button type="button" class="text-sm font-bold px-3 py-1 rounded-xl border-2" :class="flags[cur.id] ? 'bg-sun/40 border-sun' : 'border-line'" @click="toggleFlag()">🚩 Keyinroq qarayman</button>
+      </div>
+      <p class="font-semibold whitespace-pre-wrap" x-text="cur.text"></p>
+
+      <template x-if="cur.code">
+        <div class="codebox mt-3"><div class="nums" x-html="lineNums(cur.code)"></div><pre><code x-html="hl(cur.code)"></code></pre></div>
+      </template>
+
+      <!-- ===== single / multiple ===== -->
+      <template x-if="cur.kind === 'single' || cur.kind === 'multiple'">
+        <div>
+          <p x-show="cur.multiple" class="mt-3 text-sm font-bold text-brand-dark bg-brand/10 rounded-xl px-3 py-2"><span x-text="cur.n_correct"></span> ta javobni tanlang</p>
+          <div class="mt-4 space-y-2.5">
+            <template x-for="o in cur.options" :key="o.id">
+              <button type="button" class="opt" :class="isOn(o.id) && 'on'" @click="choose(o.id)">
+                <span class="mark" :class="cur.multiple ? 'c' : 'r'"><span x-show="isOn(o.id)">✓</span></span>
+                <span class="flex-1 min-w-0 overflow-x-auto" :class="isCode(o.text) && 'mono'" x-text="o.text" :style="isCode(o.text) ? '' : 'white-space:pre-wrap'"></span>
+              </button>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <!-- ===== interaktiv: umumiy yo'riqnoma ===== -->
+      <p x-show="isInter(cur)" class="mt-3 text-xs text-muted">Blokni sudrab tashlang yoki avval blokni, keyin katakni bosing. Joylashtirilgan blokni bossangiz, u qaytib chiqadi.</p>
+      <p x-show="cur.kind === 'code_gap' && cur.decoys" class="mt-2 text-sm font-semibold text-brand-dark">Eslatma: ba'zi bloklar ishlatilmaydi.</p>
+
+      <!-- ===== match ===== -->
+      <template x-if="cur.kind === 'match'">
+        <div class="mt-3 grid sm:grid-cols-2 gap-4">
+          <div><div class="text-xs font-bold text-muted mb-1">Bloklar</div>
+            <div class="bank" data-drop="bank" :class="hot==='bank' && 'hot'">
+              <template x-for="b in bankBlocks()" :key="b.id"><span class="blk" :class="sel===b.id && 'sel'" :data-blk="b.id" @pointerdown="dragStart($event, b.id)" @click="blockClick(b.id)" x-text="b.text"></span></template>
+            </div></div>
+          <div class="space-y-2">
+            <template x-for="t in cur.targets" :key="t.id">
+              <div class="mrow border border-line rounded-xl bg-card">
+                <code class="flex-1 text-sm" x-text="t.text"></code>
+                <span class="slot" :class="[slots()[t.id] ? 'full' : '', hot==='s:'+t.id ? 'hot' : '']" :data-drop="'s:' + t.id" @click="slotClick(t.id)" style="min-width:7rem">
+                  <template x-if="slots()[t.id]"><span class="blk" :class="sel===slots()[t.id] && 'sel'" :data-blk="slots()[t.id]" @pointerdown="dragStart($event, slots()[t.id])" x-text="blockText(slots()[t.id])"></span></template>
+                </span>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <!-- ===== code_gap ===== -->
+      <template x-if="cur.kind === 'code_gap'">
+        <div class="mt-3">
+          <div class="text-xs font-bold text-muted mb-1">Bloklar</div>
+          <div class="bank mb-3" data-drop="bank" :class="hot==='bank' && 'hot'">
+            <template x-for="b in bankBlocks()" :key="b.id"><span class="blk" :class="sel===b.id && 'sel'" :data-blk="b.id" @pointerdown="dragStart($event, b.id)" @click="blockClick(b.id)" x-text="b.text"></span></template>
+          </div>
+          <div class="gapcode">
+            <template x-for="(line, li) in cur.lines" :key="li">
+              <div class="cline"><template x-for="(p, pi) in line" :key="pi"><span><template x-if="p.t !== undefined"><span x-html="hl(p.t)"></span></template><template x-if="p.slot"><span class="slot" :class="[slots()[p.slot] ? 'full' : '', hot==='s:'+p.slot ? 'hot' : '']" :data-drop="'s:' + p.slot" @click="slotClick(p.slot)"><template x-if="slots()[p.slot]"><span class="blk" :class="sel===slots()[p.slot] && 'sel'" :data-blk="slots()[p.slot]" @pointerdown="dragStart($event, slots()[p.slot])" x-text="blockText(slots()[p.slot])"></span></template><template x-if="!slots()[p.slot]"><span class="text-transparent select-none">__</span></template></span></template></span></template></div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <!-- ===== categorize ===== -->
+      <template x-if="cur.kind === 'categorize'">
+        <div class="mt-3 grid sm:grid-cols-2 gap-4">
+          <div><div class="text-xs font-bold text-muted mb-1">Bloklar</div>
+            <div class="bank" data-drop="bank" :class="hot==='bank' && 'hot'">
+              <template x-for="b in bankBlocks()" :key="b.id"><span class="blk" :class="sel===b.id && 'sel'" :data-blk="b.id" @pointerdown="dragStart($event, b.id)" @click="blockClick(b.id)" x-text="b.text"></span></template>
+            </div></div>
+          <div class="space-y-3">
+            <template x-for="c in cur.categories" :key="c.id">
+              <div class="cat" :class="hot==='c:'+c.id && 'hot'" :data-drop="'c:' + c.id" @click="catClick(c.id)">
+                <div class="text-sm font-bold mb-2" x-text="c.label"></div>
+                <div class="flex flex-wrap gap-2">
+                  <template x-for="b in catBlocks(c.id)" :key="b.id"><span class="blk" :class="[sel===b.id && 'sel', isLocked(b.id) && 'lock']" :data-blk="b.id" @pointerdown="dragStart($event, b.id)" @click.stop="catBlockClick(b.id)" x-text="b.text"></span></template>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <!-- ===== order ===== -->
+      <template x-if="cur.kind === 'order'">
+        <div class="mt-3">
+          <div class="text-xs font-bold text-muted" x-text="'▲ ' + cur.top_label"></div>
+          <template x-for="(id, idx) in orderList()" :key="id">
+            <div class="orow" :class="[hot==='o:'+idx && 'hot', sel===id && 'ring-2 ring-sun']" :data-drop="'o:' + idx" @click="orderClick(id)">
+              <span class="blk" style="cursor:grab" :data-blk="id" @pointerdown="dragStart($event, id)" x-text="'⠿ ' + blockText(id)"></span>
+              <span class="flex-1"></span>
+              <button type="button" class="px-2 text-lg" :disabled="idx === 0" @click.stop="moveOrder(idx, -1)" aria-label="Yuqoriga">↑</button>
+              <button type="button" class="px-2 text-lg" :disabled="idx === orderList().length - 1" @click.stop="moveOrder(idx, 1)" aria-label="Pastga">↓</button>
+            </div>
+          </template>
+          <div class="text-xs font-bold text-muted mt-2" x-text="'▼ ' + cur.bottom_label"></div>
+        </div>
+      </template>
+
+      <button type="button" x-show="isInter(cur)" class="btn-3d sm mt-4" @click="clearInter()">Tozalash</button>
+
+      <div class="flex justify-between mt-6 gap-3">
+        <button type="button" class="btn-3d sm" :disabled="i === 0" @click="go(i-1)">← Oldingi</button>
+        <button type="button" class="btn-3d btn-brand sm" x-show="i < items.length - 1" @click="go(i+1)">Keyingi →</button>
+        <button type="button" class="btn-3d btn-ok sm" x-show="i === items.length - 1" @click="askFinish()">Tugatish ✓</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- Savollar xaritasi -->
+  <div class="mt-5">
+    <div class="flex flex-wrap gap-1.5">
+      <template x-for="(it, k) in items" :key="it.id">
+        <button type="button" class="qbtn" :class="[isAnswered(it) ? 'ans' : (isPartial(it) ? 'part' : ''), flags[it.id] ? 'flag' : '', k === i ? 'cur' : '']" @click="go(k)" x-text="k+1"></button>
+      </template>
+    </div>
+    <div class="flex flex-wrap gap-4 text-xs text-muted mt-2">
+      <span>🟦 javob berilgan</span><span>🟨 belgilangan / to'liq emas</span><span>⬜ javob berilmagan</span>
+    </div>
+    <button type="button" class="btn-3d btn-ok w-full mt-5" @click="askFinish()">Testni tugatish</button>
+  </div>
+
+  <!-- Tugatish tasdig'i -->
+  <div x-show="confirmOpen" class="fixed inset-0 z-50 grid place-items-center p-4 bg-black/50" @keydown.escape.window="confirmOpen=false">
+    <div class="bg-card rounded-3xl p-6 max-w-sm w-full space-y-3 shadow-2xl">
+      <h3 class="font-kid font-extrabold text-2xl">Testni tugatamizmi?</h3>
+      <p x-show="unanswered > 0" class="text-bad-dark font-semibold">Javob berilmagan (yoki to'liq to'ldirilmagan) savollar: <span x-text="unanswered"></span> ta.</p>
+      <p x-show="flaggedCount > 0" class="text-sm">🚩 Belgilangan savollar: <span x-text="flaggedCount"></span> ta.</p>
+      <p x-show="unanswered === 0 && flaggedCount === 0" class="text-sm text-muted">Hamma savolga javob berilgan.</p>
+      <div class="flex gap-2 pt-2">
+        <button type="button" class="btn-3d flex-1" @click="confirmOpen=false">Qaytish</button>
+        <button type="button" class="btn-3d btn-ok flex-1" :disabled="busy" @click="finish()">Tugatish</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+function attemptApp() {
+  const D = JSON.parse(document.getElementById('pcep-data').textContent);
+  const KEY = 'pcep_i_' + D.attempt;
+  const RKEY = q => 'pcep_r_' + D.attempt + '_' + q;
+  const csrf = '{{ csrf_token }}';
+  const INTER = ['match', 'order', 'categorize', 'code_gap'];
+  return {
+    items: D.items, i: 0, answers: {}, flags: {}, resp: {}, remaining: D.remaining,
+    confirmOpen: false, busy: false, timer: null, sel: null, hot: null, drag: null,
+    get cur() { return this.items[this.i]; },
+    get answeredCount() { return this.items.filter(x => this.isAnswered(x)).length; },
+    get unanswered() { return this.items.length - this.answeredCount; },
+    get flaggedCount() { return this.items.filter(x => this.flags[x.id]).length; },
+    init() {
+      this.items.forEach(x => {
+        this.flags[x.id] = !!x.flagged;
+        if (this.isInter(x)) {
+          let r = x.response && Object.keys(x.response).length ? x.response : null;
+          if (!r) { try { r = JSON.parse(localStorage.getItem(RKEY(x.id)) || 'null'); } catch (e) {} }
+          this.resp[x.id] = r || {};
+        } else this.answers[x.id] = x.selected || [];
+      });
+      try { const s = parseInt(localStorage.getItem(KEY)); if (s >= 0 && s < this.items.length) this.i = s; } catch (e) {}
+      if (this.remaining !== null) {
+        this.timer = setInterval(() => {
+          this.remaining = Math.max(0, this.remaining - 1);
+          if (this.remaining === 0) { clearInterval(this.timer); this.finish(); }
+        }, 1000);
+      }
+      window.addEventListener('beforeunload', e => { if (!this.busy && this.answeredCount) { e.preventDefault(); e.returnValue = ''; } });
+    },
+    isInter(x) { return INTER.includes(x.kind); },
+    fmt(s) { s = s || 0; return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); },
+    go(k) { this.i = k; this.sel = null; try { localStorage.setItem(KEY, k); } catch (e) {} window.scrollTo({ top: 0, behavior: 'smooth' }); },
+
+    /* ---- javob berilganlik ---- */
+    isAnswered(x) {
+      if (!this.isInter(x)) return (this.answers[x.id] || []).length > 0;
+      const r = this.resp[x.id] || {};
+      if (x.kind === 'order') return !!(r.order && r.order.length);
+      const n = Object.keys(r.slots || {}).length;
+      if (x.kind === 'match') return n === x.targets.length;
+      if (x.kind === 'code_gap') return n === x.n_slots;
+      return n === x.blocks.filter(b => !(b.id in x.prefilled)).length;   // categorize
+    },
+    isPartial(x) { return this.isInter(x) && !this.isAnswered(x) && Object.keys((this.resp[x.id] || {}).slots || {}).length > 0; },
+
+    /* ---- single / multiple ---- */
+    isOn(id) { return (this.answers[this.cur.id] || []).includes(id); },
+    choose(id) {
+      const q = this.cur; let sel = [...(this.answers[q.id] || [])];
+      if (q.multiple) sel = sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]; else sel = [id];
+      this.answers[q.id] = sel; this.save(q);
+    },
+    toggleFlag() { const q = this.cur; this.flags[q.id] = !this.flags[q.id]; this.save(q); },
+    save(q) {
+      const body = { qid: q.id, flagged: !!this.flags[q.id] };
+      if (this.isInter(q)) body.response = this.resp[q.id]; else body.selected = this.answers[q.id];
+      fetch(D.save_url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf }, body: JSON.stringify(body) }).catch(() => {});
+      if (this.isInter(q)) { try { localStorage.setItem(RKEY(q.id), JSON.stringify(this.resp[q.id])); } catch (e) {} }
+    },
+
+    /* ---- interaktiv: umumiy ---- */
+    slots() { return (this.resp[this.cur.id] || {}).slots || {}; },
+    setSlots(s) { this.resp[this.cur.id] = { slots: s }; this.save(this.cur); },
+    blockText(id) { const b = this.cur.blocks.find(x => x.id === id); return b ? b.text : ''; },
+    bankBlocks() {
+      const q = this.cur, s = this.slots();
+      if (q.kind === 'categorize') return q.blocks.filter(b => !(b.id in s) && !(b.id in q.prefilled));
+      const used = new Set(Object.values(s)); return q.blocks.filter(b => !used.has(b.id));
+    },
+    clearInter() {
+      const q = this.cur; this.sel = null;
+      if (q.kind === 'order') { this.resp[q.id] = {}; this.save(q); } else this.setSlots({});
+    },
+
+    /* ---- match / code_gap: blokni katakka qo'yish ---- */
+    placeSlot(blockId, slotId) {
+      const s = { ...this.slots() };
+      for (const k of Object.keys(s)) if (s[k] === blockId) delete s[k];   // boshqa joydan olinadi
+      if (slotId) s[slotId] = blockId;                                     // band bo'lsa, eskisi bankka qaytadi
+      this.setSlots(s);
+    },
+    blockClick(id) { this.sel = this.sel === id ? null : id; },
+    slotClick(slotId) {
+      const s = this.slots();
+      if (this.sel) { this.placeSlot(this.sel, slotId); this.sel = null; return; }
+      if (s[slotId]) this.placeSlot(s[slotId], null);                       // bosib chiqarib olish
+    },
+
+    /* ---- categorize ---- */
+    catBlocks(catId) { const s = this.slots(), q = this.cur; return q.blocks.filter(b => (b.id in q.prefilled ? q.prefilled[b.id] === catId : s[b.id] === catId)); },
+    isLocked(id) { return id in this.cur.prefilled; },
+    placeCat(blockId, catId) {
+      if (this.isLocked(blockId)) return;
+      const s = { ...this.slots() };
+      if (catId) s[blockId] = catId; else delete s[blockId];
+      this.setSlots(s);
+    },
+    catClick(catId) { if (this.sel) { this.placeCat(this.sel, catId); this.sel = null; } },
+    catBlockClick(id) { if (this.isLocked(id)) return; if (this.sel) { this.placeCat(this.sel, null); this.sel = null; } else this.placeCat(id, null); },
+
+    /* ---- order ---- */
+    orderList() { const r = this.resp[this.cur.id] || {}; return r.order && r.order.length ? r.order : this.cur.blocks.map(b => b.id); },
+    setOrder(list) { this.resp[this.cur.id] = { order: list }; this.save(this.cur); },
+    moveOrder(idx, d) { const l = [...this.orderList()], j = idx + d; if (j < 0 || j >= l.length) return; [l[idx], l[j]] = [l[j], l[idx]]; this.setOrder(l); },
+    moveTo(id, idx) { const l = this.orderList().filter(x => x !== id); l.splice(idx, 0, id); this.setOrder(l); },
+    orderClick(id) {
+      if (!this.sel) { this.sel = id; return; }
+      if (this.sel !== id) { const l = [...this.orderList()], a = l.indexOf(this.sel), b = l.indexOf(id); [l[a], l[b]] = [l[b], l[a]]; this.setOrder(l); }
+      this.sel = null;
+    },
+
+    /* ---- sudrab tashlash (sichqoncha va barmoq: Pointer Events) ---- */
+    dragStart(e, id) {
+      if (e.button !== undefined && e.button !== 0) return;
+      const el = e.currentTarget;
+      this.drag = { id, el, x: e.clientX, y: e.clientY, on: false, ghost: null };
+      const move = ev => this.dragMove(ev), up = ev => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); this.dragEnd(ev); };
+      document.addEventListener('pointermove', move); document.addEventListener('pointerup', up);
+    },
+    dragMove(e) {
+      const d = this.drag; if (!d) return;
+      if (!d.on && Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6) {
+        d.on = true; d.ghost = d.el.cloneNode(true); d.ghost.classList.add('ghost'); document.body.appendChild(d.ghost); document.body.classList.add('dragging');
+      }
+      if (!d.on) return;
+      d.ghost.style.left = e.clientX + 'px'; d.ghost.style.top = e.clientY + 'px';
+      const t = document.elementFromPoint(e.clientX, e.clientY), z = t && t.closest('[data-drop]');
+      this.hot = z ? z.dataset.drop : null;
+    },
+    dragEnd(e) {
+      const d = this.drag; this.drag = null; if (!d) return;
+      if (!d.on) return;                                   // oddiy bosish — @click ishlaydi
+      d.ghost.remove(); document.body.classList.remove('dragging'); this.hot = null;
+      d.el.addEventListener('click', ev => ev.stopImmediatePropagation(), { once: true, capture: true });   // sudrashdan keyingi "click" ni yutamiz
+      const t = document.elementFromPoint(e.clientX, e.clientY), z = t && t.closest('[data-drop]');
+      if (!z) return;
+      const k = z.dataset.drop, q = this.cur; this.sel = null;
+      if (q.kind === 'order') { if (k.startsWith('o:')) this.moveTo(d.id, parseInt(k.slice(2))); return; }
+      if (q.kind === 'categorize') { this.placeCat(d.id, k.startsWith('c:') ? k.slice(2) : null); return; }
+      this.placeSlot(d.id, k.startsWith('s:') ? k.slice(2) : null);
+    },
+
+    askFinish() { this.confirmOpen = true; },
+    async finish() {
+      if (this.busy) return; this.busy = true;
+      try {
+        const r = await fetch(D.finish_url, { method: 'POST', headers: { 'X-CSRFToken': csrf } });
+        const j = await r.json();
+        try { localStorage.removeItem(KEY); this.items.forEach(x => localStorage.removeItem(RKEY(x.id))); } catch (e) {}
+        window.location = j.url;
+      } catch (e) { this.busy = false; alert("Tarmoq xatosi. Qayta urinib ko'ring."); }
+    },
+    hl(code) { try { return hljs.highlight(code, { language: 'python' }).value; } catch (e) { return code.replace(/</g, '&lt;'); } },
+    lineNums(code) { return code.split('\n').map((_, k) => k + 1).join('<br>'); },
+    isCode(t) { return t.includes('\n') || /^(def |for |if |while |print\(|try:|[A-Za-z_][\w.]*(\[.*\])?\s*=|[A-Za-z_][\w.]*\(|[A-Za-z_][\w.]*\[)/.test(t); },
+  };
+}
+</script>
+{% endblock %}

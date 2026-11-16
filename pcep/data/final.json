@@ -1,0 +1,962 @@
+[
+ {
+  "bank": "final",
+  "module": null,
+  "num": 1,
+  "section": "1.5",
+  "text": "Which line of code asks the user for an integer value and assigns it to the version variable? (Original task: insert the code boxes in the correct positions.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "version = int(input(\"Enter major version number:\"))",
+    "correct": true
+   },
+   {
+    "text": "version = float(input(\"Enter major version number:\"))",
+    "correct": false
+   },
+   {
+    "text": "version == int(input(\"Enter major version number:\"))",
+    "correct": false
+   },
+   {
+    "text": "version = input(int(\"Enter major version number:\"))",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only acceptable answer looks as follows: version = int(input(\"Enter major version number:\"))",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 01)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 2,
+  "section": "1.3",
+  "text": "Match the given literals with the data types: \"\\\"\", False, -1_999, -1.999. Which assignment is correct? (Original task: drag and drop the literals to match their data type names.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "\"\\\"\" → String; False → Boolean; -1_999 → Integer; -1.999 → Float",
+    "correct": true
+   },
+   {
+    "text": "\"\\\"\" → String; False → Boolean; -1_999 → Float; -1.999 → Integer",
+    "correct": false
+   },
+   {
+    "text": "\"\\\"\" → Boolean; False → String; -1_999 → Integer; -1.999 → Float",
+    "correct": false
+   },
+   {
+    "text": "\"\\\"\" → String; False → Integer; -1_999 → Boolean; -1.999 → Float",
+    "correct": false
+   }
+  ],
+  "explanation_en": "\"\\\"\" is a string of length 1 – it contains one quotation mark only. False is one of two possible Boolean values. -1_999 is an integer value equal to minus one thousand nine hundred and ninety nine (don't let the underscore confuse you). -1.999 is a float value equal to minus one and nine hundred ninety nine thousandths.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 02)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 3,
+  "section": "1.4",
+  "text": "Which of the following expressions evaluate to a zero result? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "1 // 3 * 3 ** 0",
+    "correct": true
+   },
+   {
+    "text": "1 ** 2 - 4 // 3",
+    "correct": true
+   },
+   {
+    "text": "4 - 3 // 2 + 1",
+    "correct": false
+   },
+   {
+    "text": "4 / 2 + 2 ** 1",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Here are the actual values of each of the non-zero expressions: 4 - 3 // 2 + 1 evaluates to 4. 4 / 2 + 2 ** 1 evaluates to 4.0.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 03)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 4,
+  "section": "1.5",
+  "text": "Which line of code asks the user for a float value and assigns it to the velocity variable? (Original task: insert the code boxes in the correct positions.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "velocity = float(input(\"Enter speed in knots:\"))",
+    "correct": true
+   },
+   {
+    "text": "velocity = int(input(\"Enter speed in knots:\"))",
+    "correct": false
+   },
+   {
+    "text": "velocity = float(print(\"Enter speed in knots:\"))",
+    "correct": false
+   },
+   {
+    "text": "velocity = input(float(\"Enter speed in knots:\"))",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The only correct answer looks as follows: velocity = float(input(\"Enter speed in knots:\"))",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 04)",
+  "converted_from": "fill_gaps",
+  "note": "Bo'sh joyni to'ldirish (drag & drop) savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 5,
+  "section": "1.1",
+  "text": "A binary code consists of:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "a sequence of bits which encodes machine instructions.",
+    "correct": true
+   },
+   {
+    "text": "a list of keywords.",
+    "correct": false
+   },
+   {
+    "text": "a set of a certain alphabet symbols.",
+    "correct": false
+   },
+   {
+    "text": "a sequence of ASCII characters.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "A binary code is code designed to be executed by hardware (the CPU), and hence this kind of code is actually a sequence of bits which forms a series of machine instructions.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 05)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 6,
+  "section": "1.1",
+  "text": "To run the code given as a source file whose name has the .py extension, you need to have:",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "an MS Windows computer.",
+    "correct": false
+   },
+   {
+    "text": "a Python editor.",
+    "correct": false
+   },
+   {
+    "text": "a Python interpreter.",
+    "correct": true
+   },
+   {
+    "text": "a Python compiler.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As Python is an interpreted programming language, an interpreter is needed to run Python source code.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 06)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 7,
+  "section": "1.4",
+  "text": "Arrange the arithmetic operations in the order which reflects their priorities, where the top-most position has the highest priority and the bottom-most position has the lowest priority. (Operations: ADDITION, DIVISION, EXPONENTATION.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "Exponentiation, Division, Addition",
+    "correct": true
+   },
+   {
+    "text": "Exponentiation, Addition, Division",
+    "correct": false
+   },
+   {
+    "text": "Division, Exponentiation, Addition",
+    "correct": false
+   },
+   {
+    "text": "Addition, Division, Exponentiation",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Python's arrangement of these three arithmetic operators is as follows: exponentiation (the power of) has the highest priority; multiplication and two kinds of division are in-betweens; addition along with subtraction take the lowest position.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 07)",
+  "converted_from": "ordering",
+  "note": "Tartiblash savoli variantli savolga aylantirildi",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 8,
+  "section": "2.2",
+  "text": "What is the expected output of the following code?",
+  "code": "others = 1\nfor i in range(2, 4):\n    for j in range(-1, 2):\n        if i == j:\n            others += 1\n        else:\n            break\nprint(others)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code outputs nothing.",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": true
+   },
+   {
+    "text": "4",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The for i loop goes through two values: 2 and 3, while for j through three value: -1, 0, and 1. As you can see, these two sets have nothing in common, which means that the expression i == j is always false, and the break instruction is always executed. In effect, the others variable isn't incremented even once, so it retains its initial value: 1.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 08)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 9,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "power = 2\nwhile power < 5:\n    power += 1\n    if power == 3:\n        continue\n    print(\"@\", end=\"\")\nelse:\n    print(\"@\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "The program outputs two at signs (@@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs one at sign (@) to the screen.",
+    "correct": false
+   },
+   {
+    "text": "The program enters an infinite loop.",
+    "correct": false
+   },
+   {
+    "text": "The program outputs three at signs (@@@) to the screen.",
+    "correct": true
+   }
+  ],
+  "explanation_en": "The program prints three at signs – two of them come from the while loop's body, and the third from the else: branch.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 09)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 10,
+  "section": "2.1",
+  "text": "What is the expected output of the following code?",
+  "code": "planets = 1 + 2 * 3 // 4\nif planets < 0:\n    print(\"#\")\nelif planets > 2:\n    print(\"##\")\nelse:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "##",
+    "correct": false
+   },
+   {
+    "text": "The code produces no output.",
+    "correct": false
+   },
+   {
+    "text": "###",
+    "correct": true
+   },
+   {
+    "text": "#",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As the expression 1 + 2 * 3 // 4 evaluates to 2 the only path the control can reach is the one beyond the else: keyword.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 10)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 11,
+  "section": "2.1",
+  "text": "Which expressions obtain a code which outputs ### to the screen? (Original task: drag and drop the conditional expressions into the two gaps; some boxes are not used. Boxes: shift < 0, shift = 0, shift == 0, shift =/= 0.)",
+  "code": "shift = 5 - 4 * 2\nif shift > 0:\n    print(\"#\")\nelif <gap 1>:\n    print(\"##\")\nelif <gap 2>:\n    print(\"###\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "elif shift == 0: ... elif shift < 0:",
+    "correct": true
+   },
+   {
+    "text": "elif shift < 0: ... elif shift == 0:",
+    "correct": false
+   },
+   {
+    "text": "elif shift = 0: ... elif shift < 0:",
+    "correct": false
+   },
+   {
+    "text": "elif shift =/= 0: ... elif shift < 0:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Let's investigate the case: an integer value assigned to the shift variable is equal to -3 (certainly not 2!). As we want to see three hashes, we need to hit the second elif branch – this is why we should put the shift < 0 expression there. Note: neither shift =/= 0 nor shift = 0 is syntactically correct.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 11)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 12,
+  "section": "2.2",
+  "text": "Which line forms a loop that executes its body with the number variable going through the values -3, -2, and -1 (in that order)? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "for number in range(-3, 0, 1):",
+    "correct": true
+   },
+   {
+    "text": "for number in range(0, -3, 1):",
+    "correct": false
+   },
+   {
+    "text": "for number in range(-3, -1, 1):",
+    "correct": false
+   },
+   {
+    "text": "for number in range(1, -3, 0):",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The answer we are waiting for is as follows: for number in range(-3, 0, 1):",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 12)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 13,
+  "section": "2.2",
+  "text": "How many asterisks (*) does the code output to the screen?",
+  "code": "torque = 0\nwhile torque != 0:\n    torque //= 2\n    print(\"*\", end=\"\")\nelse:\n    print(\"*\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "one",
+    "correct": true
+   },
+   {
+    "text": "two",
+    "correct": false
+   },
+   {
+    "text": "zero (the code outputs nothing)",
+    "correct": false
+   },
+   {
+    "text": "three",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As the while loop's condition is initially not satisfied, the one and only asterisk will be printed by the else: branch.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 13)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 14,
+  "section": "2.1",
+  "text": "Which line forms a conditional instruction that guarantees a certain statement is executed when the tax_rate variable is less than 23.5? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "if tax_rate < 23.5:",
+    "correct": true
+   },
+   {
+    "text": "if 23.5 < tax_rate:",
+    "correct": false
+   },
+   {
+    "text": "tax_rate if < 23.5:",
+    "correct": false
+   },
+   {
+    "text": "if tax_rate > 23.5:",
+    "correct": false
+   }
+  ],
+  "explanation_en": "This is what we expected from you: if tax_rate < 23.5:",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 14)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 15,
+  "section": "2.2",
+  "text": "What happens when the user runs the following code?",
+  "code": "angle = -1\nfor i in range(-1, 1):\n    if 2 * i < 4:\n        angle += 1\nelse:\n    angle += 2\nprint(angle)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code enters an infinite loop.",
+    "correct": false
+   },
+   {
+    "text": "The code outputs 3.",
+    "correct": true
+   },
+   {
+    "text": "The code outputs 1.",
+    "correct": false
+   },
+   {
+    "text": "The code outputs 2.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "In the sequence -1, 0, which is passed through by the i variable, both values satisfy the condition 2 * i < 4. In effect, the angle variable is incremented twice inside the loop's body and additionally incremented by 2 inside the else: branch, which finally sets it to 3.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 15)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 16,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, select the expressions which will not raise any exception. (Select two expressions.)",
+  "code": "numbers = [1, 0.5, 0.25, 0.125]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "numbers[numbers[0]]",
+    "correct": true
+   },
+   {
+    "text": "numbers[numbers[1]]",
+    "correct": false
+   },
+   {
+    "text": "numbers[-10]",
+    "correct": false
+   },
+   {
+    "text": "numbers[0:4]",
+    "correct": true
+   }
+  ],
+  "explanation_en": "numbers[numbers[0]]: the expression accesses an element of the index 1, so it evaluates to 0.5. numbers[numbers[1]]: the index must be an integer value – as numbers[1] evaluates to 0.5, indexing cannot go off well. numbers[-10]: the expression tries to reach an element located beyond the available range and it must end with an exception, sorry. numbers[0:4]: this slice evaluates to a new list containing the same elements as numbers.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 16)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 17,
+  "section": "3.3",
+  "text": "What is the expected output of the following code?",
+  "code": "train_speed = {\"FlyingScotsman\": 201, \"TGV\": 320, \"Shinkansen\": 320}\n\nfor train in train_speed.items():\n    print(train[0], end=\"\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "FlyingScotsmanTGVShinkansen",
+    "correct": true
+   },
+   {
+    "text": "FTS",
+    "correct": false
+   },
+   {
+    "text": "233",
+    "correct": false
+   },
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As the .items() method returns a list of tuples where each tuple contains a (key, value) pair, the [0] index retrieves the first value of each tuple. In effect, only the keys are outputted to the screen.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 17)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 18,
+  "section": "3.3",
+  "text": "Assuming that the pizza_menu dictionary contains pizza:price pairs, which line of code adds Prosciutto Pizza at $1.39 to the directory? (Original task: arrange the code boxes in the correct order.)",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "pizza_menu[\"Prosciutto Pizza\"] = 1.39",
+    "correct": true
+   },
+   {
+    "text": "pizza_menu[1.39] = \"Prosciutto Pizza\"",
+    "correct": false
+   },
+   {
+    "text": "pizza_menu = [\"Prosciutto Pizza\"] 1.39",
+    "correct": false
+   },
+   {
+    "text": "\"Prosciutto Pizza\"[pizza_menu] = 1.39",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As adding a new key:value pair to a dictionary looks like assigning a new value to a list element, the expected answer looks as follows: pizza_menu[\"Prosciutto Pizza\"] = 1.39",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 18)",
+  "converted_from": "ordering",
+  "note": "Kod bo'laklarini tartiblash savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 19,
+  "section": "3.1",
+  "text": "What is the expected output of the following code?",
+  "code": "list_one = [1,2]\nlist_two = list_one[:]\nlist_two.append(3)\nprint(list_one[-1] + list_two[-1])",
+  "type": "single",
+  "options": [
+   {
+    "text": "5",
+    "correct": true
+   },
+   {
+    "text": "The code raises an exception and outputs nothing.",
+    "correct": false
+   },
+   {
+    "text": "4",
+    "correct": false
+   },
+   {
+    "text": "6",
+    "correct": false
+   }
+  ],
+  "explanation_en": "As list_two originates from a slice of list_one, the last elements of these lists are different (they are 2 and 3). Therefore, their sum is equal to 5.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 19)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 20,
+  "section": "3.2",
+  "text": "What is true about tuples? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "Tuples are immutable, which means that you're not allowed to change their contents.",
+    "correct": true
+   },
+   {
+    "text": "The + operator can be applied to tuples and means concatenation.",
+    "correct": true
+   },
+   {
+    "text": "All tuple elements must be of the same type.",
+    "correct": false
+   },
+   {
+    "text": "The del keyword can be applied to a single tuple element in order to remove it.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Tuples are immutable – True: any attempt to change a tuple contents will raise the TypeError exception. The + operator – True: for example, (1,) + (2,) evaluates to (1, 2). All tuple elements must be of the same type – False: tuples of that kind would be very inflexible and of little use. The del keyword on a single element – False: immutable beings (including tuples) aren't able to mutate. You can use the del keyword to remove a tuple as a whole, but not to change its contents.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 20)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 21,
+  "section": "3.2",
+  "text": "What is the expected result of the following code?",
+  "code": "answers = (False, True, True)\nselection = answers[:]\npoints = 0\nfor answer in selection[1:]:\n    if answer:\n        points += 1\nprint(points)",
+  "type": "single",
+  "options": [
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": true
+   }
+  ],
+  "explanation_en": "Note: the selection has been created with help of a full-range slice, and therefore it is a separate, carbon copy of the answers list. As part of this list, which is iterated through, contains two True elements, the points variable is incremented twice inside the loop, and its final value is 2.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 21)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 22,
+  "section": "3.1",
+  "text": "Assuming that the following assignment has been successfully executed, which of the following expressions evaluate to False? (Select two expressions.)",
+  "code": "the_data = [True, 3.1415, -2]",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "the_data.index(-2) not in the_data",
+    "correct": false
+   },
+   {
+    "text": "the_data.index(the_data[-1]) == 0",
+    "correct": true
+   },
+   {
+    "text": "len(the_data[0:2]) == 0",
+    "correct": true
+   },
+   {
+    "text": "-2 in the_data[2:4]",
+    "correct": false
+   }
+  ],
+  "explanation_en": "the_data.index(-2) not in the_data: the_data.index(-2) evaluates to 2, which is not contained in the list – True! the_data.index(the_data[-1]) == 0: there is no such value in the list as -1 – False! len(the_data[0:2]) == 0: the [0:2] slice grabs the first two elements of the list, so its length can't be zero – False! -2 in the_data[2:4]: the slice consists of just one value taken from the last the_data element, which is -2 – True!",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 22)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 23,
+  "section": "4.3",
+  "text": "What is true about exceptions in Python? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "An unhandled exception causes the program to terminate.",
+    "correct": true
+   },
+   {
+    "text": "If any of the raised exceptions remains unhandled, an error message is printed, and program execution continues.",
+    "correct": false
+   },
+   {
+    "text": "The code put inside the try branch may not be fully executed.",
+    "correct": true
+   },
+   {
+    "text": "IndexError may be raised when you try to access a nonexistent dictionary element.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "An unhandled exception causes the program to terminate – True. Handling exceptions is your task. If any of the raised exceptions remains unhandled, an error message is printed, and program execution continues – False. The error message which appears on screen announces the sad fact that the code is irrevocably terminated. The code put inside the try branch may not be fully executed – True. Such behavior makes the exceptions controllable. IndexError for a nonexistent dictionary element – False. This is a job for the KeyError exception.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 23)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 24,
+  "section": "4.1",
+  "text": "Which of the following sentences are true? (Select two answers.)",
+  "code": "",
+  "type": "multiple",
+  "options": [
+   {
+    "text": "A function declaration may be located anywhere inside the source code.",
+    "correct": false
+   },
+   {
+    "text": "A function cannot invoke itself.",
+    "correct": false
+   },
+   {
+    "text": "It's technically possible to name a variable using an already existing function name, but it will shadow that function.",
+    "correct": true
+   },
+   {
+    "text": "When a function body contains no return expression statement, the function returns None implicitly.",
+    "correct": true
+   }
+  ],
+  "explanation_en": "A function declaration may be located anywhere inside the source code – Wrong: the declaration must be completed before its first use (the only exception applies to recursive functions). A function cannot invoke itself – Of course, it can – this is what recursion is about!",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 24)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 25,
+  "section": "4.2",
+  "text": "Which of the following functions can be invoked with three arguments?",
+  "code": "",
+  "type": "single",
+  "options": [
+   {
+    "text": "def three(x, y=0):\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def one(x, y, z, v=0):\n    pass",
+    "correct": true
+   },
+   {
+    "text": "def four():\n    pass",
+    "correct": false
+   },
+   {
+    "text": "def two(speed, altitude):\n    pass",
+    "correct": false
+   }
+  ],
+  "explanation_en": "def three(x, y=0): accepts either one or two arguments only. def one(x, y, z, v=0): fulfills our requirements. It can also be invoked with four arguments. def four(): no arguments are allowed here. def two(speed, altitude): you will provoke an exception if you invoke the function with more than two arguments.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 25)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 26,
+  "section": "4.2",
+  "text": "What is the expected result of running the following code?",
+  "code": "def process(data):\n    data = 2\n    return data\n\n\nmeasurements = [0 for i in range(3)]\nresult = process(measurements)\nprint(result[-2])",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code prints 2.",
+    "correct": false
+   },
+   {
+    "text": "The code prints 0.",
+    "correct": false
+   },
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": true
+   },
+   {
+    "text": "The code prints 1.",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Note: the function returns a single integer value, not a list of any kind. You're not allowed to index an integer, so TypeError is inevitable.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 26)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 27,
+  "section": "4.3",
+  "text": "What is the expected output of the following code?",
+  "code": "def walk(top):\n    if top == 0:\n        return 0\n    else:\n        return top * walk(top - 1)\n\n\nprint(walk(2))",
+  "type": "single",
+  "options": [
+   {
+    "text": "3",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": true
+   }
+  ],
+  "explanation_en": "The walk() function returns its argument multiplied by the result returned by itself. The invocations go as follows: 1. walk(2) which returns 2 * walk(1); 2. walk(1) which returns 1 * walk(0); 3. walk(0) which returns 0 and prevents the next invocation; 4. consequently, the final result is 2 * 1 * 0.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 27)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 28,
+  "section": "4.2",
+  "text": "What is the expected output of the following code?",
+  "code": "def combine(width, height=10, depth=0, is_3D=False):\n    if is_3D:\n        return [is_3D, width, height, depth]\n\n\nprint(combine(2)[0])",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code raises an unhandled exception.",
+    "correct": true
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": false
+   },
+   {
+    "text": "0",
+    "correct": false
+   }
+  ],
+  "explanation_en": "Look into the function body, please. You'll see that when is_3D is False (which is the parameter's default value) the function doesn't explicitly return any value. This means that None is returned implicitly. As you're not allowed to use a subscript to non-sequenced data, TypeError is raised.",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 28)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 29,
+  "section": "4.2",
+  "text": "What is the expected result of the following code?",
+  "code": "def sample(value):\n    return total - value\n\n\ntotal = 4\ntotal = sample(2)\ntotal = sample(1)\nprint(total)",
+  "type": "single",
+  "options": [
+   {
+    "text": "The code is erroneous and cannot be run.",
+    "correct": false
+   },
+   {
+    "text": "1",
+    "correct": true
+   },
+   {
+    "text": "2",
+    "correct": false
+   },
+   {
+    "text": "4",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The function reads the global variable named total, but it doesn't modify it. The variable value changes outside the function, by assigning the result the function returns. The sequence of values the variable takes is as follows: 4 (after the initial assignment); 2 (after the first function invocation); 1 (after the second function invocation and just before printing).",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 29)",
+  "converted_from": "",
+  "note": "",
+  "needs_review": false
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "num": 30,
+  "section": "4.3",
+  "text": "Which code builds a program which prints Did you ever! to the screen? (Original task: drag and drop the code boxes into the two gaps; one box is not used. Boxes: except ZeroDivisionError:, except KeyError:, try:)",
+  "code": "<gap 1>\n    rate = 25.5 / 0.0\n<gap 2>\n    print(\"Did you ever!\")\nexcept:\n    print(\"Ever!\")",
+  "type": "single",
+  "options": [
+   {
+    "text": "try: / rate = 25.5 / 0.0 / except ZeroDivisionError: / print(\"Did you ever!\") / except: / print(\"Ever!\")",
+    "correct": true
+   },
+   {
+    "text": "try: / rate = 25.5 / 0.0 / except KeyError: / print(\"Did you ever!\") / except: / print(\"Ever!\")",
+    "correct": false
+   },
+   {
+    "text": "except ZeroDivisionError: / rate = 25.5 / 0.0 / try: / print(\"Did you ever!\") / except: / print(\"Ever!\")",
+    "correct": false
+   },
+   {
+    "text": "try: / rate = 25.5 / 0.0 / except: / print(\"Did you ever!\") / except ZeroDivisionError: / print(\"Ever!\")",
+    "correct": false
+   }
+  ],
+  "explanation_en": "The code we counted on looks like this: try: rate = 25.5 / 0.0 except ZeroDivisionError: print(\"Did you ever!\") except: print(\"Ever!\")",
+  "source_file": ".gitbook/assets/Final Practice Test 1st Launch (Solution 30)",
+  "converted_from": "drag_drop",
+  "note": "Drag & drop savoli variantli savolga aylantirildi (variantlarni men tuzdim)",
+  "needs_review": true
+ }
+]

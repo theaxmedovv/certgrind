@@ -1,0 +1,157 @@
+{% extends "teacher/base.html" %}
+{% block title %}{{ room.name }} — Bilimdon{% endblock %}
+{% block content %}
+<div x-data="teacherRoom({{ room.id }})" @click.once="Sfx.unlock()" x-cloak>
+
+  <!-- bildirishnomalar (toast) -->
+  <div class="fixed top-20 right-4 z-50 space-y-3 w-96 max-w-[92vw]">
+    <template x-for="t in toasts" :key="t.uid">
+      <div class="rounded-2xl shadow-2xl p-4 text-white anim-slide border-2 border-white/30" :class="t.kind==='violation' ? 'bg-bad-dark' : (t.kind==='late' ? 'bg-brand' : 'bg-slate-700')">
+        <div class="flex gap-2 items-start">
+          <span class="text-2xl" x-text="t.kind==='violation' ? '🚨' : (t.kind==='late' ? '🕒' : 'ℹ️')"></span>
+          <p class="flex-1 font-semibold" x-text="t.text"></p>
+          <button @click="dismiss(t)" class="opacity-70 hover:opacity-100" aria-label="Yopish">✕</button>
+        </div>
+        <div class="flex gap-2 mt-3" x-show="t.kind==='violation'">
+          <button @click="decideViolation(t.id,'allowed')" class="btn-3d btn-ok sm flex-1">Ruxsat berish</button>
+          <button @click="decideViolation(t.id,'kicked')" class="btn-3d btn-glass sm flex-1">Chiqarish</button>
+        </div>
+        <div class="flex gap-2 mt-3 items-center" x-show="t.kind==='late'">
+          <input type="number" min="0" placeholder="+daq." x-model="lateExtra[t.pid]" class="w-20 rounded-lg px-2 py-1.5 text-slate-900 text-sm" title="Qo'shimcha vaqt (daqiqa)" aria-label="Qo'shimcha vaqt">
+          <button @click="decideLate(t.pid,true)" class="btn-3d btn-ok sm flex-1">Ruxsat</button>
+          <button @click="decideLate(t.pid,false)" class="btn-3d btn-glass sm flex-1">Rad etish</button>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- yuqori boshqaruv -->
+  <div class="card p-4 mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
+    <div class="min-w-0">
+      <h1 class="text-xl font-extrabold truncate">{{ room.name }}</h1>
+      <div class="text-xs muted break-all"><span x-show="!connected" class="text-bad-dark font-bold">⚠ aloqa yo'q · </span>{{ join_url }}</div>
+    </div>
+    <div class="text-center"><div class="text-xs muted font-bold">XONA RAQAMI</div><div class="font-kid font-extrabold text-4xl tracking-[.15em] text-brand num">{{ room.code }}</div></div>
+    <div class="text-center">
+      <div class="text-xs muted font-bold">QOLGAN VAQT</div>
+      <div class="font-kid font-extrabold text-4xl num" :class="status==='paused' ? 'text-sun-dark' : (remaining < 60 && status==='running' ? 'text-bad anim-flash' : '')" x-text="loaded ? fmt(remaining) : '--:--'"></div>
+      <div class="text-xs font-bold" x-show="status==='paused'">⏸ pauza</div>
+    </div>
+    <div class="ml-auto flex flex-wrap gap-2 items-center">
+      <button @click="toggleSound()" class="btn-3d btn-ghost sm" :aria-label="soundOn ? 'Ovoz yoqilgan' : 'Ovoz o\'chiq'" x-text="soundOn ? '🔔' : '🔕'"></button>
+      <a href="{% url 'room_screen' room.pk %}" target="_blank" class="btn-3d btn-ghost sm"><i data-lucide="monitor" class="w-4 h-4"></i> Proyektor</a>
+      <button x-show="status==='waiting'" @click="start()" class="btn-3d btn-ok text-xl px-10 py-3">▶ START</button>
+      <button x-show="status==='running'" @click="pause()" class="btn-3d btn-sun">⏸ Pauza</button>
+      <button x-show="status==='paused'" @click="resume()" class="btn-3d btn-ok">▶ Davom ettirish</button>
+      <div x-show="status==='running' || status==='paused'" class="flex items-center gap-1.5">
+        <button @click="addTime(1)" class="btn-3d btn-ghost sm">➕ 1</button>
+        <button @click="addTime(5)" class="btn-3d btn-ghost sm">➕ 5</button>
+        <input type="number" min="1" x-model.number="addMinutes" class="input !w-16 !py-1.5 text-center" aria-label="Daqiqa">
+        <button @click="addTime(addMinutes)" class="btn-3d btn-ghost sm">➕ daq.</button>
+      </div>
+      <button x-show="status==='running' || status==='paused'" @click="finish()" class="btn-3d btn-bad sm">⏹ Testni tugatish</button>
+      <button @click="panelOpen=!panelOpen" class="btn-3d btn-ghost sm hidden xl:inline-flex" aria-label="Jurnal panelini yig'ish/ochish"><i data-lucide="panel-right" class="w-4 h-4"></i></button>
+    </div>
+  </div>
+
+  <!-- g'oliblar va natijalar ruxsati -->
+  <div x-show="status==='finished'" class="rounded-3xl bg-student kid p-5 mb-4 shadow-xl">
+    <h2 class="text-center font-kid font-extrabold text-3xl">🏆 G'oliblar</h2>
+    {% include "partials/podium.html" with items="snap.podium" %}
+    <div class="flex flex-wrap gap-2 justify-center mt-6">
+      <button x-show="!snap.room.results_visible" @click="setResultsVisible(true)" class="btn-3d btn-sun">Natijalarni ko'rishga ruxsat berish</button>
+      <button x-show="snap.room.results_visible" @click="setResultsVisible(false)" class="btn-3d btn-glass">✓ Ruxsat berilgan (yopish)</button>
+      <a href="{% url 'results' room.pk %}" class="btn-3d btn-glass">Natijalar jadvali</a>
+      <a href="{% url 'room_stats' room.pk %}" class="btn-3d btn-glass">Statistika</a>
+      <a href="{% url 'results_export' room.pk %}" class="btn-3d btn-glass">📥 Excel</a>
+    </div>
+  </div>
+
+  <div class="grid gap-4" :class="panelOpen ? 'xl:grid-cols-[1fr_340px]' : ''">
+    <div class="space-y-4 min-w-0">
+      <!-- kech kirish -->
+      <section x-show="snap.late.length" class="rounded-2xl border-2 border-brand bg-brand/10 p-4">
+        <h2 class="font-bold mb-2">🕒 Kech kirish so'rovlari</h2>
+        <template x-for="l in snap.late" :key="l.pid">
+          <div class="flex flex-wrap items-center gap-3 py-2 border-t border-brand/20 first:border-0">
+            <div class="w-10 h-10 rounded-full overflow-hidden" x-avatar="l.avatar"></div>
+            <span class="flex-1 min-w-[160px]"><b x-text="l.name"></b> (<span x-text="l.school_class"></span>) testga kirmoqchi — <span x-text="l.time"></span></span>
+            <input type="number" min="0" placeholder="+daq." x-model="lateExtra[l.pid]" class="input !w-20 !py-1" title="Qo'shimcha vaqt (daqiqa)">
+            <button @click="decideLate(l.pid, true)" class="btn-3d btn-ok sm">Ruxsat berish</button>
+            <button @click="decideLate(l.pid, false)" class="btn-3d btn-bad sm">Rad etish</button>
+          </div>
+        </template>
+      </section>
+
+      <!-- qidiruv va filtr -->
+      <div class="card p-3 flex flex-wrap items-center gap-2">
+        <div class="relative flex-1 min-w-[180px]"><i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 muted"></i><input x-model="search" placeholder="Ism yoki sinf bo'yicha qidirish" class="input !pl-9 !py-2"></div>
+        <template x-for="f in [['all','Hammasi'],['active','Faol'],['frozen','Muzlatilgan'],['kicked','Chetlatilgan'],['waiting','Kutmoqda'],['finished','Tugatgan']]" :key="f[0]">
+          <button class="chip" :class="statusFilter===f[0] && 'on'" @click="statusFilter=f[0]" x-text="f[1]"></button>
+        </template>
+        <span class="muted text-sm ml-auto">Faol: <b x-text="counts.active"></b> · Tugatgan: <b x-text="counts.finished"></b> · Jami: <b x-text="counts.total"></b></span>
+      </div>
+      <div x-show="status!=='waiting' && status!=='finished'" class="h-2 rounded-full bg-line overflow-hidden" title="Umumiy progress"><div class="h-full bg-brand transition-all duration-700" :style="`width:${progressPct}%`"></div></div>
+
+      <!-- o'quvchilar setkasi -->
+      <div x-show="!loaded" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3"><template x-for="i in 6"><div class="skeleton h-28"></div></template></div>
+      <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3" x-show="loaded">
+        <template x-for="p in filtered" :key="p.id">
+          <div class="rounded-2xl border-2 p-3 transition bg-card" :class="cardClass(p)">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full overflow-hidden flex-none anim-pop" x-avatar="p.avatar"></div>
+              <div class="min-w-0 flex-1">
+                <div class="font-bold truncate" x-text="p.name"></div>
+                <div class="text-xs muted"><span x-text="p.school_class"></span> <span x-show="p.is_late" class="chip !py-0 !px-1.5 !text-[10px] !bg-brand/20">kech</span> <span x-show="p.violations" class="chip !py-0 !px-1.5 !text-[10px] !bg-bad/20 !text-bad-dark" x-text="'⚠ '+p.violations"></span></div>
+              </div>
+              <div class="text-right"><div class="font-kid font-extrabold text-xl num" x-text="p.score"></div><div class="text-[10px] muted font-bold" x-show="p.rank" x-text="p.rank + '-o\'rin'"></div></div>
+            </div>
+            <div class="mt-2" x-show="status!=='waiting'">
+              <div class="flex justify-between text-xs font-semibold mb-1"><span x-text="statusLabel(cardState(p))"></span><span class="num" x-text="p.status==='waiting' ? '—' : (p.answered + ' javob · ' + p.correct + ' ✓ · ' + (p.round || 1) + '-aylana')"></span></div>
+              <div class="h-2 rounded-full bg-line overflow-hidden"><div class="h-full bg-brand transition-all duration-500" :style="`width:${snap.room.total_questions ? Math.min(100, p.in_round*100/snap.room.total_questions) : 0}%`"></div></div>
+            </div>
+            <div class="flex justify-end gap-3 mt-2 text-xs font-bold">
+              <button x-show="p.status==='active'" @click="extraTime(p)" class="text-brand">⏱ vaqt</button>
+              <button x-show="p.status!=='kicked'" @click="kick(p)" class="text-bad-dark dark:text-bad">✕ chiqarish</button>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="card p-10 text-center" x-show="loaded && !filtered.length">
+        <div class="text-5xl mb-2" x-text="status==='waiting' ? '⏳' : '🔍'"></div>
+        <p class="font-bold" x-text="status==='waiting' && !counts.total ? 'Hali hech kim kirmadi' : 'Hech narsa topilmadi'"></p>
+        <p class="muted text-sm" x-show="status==='waiting' && !counts.total">Proyektor ekranidagi QR-kodni ko'rsating.</p>
+      </div>
+    </div>
+
+    <!-- o'ng panel: jurnallar -->
+    <aside x-show="panelOpen" class="card p-4 h-fit xl:sticky xl:top-20 space-y-3">
+      <div class="flex gap-2">
+        <button class="chip flex-1 justify-center" :class="tab==='violations' && 'on'" @click="tab='violations'">⚠ Qoidabuzarliklar</button>
+        <button class="chip flex-1 justify-center" :class="tab==='powerups' && 'on'" @click="tab='powerups'">⚡ Super-kuchlar</button>
+      </div>
+      <div x-show="tab==='violations'" class="max-h-[60vh] overflow-y-auto scroll-thin text-sm divide-y divide-line">
+        <template x-for="v in snap.violations" :key="v.id">
+          <div class="py-2">
+            <div><b x-text="v.name"></b> <span class="muted" x-text="'('+v.school_class+')'"></span></div>
+            <div class="text-xs muted"><span x-text="v.type_label"></span> · <span x-text="v.time"></span> · jami <b x-text="v.count"></b></div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="chip !py-0" :class="{'!bg-sun/30 !text-sun-dark': v.decision==='pending','!bg-ok/20 !text-ok-dark': v.decision==='allowed','!bg-bad/15 !text-bad-dark': v.decision==='kicked'}" x-text="{pending:'kutilmoqda',allowed:'ruxsat berildi',kicked:'chiqarildi'}[v.decision]"></span>
+              <template x-if="v.decision==='pending'"><span class="flex gap-1"><button class="text-ok-dark font-bold text-xs" @click="decideViolation(v.id,'allowed')">Ruxsat</button><button class="text-bad-dark font-bold text-xs" @click="decideViolation(v.id,'kicked')">Chiqarish</button></span></template>
+            </div>
+          </div>
+        </template>
+        <p class="muted py-4 text-center" x-show="!snap.violations.length">Hozircha yo'q 🎉</p>
+      </div>
+      <div x-show="tab==='powerups'" class="max-h-[60vh] overflow-y-auto scroll-thin text-sm divide-y divide-line">
+        <template x-for="(l, i) in snap.powerups" :key="i">
+          <div class="py-2"><span class="muted text-xs" x-text="l.time"></span><br><b x-text="l.attacker"></b> → <b x-text="l.victim"></b><br>
+            <span x-text="l.type==='steal' ? '💰 O\'g\'irlash (' + l.amount + ' ball)' : '❄️ Muzlatish (' + l.seconds + ' soniya)'"></span></div>
+        </template>
+        <p class="muted py-4 text-center" x-show="!snap.powerups.length">Hozircha yo'q</p>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/teacher.js"></script>{% endblock %}

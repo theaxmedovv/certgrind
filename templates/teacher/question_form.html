@@ -1,0 +1,87 @@
+{% extends "teacher/base.html" %}
+{% block title %}Savol — Bilimdon{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold mb-4">{% if question %}Savolni tahrirlash{% else %}Yangi savol{% endif %}</h1>
+{% if errors %}<div class="rounded-2xl bg-bad/10 border border-bad text-bad-dark dark:text-bad p-3 mb-4 font-semibold">{% for e in errors %}<div>• {{ e }}</div>{% endfor %}</div>{% endif %}
+{{ opt_rows|json_script:"opt-data" }}
+<form method="post" enctype="multipart/form-data" class="grid xl:grid-cols-2 gap-6"
+      x-data="{
+        text: '{{ q_text|escapejs }}',
+        code: '{{ q_code|escapejs }}',
+        rows: JSON.parse(document.getElementById('opt-data').textContent),
+        correct: 0,
+        shapes: ['▲','◆','●','■','★','⬢'],
+        init() { const i = this.rows.findIndex(r => r.correct); this.correct = i < 0 ? 0 : i; },
+        remove(i) { this.rows.splice(i, 1); if (this.correct >= this.rows.length) this.correct = 0; }
+      }">
+  {% csrf_token %}
+  <section class="card p-5 space-y-4">
+    <div>
+      <label class="block text-sm font-bold mb-1">Savol matni</label>
+      <textarea name="text" rows="3" x-model="text" class="input" required></textarea>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-bold mb-1">Mavzu</label>
+        <input name="topic" list="topics" value="{% if form_data %}{{ form_data.topic }}{% else %}{{ question.topic.name }}{% endif %}" class="input" placeholder="Masalan: Massivlar" required>
+        <datalist id="topics">{% for t in topics %}<option value="{{ t.name }}">{% endfor %}</datalist>
+      </div>
+      <div>
+        <label class="block text-sm font-bold mb-1">Qiyinlik</label>
+        <select name="difficulty" class="input">{% for v, l in difficulties %}<option value="{{ v }}" {% if question.difficulty == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-bold mb-1">Kod bloki (ixtiyoriy)</label>
+      <textarea name="code" rows="5" x-model="code" spellcheck="false" class="input font-mono text-sm" style="font-family:'JetBrains Mono',monospace" placeholder="x = 2&#10;print(x + 3)"></textarea>
+    </div>
+    <div>
+      <label class="block text-sm font-bold mb-1">Kiritiladigan qiymatlar — input() uchun (ixtiyoriy)</label>
+      <input name="input_values" value="{% if form_data %}{{ form_data.input_values }}{% else %}{{ question.input_values }}{% endif %}" class="input" placeholder="Masalan: 5, 7">
+    </div>
+    <div>
+      <label class="block text-sm font-bold mb-1">Rasm (ixtiyoriy)</label>
+      <input type="file" name="image" accept="image/*" class="text-sm">
+      {% if question.image %}<div class="mt-2 flex items-center gap-3"><img src="{{ question.image.url }}" class="h-16 rounded-xl" alt=""><label class="text-sm"><input type="checkbox" name="remove_image"> olib tashlash</label></div>{% endif %}
+    </div>
+    <div>
+      <label class="block text-sm font-bold mb-1">Javob variantlari (2–6 ta, to'g'risini belgilang)</label>
+      <div class="space-y-2">
+        <template x-for="(row, i) in rows" :key="i">
+          <div class="flex items-center gap-2">
+            <input type="radio" name="correct" :value="i" x-model.number="correct" class="h-5 w-5 accent-[#22C55E]" :aria-label="'To\'g\'ri javob '+(i+1)">
+            <input name="opt_text" x-model="row.text" class="input flex-1" :placeholder="shapes[i] + ' Variant ' + (i+1)">
+            <button type="button" class="text-bad-dark px-2 text-lg" x-show="rows.length > 2" @click="remove(i)" aria-label="O'chirish">✕</button>
+          </div>
+        </template>
+      </div>
+      <button type="button" class="mt-2 text-brand text-sm font-bold" x-show="rows.length < 6" @click="rows.push({text:'', correct:false})">+ Variant qo'shish</button>
+    </div>
+    <div class="flex gap-3">
+      <button class="btn-3d btn-brand">Saqlash</button>
+      <a href="{% url 'question_list' %}" class="btn-3d btn-ghost">Bekor qilish</a>
+    </div>
+  </section>
+
+  <!-- JONLI PREVIEW: o'quvchi qanday ko'radi -->
+  <section>
+    <div class="text-sm font-bold muted mb-2 flex items-center gap-2"><i data-lucide="eye" class="w-4 h-4"></i> O'quvchi shunday ko'radi</div>
+    <div class="kid bg-student rounded-3xl p-4 sm:p-5 space-y-3">
+      <div class="bg-white text-slate-900 rounded-3xl p-4 text-center" style="box-shadow:0 6px 0 rgba(0,0,0,.25)">
+        <p class="font-kid font-extrabold text-xl" x-text="text || 'Savol matni shu yerda ko\'rinadi...'"></p>
+      </div>
+      <pre x-show="code.trim()" class="rounded-2xl bg-[#0F1226] text-[#E6E9FF] p-3 text-sm overflow-x-auto" style="font-family:'JetBrains Mono',monospace"><template x-for="(ln, n) in code.split('
+')" :key="n"><div class="whitespace-pre"><span class="inline-block w-7 text-right pr-3 opacity-40 select-none" x-text="n+1"></span><span x-text="ln"></span></div></template></pre>
+      <div class="grid gap-2 sm:grid-cols-2">
+        <template x-for="(row, i) in rows" :key="i">
+          <div class="ans !min-h-[60px] !text-base" :class="'c'+i" :style="correct===i ? 'outline:4px solid #fff' : ''">
+            <span class="shape" x-text="shapes[i]"></span>
+            <span class="flex-1" x-text="row.text || 'Variant ' + (i+1)"></span>
+            <span x-show="correct===i" class="text-xs bg-white text-slate-800 rounded-full px-2 py-0.5 font-extrabold">✓ to'g'ri</span>
+          </div>
+        </template>
+      </div>
+    </div>
+  </section>
+</form>
+{% endblock %}

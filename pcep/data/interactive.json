@@ -1,0 +1,1576 @@
+[
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "5",
+  "type": "match",
+  "text": "Drag and drop the data type names to match the given literals.",
+  "interaction": {
+   "items": [
+    {
+     "id": "b1",
+     "text": "Integer"
+    },
+    {
+     "id": "b2",
+     "text": "Float"
+    },
+    {
+     "id": "b3",
+     "text": "String"
+    },
+    {
+     "id": "b4",
+     "text": "Boolean"
+    }
+   ],
+   "targets": [
+    {
+     "id": "t1",
+     "text": "\"False\"",
+     "is_code": true
+    },
+    {
+     "id": "t2",
+     "text": "True",
+     "is_code": true
+    },
+    {
+     "id": "t3",
+     "text": "1_000_000",
+     "is_code": true
+    },
+    {
+     "id": "t4",
+     "text": "1.41421356237",
+     "is_code": true
+    }
+   ],
+   "answer": {
+    "t1": "b3",
+    "t2": "b4",
+    "t3": "b1",
+    "t4": "b2"
+   }
+  },
+  "explanation_uz": {
+   "javob": "\"False\" → String; True → Boolean; 1_000_000 → Integer; 1.41421356237 → Float.",
+   "nega": "Qo'shtirnoq ichidagi hamma narsa string (matn), hatto \"False\" ham. Qo'shtirnoqsiz True — Boolean. 1_000_000 dagi pastki chiziq faqat o'qishni osonlashtiradi, bu butun son. Nuqtali son — float.",
+   "xato": "Ishlatilmagan blok yo'q — to'rttasi ham kerak. \"False\" ni Boolean deb qo'ymang: qo'shtirnoq uni stringga aylantiradi. 1_000_000 ni Float deb o'ylamang: kasr qismi yo'q.",
+   "eslab": "Qo'shtirnoq = string. Nuqta = float. _ raqamlar orasida bo'lsa integer."
+  },
+  "verify": {
+   "kind": "match_types"
+  },
+  "section": "1.3"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "6",
+  "type": "match",
+  "text": "Drag and drop the data type names to match the given literals.",
+  "interaction": {
+   "items": [
+    {
+     "id": "b1",
+     "text": "String"
+    },
+    {
+     "id": "b2",
+     "text": "Float"
+    },
+    {
+     "id": "b3",
+     "text": "Integer"
+    },
+    {
+     "id": "b4",
+     "text": "Boolean"
+    }
+   ],
+   "targets": [
+    {
+     "id": "t1",
+     "text": "\"\\\"\"",
+     "is_code": true
+    },
+    {
+     "id": "t2",
+     "text": "False",
+     "is_code": true
+    },
+    {
+     "id": "t3",
+     "text": "-1",
+     "is_code": true
+    },
+    {
+     "id": "t4",
+     "text": "-.1",
+     "is_code": true
+    }
+   ],
+   "answer": {
+    "t1": "b1",
+    "t2": "b4",
+    "t3": "b3",
+    "t4": "b2"
+   }
+  },
+  "explanation_uz": {
+   "javob": "\"\\\"\" → String; False → Boolean; -1 → Integer; -.1 → Float.",
+   "nega": "\"\\\"\" — uzunligi 1 bo'lgan string: ichida bitta qo'shtirnoq (\\\" — qochirilgan qo'shtirnoq). False — Boolean. -1 — butun son. -.1 — kasr son (minus bir o'ndan bir).",
+   "xato": "False ni Integer deb qo'ymang: Python'da bu alohida Boolean tur. -.1 — float, string emas.",
+   "eslab": "Escape belgisi (\\) maxsus belgini oddiy belgiga aylantiradi."
+  },
+  "verify": {
+   "kind": "match_types"
+  },
+  "section": "1.3"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "2",
+  "type": "match",
+  "text": "Drag and drop the literals to match their data type names.",
+  "interaction": {
+   "items": [
+    {
+     "id": "b1",
+     "text": "Integer"
+    },
+    {
+     "id": "b2",
+     "text": "String"
+    },
+    {
+     "id": "b3",
+     "text": "Boolean"
+    },
+    {
+     "id": "b4",
+     "text": "Float"
+    }
+   ],
+   "targets": [
+    {
+     "id": "t1",
+     "text": "\"\\\"\"",
+     "is_code": true
+    },
+    {
+     "id": "t2",
+     "text": "False",
+     "is_code": true
+    },
+    {
+     "id": "t3",
+     "text": "-1_999",
+     "is_code": true
+    },
+    {
+     "id": "t4",
+     "text": "-1.999",
+     "is_code": true
+    }
+   ],
+   "answer": {
+    "t1": "b2",
+    "t2": "b3",
+    "t3": "b1",
+    "t4": "b4"
+   }
+  },
+  "explanation_uz": {
+   "javob": "\"\\\"\" → String; False → Boolean; -1_999 → Integer; -1.999 → Float.",
+   "nega": "\"\\\"\" — bitta qo'shtirnoq belgisidan iborat string. False — Boolean. -1_999 — minus bir ming to'qqiz yuz to'qson to'qqiz, butun son (pastki chiziq chalg'itmasin). -1.999 — float.",
+   "xato": "-1_999 ni Float deb qo'ymang — nuqta yo'q. False string emas.",
+   "eslab": "Qo'shtirnoq = string; nuqta = float."
+  },
+  "verify": {
+   "kind": "match_types"
+  },
+  "section": "1.3"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "7",
+  "type": "order",
+  "text": "Arrange the arithmetic operations in the order which reflects their priorities, where the top-most position has the highest priority and the bottom-most position has the lowest priority.",
+  "interaction": {
+   "items": [
+    {
+     "id": "i1",
+     "text": "EXPONENTIATION"
+    },
+    {
+     "id": "i2",
+     "text": "ADDITION"
+    },
+    {
+     "id": "i3",
+     "text": "DIVISION"
+    }
+   ],
+   "answer": [
+    "i1",
+    "i3",
+    "i2"
+   ],
+   "top_label": "Eng yuqori ustuvorlik",
+   "bottom_label": "Eng past ustuvorlik"
+  },
+  "explanation_uz": {
+   "javob": "Daraja (exponentiation), bo'lish (division), qo'shish (addition).",
+   "nega": "Python ustuvorligi: ** (daraja) eng yuqori; *, /, //, % o'rtada; + va - eng quyi. Shuning uchun avval daraja, keyin bo'lish, oxirida qo'shish.",
+   "xato": "Qo'shish bo'lishdan yuqorida tursa, 2 + 6 / 3 ni noto'g'ri hisoblagan bo'lasiz (8/3 emas, 4.0).",
+   "eslab": "** > * / // % > + -"
+  },
+  "verify": {
+   "kind": "precedence"
+  },
+  "section": "1.4"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "8",
+  "type": "order",
+  "text": "Arrange the arithmetic operations in the order which reflects their priorities, where the top-most position has the highest priority and the bottom-most position has the lowest priority.",
+  "interaction": {
+   "items": [
+    {
+     "id": "i1",
+     "text": "SUBTRACTION"
+    },
+    {
+     "id": "i2",
+     "text": "EXPONENTIATION"
+    },
+    {
+     "id": "i3",
+     "text": "MULTIPLICATION"
+    }
+   ],
+   "answer": [
+    "i2",
+    "i3",
+    "i1"
+   ],
+   "top_label": "Eng yuqori ustuvorlik",
+   "bottom_label": "Eng past ustuvorlik"
+  },
+  "explanation_uz": {
+   "javob": "Daraja, ko'paytirish, ayirish.",
+   "nega": "** eng kuchli, keyin *, eng oxirida - (ayirish).",
+   "xato": "Ayirish ko'paytirishdan oldin bajarilmaydi: 10 - 2 * 3 = 4, 24 emas.",
+   "eslab": "** > * > -"
+  },
+  "verify": {
+   "kind": "precedence"
+  },
+  "section": "1.4"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "7",
+  "type": "order",
+  "text": "Arrange the arithmetic operations in the order which reflects their priorities, where the top-most position has the highest priority and the bottom-most position has the lowest priority.",
+  "interaction": {
+   "items": [
+    {
+     "id": "i1",
+     "text": "ADDITION"
+    },
+    {
+     "id": "i2",
+     "text": "DIVISION"
+    },
+    {
+     "id": "i3",
+     "text": "EXPONENTIATION"
+    }
+   ],
+   "answer": [
+    "i3",
+    "i2",
+    "i1"
+   ],
+   "top_label": "Eng yuqori ustuvorlik",
+   "bottom_label": "Eng past ustuvorlik"
+  },
+  "explanation_uz": {
+   "javob": "Daraja, bo'lish, qo'shish.",
+   "nega": "Ustuvorlik: ** → * / // % → + -.",
+   "xato": "Qo'shish eng quyida turishi kerak.",
+   "eslab": "** > * / > + -"
+  },
+  "verify": {
+   "kind": "precedence"
+  },
+  "section": "1.4"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "11",
+  "type": "categorize",
+  "text": "Decide which variable names are legal in Python. Drag and drop them in the right containers labelled \"Legal names\" and \"Illegal names\".",
+  "interaction": {
+   "items": [
+    {
+     "id": "i1",
+     "text": "i_am_a_variable",
+     "is_code": true
+    },
+    {
+     "id": "i2",
+     "text": "for",
+     "is_code": true
+    },
+    {
+     "id": "i3",
+     "text": "2nd_class",
+     "is_code": true
+    },
+    {
+     "id": "i4",
+     "text": "_fun",
+     "is_code": true
+    },
+    {
+     "id": "i5",
+     "text": "For",
+     "is_code": true
+    },
+    {
+     "id": "p1",
+     "text": "samplevariable",
+     "is_code": true
+    },
+    {
+     "id": "p2",
+     "text": "@home",
+     "is_code": true
+    }
+   ],
+   "categories": [
+    {
+     "id": "c1",
+     "label": "Legal names ✓"
+    },
+    {
+     "id": "c2",
+     "label": "Illegal names ✗"
+    }
+   ],
+   "prefilled": {
+    "p1": "c1",
+    "p2": "c2"
+   },
+   "answer": {
+    "i1": "c1",
+    "i2": "c2",
+    "i3": "c2",
+    "i4": "c1",
+    "i5": "c1",
+    "p1": "c1",
+    "p2": "c2"
+   }
+  },
+  "explanation_uz": {
+   "javob": "To'g'ri nomlar: i_am_a_variable, _fun, For. Noto'g'ri: for, 2nd_class.",
+   "nega": "Nom harf yoki pastki chiziq (_) bilan boshlanishi, ichida harf, raqam va _ bo'lishi mumkin. Katta-kichik harf farqlanadi, shuning uchun For — oddiy nom, for esa kalit so'z (keyword).",
+   "xato": "for — Python'ning band so'zi, nom bo'la olmaydi. 2nd_class raqam bilan boshlangan. (@home da @ belgisi ruxsat etilmagan — bu allaqachon joylashtirilgan misol.)",
+   "eslab": "Nom raqam bilan boshlanmaydi, kalit so'z bo'lmaydi, maxsus belgilar (@) mumkin emas."
+  },
+  "verify": {
+   "kind": "identifiers"
+  },
+  "section": "1.3"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "15",
+  "type": "code_gap",
+  "text": "Insert the code boxes in the correct positions in order to build a line of code which asks the user for an integer value and assigns it to the floor variable. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "floor = {{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "input"
+    },
+    {
+     "id": "b2",
+     "text": "print"
+    },
+    {
+     "id": "b3",
+     "text": "("
+    },
+    {
+     "id": "b4",
+     "text": "float"
+    },
+    {
+     "id": "b5",
+     "text": "int"
+    },
+    {
+     "id": "b6",
+     "text": "(\"Enter floor number:\")"
+    },
+    {
+     "id": "b7",
+     "text": ")"
+    },
+    {
+     "id": "b8",
+     "text": ";"
+    }
+   ],
+   "answer": {
+    "g1": "b5",
+    "g2": "b3",
+    "g3": "b1",
+    "g4": "b6",
+    "g5": "b7"
+   },
+   "alternatives": [],
+   "solution": "floor = int(input(\"Enter floor number:\"))"
+  },
+  "explanation_uz": {
+   "javob": "floor = int(input(\"Enter floor number:\"))",
+   "nega": "input() foydalanuvchidan har doim matn (str) oladi. Butun son kerak bo'lgani uchun uni int() ga o'rash kerak: int(input(...)). Qavslar ochilish va yopilish juft bo'lishi kerak.",
+   "xato": "float kasr son beradi, savolda esa butun son (integer) so'ralgan. print — chiqarish funksiyasi, qiymat so'ramaydi. ; (nuqtali vergul) Pythonda qator oxiriga qo'yilmaydi.",
+   "eslab": "int(input(\"...\")) — butun son kiritish retsepti."
+  },
+  "verify": {
+   "setup": "",
+   "compile": true
+  },
+  "section": "1.5"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "16",
+  "type": "code_gap",
+  "text": "Insert the code boxes in the correct positions in order to build a line of code which prints the values assigned to the width and height variables separated by a multiplication sign (×). (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "width, height = 100, 120\n{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "sep=\"×\""
+    },
+    {
+     "id": "b2",
+     "text": "width, height,"
+    },
+    {
+     "id": "b3",
+     "text": "\";\""
+    },
+    {
+     "id": "b4",
+     "text": "print"
+    },
+    {
+     "id": "b5",
+     "text": "end=\"×\""
+    },
+    {
+     "id": "b6",
+     "text": ")"
+    },
+    {
+     "id": "b7",
+     "text": "input"
+    },
+    {
+     "id": "b8",
+     "text": "("
+    }
+   ],
+   "answer": {
+    "g1": "b4",
+    "g2": "b8",
+    "g3": "b2",
+    "g4": "b1",
+    "g5": "b6"
+   },
+   "alternatives": [],
+   "solution": "width, height = 100, 120\nprint(width, height, sep=\"×\")",
+   "result": "100×120"
+  },
+  "explanation_uz": {
+   "javob": "print(width, height, sep=\"×\")",
+   "nega": "print() ga ikkita qiymat beriladi, ular orasiga qo'yiladigan belgini sep (separator) parametri belgilaydi: sep=\"×\" → 100×120.",
+   "xato": "end=\"×\" belgini qiymatlar orasiga emas, oxiriga qo'yadi. input — qiymat so'raydi, chiqarmaydi. \";\" kerak emas.",
+   "eslab": "sep = qiymatlar orasi, end = chiqishning oxiri."
+  },
+  "verify": {
+   "expect": "100×120"
+  },
+  "section": "1.5"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "17",
+  "type": "code_gap",
+  "text": "Insert the code boxes in the correct positions in order to build a line of code which asks the user for a string value and assigns it to the password variable. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "password {{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "=="
+    },
+    {
+     "id": "b2",
+     "text": "str"
+    },
+    {
+     "id": "b3",
+     "text": "\"Enter password: \""
+    },
+    {
+     "id": "b4",
+     "text": "input"
+    },
+    {
+     "id": "b5",
+     "text": "="
+    },
+    {
+     "id": "b6",
+     "text": ")"
+    },
+    {
+     "id": "b7",
+     "text": "("
+    }
+   ],
+   "answer": {
+    "g1": "b5",
+    "g2": "b4",
+    "g3": "b7",
+    "g4": "b3",
+    "g5": "b6"
+   },
+   "alternatives": [],
+   "solution": "password = input(\"Enter password: \")"
+  },
+  "explanation_uz": {
+   "javob": "password = input(\"Enter password: \")",
+   "nega": "input() allaqachon string qaytaradi, shuning uchun str() kerak emas. = o'zlashtirish (assignment) operatori.",
+   "xato": "== solishtirish operatori, o'zlashtirmaydi. str — bu holatda ortiqcha, input zaten matn beradi.",
+   "eslab": "input() har doim str qaytaradi."
+  },
+  "verify": {
+   "compile": true
+  },
+  "section": "1.5"
+ },
+ {
+  "bank": "module",
+  "module": 1,
+  "ref": "18",
+  "type": "code_gap",
+  "text": "Insert the code boxes in the correct positions in order to build a line of code which asks the user for a float value and assigns it to the price variable. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "price {{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "=="
+    },
+    {
+     "id": "b2",
+     "text": "="
+    },
+    {
+     "id": "b3",
+     "text": ")"
+    },
+    {
+     "id": "b4",
+     "text": "float("
+    },
+    {
+     "id": "b5",
+     "text": "\"Enter item price: \" )"
+    },
+    {
+     "id": "b6",
+     "text": "int("
+    },
+    {
+     "id": "b7",
+     "text": "input("
+    }
+   ],
+   "answer": {
+    "g1": "b2",
+    "g2": "b4",
+    "g3": "b7",
+    "g4": "b5",
+    "g5": "b3"
+   },
+   "alternatives": [],
+   "solution": "price = float(input(\"Enter item price: \"))"
+  },
+  "explanation_uz": {
+   "javob": "price = float(input(\"Enter item price: \"))",
+   "nega": "Kiritilgan matn float() orqali kasr songa aylanadi: float(input(...)). Bloklarda ochuvchi qavs funksiya nomiga qo'shilgan (float(, input().",
+   "xato": "int( kasr sonni qabul qilmaydi (1.5 → xato). == o'zlashtirish emas.",
+   "eslab": "float(input(\"...\")) — kasr son kiritish."
+  },
+  "verify": {
+   "compile": true
+  },
+  "section": "1.5"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "1",
+  "type": "code_gap",
+  "text": "Insert the code boxes in the correct positions in order to build a line of code which asks the user for an integer value and assigns it to the version variable. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "version {{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "="
+    },
+    {
+     "id": "b2",
+     "text": "\"Enter major version number:\" )"
+    },
+    {
+     "id": "b3",
+     "text": "input("
+    },
+    {
+     "id": "b4",
+     "text": ")"
+    },
+    {
+     "id": "b5",
+     "text": "int("
+    },
+    {
+     "id": "b6",
+     "text": "=="
+    },
+    {
+     "id": "b7",
+     "text": "float("
+    }
+   ],
+   "answer": {
+    "g1": "b1",
+    "g2": "b5",
+    "g3": "b3",
+    "g4": "b2",
+    "g5": "b4"
+   },
+   "alternatives": [],
+   "solution": "version = int(input(\"Enter major version number:\"))"
+  },
+  "explanation_uz": {
+   "javob": "version = int(input(\"Enter major version number:\"))",
+   "nega": "Butun son kerak, input() esa matn beradi, shuning uchun int(input(...)).",
+   "xato": "float( kasr beradi. == o'zlashtirish emas.",
+   "eslab": "int(input(...)) — butun son."
+  },
+  "verify": {
+   "compile": true
+  },
+  "section": "1.5"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "4",
+  "type": "code_gap",
+  "text": "Insert the code boxes in the correct positions in order to build a line of code which asks the user for a float value and assigns it to the velocity variable. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "velocity = {{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "("
+    },
+    {
+     "id": "b2",
+     "text": "(\"Enter speed in knots:\")"
+    },
+    {
+     "id": "b3",
+     "text": ";"
+    },
+    {
+     "id": "b4",
+     "text": "print"
+    },
+    {
+     "id": "b5",
+     "text": "int"
+    },
+    {
+     "id": "b6",
+     "text": ")"
+    },
+    {
+     "id": "b7",
+     "text": "input"
+    },
+    {
+     "id": "b8",
+     "text": "float"
+    }
+   ],
+   "answer": {
+    "g1": "b8",
+    "g2": "b1",
+    "g3": "b7",
+    "g4": "b2",
+    "g5": "b6"
+   },
+   "alternatives": [],
+   "solution": "velocity = float(input(\"Enter speed in knots:\"))"
+  },
+  "explanation_uz": {
+   "javob": "velocity = float(input(\"Enter speed in knots:\"))",
+   "nega": "Kasr son so'ralgan: float(input(...)). Blokda savol matni qavs bilan birga: (\"Enter speed in knots:\").",
+   "xato": "int kasrni qabul qilmaydi. print qiymat so'ramaydi. ; kerak emas.",
+   "eslab": "float(input(\"...\"))."
+  },
+  "verify": {
+   "compile": true
+  },
+  "section": "1.5"
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "ref": "1",
+  "type": "code_gap",
+  "text": "Arrange the code boxes in the correct positions to form a conditional instruction which guarantees that a certain statement is executed when the places_occupied variable is greater than 0.",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "0"
+    },
+    {
+     "id": "b2",
+     "text": "places_occupied"
+    },
+    {
+     "id": "b3",
+     "text": ":"
+    },
+    {
+     "id": "b4",
+     "text": "if"
+    },
+    {
+     "id": "b5",
+     "text": ">"
+    }
+   ],
+   "answer": {
+    "g1": "b4",
+    "g2": "b2",
+    "g3": "b5",
+    "g4": "b1",
+    "g5": "b3"
+   },
+   "alternatives": [],
+   "solution": "if places_occupied > 0:"
+  },
+  "explanation_uz": {
+   "javob": "if places_occupied > 0:",
+   "nega": "Shart tuzilishi: if kalit so'zi, o'zgaruvchi, taqqoslash operatori, qiymat va oxirida ikki nuqta.",
+   "xato": "Hamma bloklar kerak, ishlatilmagani yo'q. Tartib buzilsa (masalan > 0 places_occupied) sintaksis xato.",
+   "eslab": "if + shart + : ."
+  },
+  "verify": {
+   "setup": "places_occupied = 3\n",
+   "suffix": "\n    print(1)",
+   "expect": "1"
+  },
+  "section": "2.1"
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "ref": "2",
+  "type": "code_gap",
+  "text": "Arrange the code boxes in the correct positions to form a conditional instruction which guarantees that a certain statement is executed when the discount variable is less than or equal to 15.0.",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "<="
+    },
+    {
+     "id": "b2",
+     "text": "discount"
+    },
+    {
+     "id": "b3",
+     "text": ":"
+    },
+    {
+     "id": "b4",
+     "text": "15.0"
+    },
+    {
+     "id": "b5",
+     "text": "if"
+    }
+   ],
+   "answer": {
+    "g1": "b5",
+    "g2": "b2",
+    "g3": "b1",
+    "g4": "b4",
+    "g5": "b3"
+   },
+   "alternatives": [],
+   "solution": "if discount <= 15.0:"
+  },
+  "explanation_uz": {
+   "javob": "if discount <= 15.0:",
+   "nega": "'Kichik yoki teng' — <= operatori.",
+   "xato": "< tenglikni qamramaydi; teskari tartib sintaksis xato.",
+   "eslab": "<= — kichik yoki teng."
+  },
+  "verify": {
+   "setup": "discount = 10.0\n",
+   "suffix": "\n    print(1)",
+   "expect": "1"
+  },
+  "section": "2.1"
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "ref": "5",
+  "type": "code_gap",
+  "text": "Drag and drop the conditional expressions to obtain a code which outputs ## to the screen. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "shift = 1 + 2 * 3\nif {{g1}}:\n    print(\"#\")\nelif {{g2}}:\n    print(\"##\")\nelse:\n    print(\"###\")",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "shift = 2"
+    },
+    {
+     "id": "b2",
+     "text": "shift < 0"
+    },
+    {
+     "id": "b3",
+     "text": "shift > 2"
+    },
+    {
+     "id": "b4",
+     "text": "shift =< 2"
+    }
+   ],
+   "answer": {
+    "g1": "b2",
+    "g2": "b3"
+   },
+   "alternatives": [],
+   "solution": "shift = 1 + 2 * 3\nif shift < 0:\n    print(\"#\")\nelif shift > 2:\n    print(\"##\")\nelse:\n    print(\"###\")",
+   "result": "##"
+  },
+  "explanation_uz": {
+   "javob": "if shift < 0 ... elif shift > 2 → ##",
+   "nega": "shift = 1 + 2*3 = 7 (9 emas!). 7 < 0 yolg'on, keyingi shart 7 > 2 rost → ## chiqadi.",
+   "xato": "shift =< 2 — bunday operator yo'q (SyntaxError). shift = 2 — o'zlashtirish, solishtirish emas. shift > 2 birinchi o'rinda bo'lsa faqat bitta # chiqardi.",
+   "eslab": "Solishtirish: ==, <=, >=; = esa o'zlashtirish."
+  },
+  "verify": {
+   "expect": "##"
+  },
+  "section": "2.1"
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "ref": "6",
+  "type": "code_gap",
+  "text": "Drag and drop the conditional expressions to obtain a code which outputs # to the screen. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "shift = 3 // 2 - 2\nif {{g1}}:\n    print(\"#\")\nelif {{g2}}:\n    print(\"##\")\nelse:\n    print(\"###\")",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "shift => 0"
+    },
+    {
+     "id": "b2",
+     "text": "shift >= 2"
+    },
+    {
+     "id": "b3",
+     "text": "shift = 0"
+    },
+    {
+     "id": "b4",
+     "text": "shift <= 0"
+    }
+   ],
+   "answer": {
+    "g1": "b4",
+    "g2": "b2"
+   },
+   "alternatives": [],
+   "solution": "shift = 3 // 2 - 2\nif shift <= 0:\n    print(\"#\")\nelif shift >= 2:\n    print(\"##\")\nelse:\n    print(\"###\")",
+   "result": "#"
+  },
+  "explanation_uz": {
+   "javob": "if shift <= 0 ... elif shift >= 2 → #",
+   "nega": "shift = 3//2 - 2 = 1 - 2 = -1. Faqat bitta # chiqishi uchun boshqaruv if ga tushishi kerak: -1 <= 0 rost.",
+   "xato": "shift => 0 va shift = 0 sintaksis jihatdan noto'g'ri. shift >= 2 birinchi turganda -1 >= 2 yolg'on bo'lardi.",
+   "eslab": "=> emas, >= yoziladi."
+  },
+  "verify": {
+   "expect": "#"
+  },
+  "section": "2.1"
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "ref": "11",
+  "type": "code_gap",
+  "text": "Arrange the code boxes in the correct positions in order to obtain a loop which executes its body with the step variable going through the values 0, 2, and 4 (in that order).",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}{{g6}}{{g7}}{{g8}}{{g9}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "):"
+    },
+    {
+     "id": "b2",
+     "text": "0,"
+    },
+    {
+     "id": "b3",
+     "text": "2"
+    },
+    {
+     "id": "b4",
+     "text": "("
+    },
+    {
+     "id": "b5",
+     "text": "for"
+    },
+    {
+     "id": "b6",
+     "text": "counter"
+    },
+    {
+     "id": "b7",
+     "text": "5,"
+    },
+    {
+     "id": "b8",
+     "text": "in"
+    },
+    {
+     "id": "b9",
+     "text": "range"
+    }
+   ],
+   "answer": {
+    "g1": "b5",
+    "g2": "b6",
+    "g3": "b8",
+    "g4": "b9",
+    "g5": "b4",
+    "g6": "b2",
+    "g7": "b7",
+    "g8": "b3",
+    "g9": "b1"
+   },
+   "alternatives": [],
+   "solution": "for counter in range(0, 5, 2):"
+  },
+  "explanation_uz": {
+   "javob": "for counter in range(0, 5, 2):",
+   "nega": "range(0, 5, 2) → 0, 2, 4: boshlanish 0, tugash 5 (kiritilmaydi), qadam 2. (Savolda 'step' deyilgan, bloklarda esa 'counter' bor — manbadagi nomuvofiqlik.)",
+   "xato": "Hamma bloklar kerak. Boshqa tartib (masalan range(5, 0, 2)) bo'sh ketma-ketlik beradi.",
+   "eslab": "range(boshlanish, tugash (kiritilmaydi), qadam)."
+  },
+  "verify": {
+   "suffix": "\n    print(counter)",
+   "expect": "0\n2\n4"
+  },
+  "section": "2.2"
+ },
+ {
+  "bank": "module",
+  "module": 2,
+  "ref": "12",
+  "type": "code_gap",
+  "text": "Arrange the code boxes in the correct positions in order to obtain a loop which executes its body with the level variable going through the values 5, 4, and 3 (in that order).",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}{{g6}}{{g7}}{{g8}}{{g9}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "2,"
+    },
+    {
+     "id": "b2",
+     "text": "for"
+    },
+    {
+     "id": "b3",
+     "text": "-1"
+    },
+    {
+     "id": "b4",
+     "text": "level"
+    },
+    {
+     "id": "b5",
+     "text": "("
+    },
+    {
+     "id": "b6",
+     "text": "in"
+    },
+    {
+     "id": "b7",
+     "text": "range"
+    },
+    {
+     "id": "b8",
+     "text": "):"
+    },
+    {
+     "id": "b9",
+     "text": "5,"
+    }
+   ],
+   "answer": {
+    "g1": "b2",
+    "g2": "b4",
+    "g3": "b6",
+    "g4": "b7",
+    "g5": "b5",
+    "g6": "b9",
+    "g7": "b1",
+    "g8": "b3",
+    "g9": "b8"
+   },
+   "alternatives": [],
+   "solution": "for level in range(5, 2, -1):"
+  },
+  "explanation_uz": {
+   "javob": "for level in range(5, 2, -1):",
+   "nega": "Kamayuvchi ketma-ketlik uchun qadam manfiy: range(5, 2, -1) → 5, 4, 3 (2 kiritilmaydi).",
+   "xato": "Qadam musbat bo'lsa ketma-ketlik bo'sh bo'ladi.",
+   "eslab": "Pasayish uchun qadam < 0."
+  },
+  "verify": {
+   "suffix": "\n    print(level)",
+   "expect": "5\n4\n3"
+  },
+  "section": "2.2"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "12",
+  "type": "code_gap",
+  "text": "Arrange the code boxes in the correct positions in order to obtain a loop which executes its body with the number variable going through the values -3, -2, and -1 (in that order).",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}{{g6}}{{g7}}{{g8}}{{g9}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "number"
+    },
+    {
+     "id": "b2",
+     "text": "0,"
+    },
+    {
+     "id": "b3",
+     "text": "in"
+    },
+    {
+     "id": "b4",
+     "text": "1"
+    },
+    {
+     "id": "b5",
+     "text": "("
+    },
+    {
+     "id": "b6",
+     "text": "):"
+    },
+    {
+     "id": "b7",
+     "text": "-3,"
+    },
+    {
+     "id": "b8",
+     "text": "range"
+    },
+    {
+     "id": "b9",
+     "text": "for"
+    }
+   ],
+   "answer": {
+    "g1": "b9",
+    "g2": "b1",
+    "g3": "b3",
+    "g4": "b8",
+    "g5": "b5",
+    "g6": "b7",
+    "g7": "b2",
+    "g8": "b4",
+    "g9": "b6"
+   },
+   "alternatives": [],
+   "solution": "for number in range(-3, 0, 1):"
+  },
+  "explanation_uz": {
+   "javob": "for number in range(-3, 0, 1):",
+   "nega": "range(-3, 0, 1) → -3, -2, -1.",
+   "xato": "Boshqa tartiblar bo'sh yoki boshqa ketma-ketlik beradi.",
+   "eslab": "range(boshlanish, tugash, qadam)."
+  },
+  "verify": {
+   "suffix": "\n    print(number)",
+   "expect": "-3\n-2\n-1"
+  },
+  "section": "2.2"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "14",
+  "type": "code_gap",
+  "text": "Arrange the code boxes in the correct positions to form a conditional instruction which guarantees that a certain statement is executed when the tax_rate variable is less than 23.5.",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": ":"
+    },
+    {
+     "id": "b2",
+     "text": "tax_rate"
+    },
+    {
+     "id": "b3",
+     "text": "if"
+    },
+    {
+     "id": "b4",
+     "text": "23.5"
+    },
+    {
+     "id": "b5",
+     "text": "<"
+    }
+   ],
+   "answer": {
+    "g1": "b3",
+    "g2": "b2",
+    "g3": "b5",
+    "g4": "b4",
+    "g5": "b1"
+   },
+   "alternatives": [],
+   "solution": "if tax_rate < 23.5:"
+  },
+  "explanation_uz": {
+   "javob": "if tax_rate < 23.5:",
+   "nega": "tax_rate 23.5 dan kichik → tax_rate < 23.5.",
+   "xato": "Teskari tartib sintaksis xato.",
+   "eslab": "if + shart + :"
+  },
+  "verify": {
+   "setup": "tax_rate = 20\n",
+   "suffix": "\n    print(1)",
+   "expect": "1"
+  },
+  "section": "2.1"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "11",
+  "type": "code_gap",
+  "text": "Drag and drop the conditional expressions to obtain a code which outputs ### to the screen. (Note: some code boxes will not be used.)",
+  "interaction": {
+   "template": "shift = 5 - 4 * 2\nif shift > 0:\n    print(\"#\")\nelif {{g1}}:\n    print(\"##\")\nelif {{g2}}:\n    print(\"###\")",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "shift < 0"
+    },
+    {
+     "id": "b2",
+     "text": "shift = 0"
+    },
+    {
+     "id": "b3",
+     "text": "shift == 0"
+    },
+    {
+     "id": "b4",
+     "text": "shift =/= 0"
+    }
+   ],
+   "answer": {
+    "g1": "b3",
+    "g2": "b1"
+   },
+   "alternatives": [],
+   "solution": "shift = 5 - 4 * 2\nif shift > 0:\n    print(\"#\")\nelif shift == 0:\n    print(\"##\")\nelif shift < 0:\n    print(\"###\")",
+   "result": "###"
+  },
+  "explanation_uz": {
+   "javob": "elif shift == 0 ... elif shift < 0 → ###",
+   "nega": "shift = 5 - 4*2 = -3. Uchta # uchun ikkinchi elif ga yetib borish kerak: birinchi elif (shift == 0) yolg'on, ikkinchisi (shift < 0) rost.",
+   "xato": "shift =/= 0 va shift = 0 sintaksis jihatdan noto'g'ri.",
+   "eslab": "Tenglik uchun == ."
+  },
+  "verify": {
+   "expect": "###"
+  },
+  "section": "2.1"
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "ref": "11",
+  "type": "code_gap",
+  "text": "Assuming that a Pepperoni Pizza costs $2.99, arrange the code boxes to create a valid line of code, which makes a relevant pizzeria's menu entry within the pizza_menu dictionary (note: \"Pepperoni Pizza\" is the key).",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}{{g6}}{{g7}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": ":"
+    },
+    {
+     "id": "b2",
+     "text": "\"Pepperoni Pizza\""
+    },
+    {
+     "id": "b3",
+     "text": "}"
+    },
+    {
+     "id": "b4",
+     "text": "pizza_menu"
+    },
+    {
+     "id": "b5",
+     "text": "2.99"
+    },
+    {
+     "id": "b6",
+     "text": "="
+    },
+    {
+     "id": "b7",
+     "text": "{"
+    }
+   ],
+   "answer": {
+    "g1": "b4",
+    "g2": "b6",
+    "g3": "b7",
+    "g4": "b2",
+    "g5": "b1",
+    "g6": "b5",
+    "g7": "b3"
+   },
+   "alternatives": [],
+   "solution": "pizza_menu = {\"Pepperoni Pizza\": 2.99}"
+  },
+  "explanation_uz": {
+   "javob": "pizza_menu = {\"Pepperoni Pizza\": 2.99}",
+   "nega": "Lug'at (dictionary) jingalak qavs ichida kalit: qiymat shaklida yoziladi.",
+   "xato": "Hamma bloklar kerak. Boshqa tartib sintaksis xato beradi.",
+   "eslab": "dict = {kalit: qiymat}"
+  },
+  "verify": {
+   "setup": "",
+   "suffix": "\nprint(pizza_menu)",
+   "expect": "{'Pepperoni Pizza': 2.99}"
+  },
+  "section": "3.3"
+ },
+ {
+  "bank": "module",
+  "module": 3,
+  "ref": "12",
+  "type": "code_gap",
+  "text": "Assuming that the pizza_menu dictionary contains pizza:price pairs, arrange the code boxes to create a valid line of code which retrieves the Margherita Pizza price, and assigns it to the charge variable.",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}{{g6}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "pizza_menu"
+    },
+    {
+     "id": "b2",
+     "text": "["
+    },
+    {
+     "id": "b3",
+     "text": "charge"
+    },
+    {
+     "id": "b4",
+     "text": "="
+    },
+    {
+     "id": "b5",
+     "text": "]"
+    },
+    {
+     "id": "b6",
+     "text": "\"Margherita Pizza\""
+    }
+   ],
+   "answer": {
+    "g1": "b3",
+    "g2": "b4",
+    "g3": "b1",
+    "g4": "b2",
+    "g5": "b6",
+    "g6": "b5"
+   },
+   "alternatives": [],
+   "solution": "charge = pizza_menu[\"Margherita Pizza\"]"
+  },
+  "explanation_uz": {
+   "javob": "charge = pizza_menu[\"Margherita Pizza\"]",
+   "nega": "Lug'atdan qiymat olish ro'yxat indekslashiga o'xshaydi, faqat indeks sifatida kalit (string) beriladi. (Manbadagi izohda 'pizza' deb yozilgan — bu xato, to'g'risi pizza_menu.)",
+   "xato": "Teskari tartib o'zlashtirish yo'nalishini buzadi.",
+   "eslab": "dict[kalit] — qiymatni oladi."
+  },
+  "verify": {
+   "setup": "pizza_menu = {'Margherita Pizza': 5}\n",
+   "suffix": "\nprint(charge)",
+   "expect": "5"
+  },
+  "section": "3.3"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "18",
+  "type": "code_gap",
+  "text": "Assuming that the pizza_menu dictionary contains pizza:price pairs, arrange the code boxes to create a valid line of code which adds Prosciutto Pizza at $1.39 to the directory.",
+  "interaction": {
+   "template": "{{g1}}{{g2}}{{g3}}{{g4}}{{g5}}{{g6}}",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "]"
+    },
+    {
+     "id": "b2",
+     "text": "pizza_menu"
+    },
+    {
+     "id": "b3",
+     "text": "\"Prosciutto Pizza\""
+    },
+    {
+     "id": "b4",
+     "text": "["
+    },
+    {
+     "id": "b5",
+     "text": "1.39"
+    },
+    {
+     "id": "b6",
+     "text": "="
+    }
+   ],
+   "answer": {
+    "g1": "b2",
+    "g2": "b4",
+    "g3": "b3",
+    "g4": "b1",
+    "g5": "b6",
+    "g6": "b5"
+   },
+   "alternatives": [],
+   "solution": "pizza_menu[\"Prosciutto Pizza\"] = 1.39"
+  },
+  "explanation_uz": {
+   "javob": "pizza_menu[\"Prosciutto Pizza\"] = 1.39",
+   "nega": "Lug'atga yangi juftlik qo'shish: dict[kalit] = qiymat.",
+   "xato": "Kalit va qiymat o'rni almashgan variantlar noto'g'ri.",
+   "eslab": "dict[kalit] = qiymat"
+  },
+  "verify": {
+   "setup": "pizza_menu = {}\n",
+   "suffix": "\nprint(pizza_menu)",
+   "expect": "{'Prosciutto Pizza': 1.39}"
+  },
+  "section": "3.3"
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "ref": "15",
+  "type": "code_gap",
+  "text": "Drag and drop the given code boxes in order to build a program which prints Mishit to the screen. (Note: one code box will not be used.)",
+  "interaction": {
+   "template": "try:\n    character = \"ABC\"[3]\n{{g1}}\n    print(\"Mishit\")\n{{g2}}\n    print(\"Failure\")",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "except IndexError:"
+    },
+    {
+     "id": "b2",
+     "text": "default:"
+    },
+    {
+     "id": "b3",
+     "text": "except:"
+    }
+   ],
+   "answer": {
+    "g1": "b1",
+    "g2": "b3"
+   },
+   "alternatives": [],
+   "solution": "try:\n    character = \"ABC\"[3]\nexcept IndexError:\n    print(\"Mishit\")\nexcept:\n    print(\"Failure\")",
+   "result": "Mishit"
+  },
+  "explanation_uz": {
+   "javob": "except IndexError: ... except:",
+   "nega": "\"ABC\"[3] — indeks chegaradan tashqari, IndexError. Birinchi except IndexError: ishlaydi va Mishit chiqadi. Pastdagi umumiy except: boshqa xatolar uchun.",
+   "xato": "default: — Python'da bunday konstruksiya yo'q. except: ni birinchi qo'ysangiz, u hamma xatoni ushlaydi va Failure chiqadi.",
+   "eslab": "Aniq except oldin, umumiy keyin."
+  },
+  "verify": {
+   "expect": "Mishit"
+  },
+  "section": "4.3"
+ },
+ {
+  "bank": "module",
+  "module": 4,
+  "ref": "16",
+  "type": "code_gap",
+  "text": "Drag and drop the given code boxes in order to build a program which prints Not a number to the screen. (Note: one code box will not be used.)",
+  "interaction": {
+   "template": "{{g1}}\n    width = float('width')\n{{g2}}\n    print(\"Not a number\")\nexcept:\n    print(\"Bad luck\")",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "except ValueError:"
+    },
+    {
+     "id": "b2",
+     "text": "try:"
+    },
+    {
+     "id": "b3",
+     "text": "except:"
+    }
+   ],
+   "answer": {
+    "g1": "b2",
+    "g2": "b1"
+   },
+   "alternatives": [],
+   "solution": "try:\n    width = float('width')\nexcept ValueError:\n    print(\"Not a number\")\nexcept:\n    print(\"Bad luck\")",
+   "result": "Not a number"
+  },
+  "explanation_uz": {
+   "javob": "try: ... except ValueError:",
+   "nega": "float('width') — matnni songa aylantirib bo'lmaydi, ValueError. try: bloki ochiladi, mos except ValueError: ushlaydi.",
+   "xato": "except: (umumiy) ikkinchi o'rinda bo'lsa ValueError ni ham ushlardi, lekin shablonda allaqachon umumiy except bor.",
+   "eslab": "try — xavfli kod, except — ushlash."
+  },
+  "verify": {
+   "expect": "Not a number"
+  },
+  "section": "4.3"
+ },
+ {
+  "bank": "final",
+  "module": null,
+  "ref": "30",
+  "type": "code_gap",
+  "text": "Drag and drop the given code boxes in order to build a program which prints Did you ever! to the screen. (Note: one code box will not be used.)",
+  "interaction": {
+   "template": "{{g1}}\n    rate = 25.5 / 0.0\n{{g2}}\n    print(\"Did you ever!\")\nexcept:\n    print(\"Ever!\")",
+   "blocks": [
+    {
+     "id": "b1",
+     "text": "except ZeroDivisionError:"
+    },
+    {
+     "id": "b2",
+     "text": "except KeyError:"
+    },
+    {
+     "id": "b3",
+     "text": "try:"
+    }
+   ],
+   "answer": {
+    "g1": "b3",
+    "g2": "b1"
+   },
+   "alternatives": [],
+   "solution": "try:\n    rate = 25.5 / 0.0\nexcept ZeroDivisionError:\n    print(\"Did you ever!\")\nexcept:\n    print(\"Ever!\")",
+   "result": "Did you ever!"
+  },
+  "explanation_uz": {
+   "javob": "try: ... except ZeroDivisionError:",
+   "nega": "0.0 ga bo'lish ZeroDivisionError beradi. Aynan shu xatoni ushlaydigan except ishlasa Did you ever! chiqadi.",
+   "xato": "except KeyError: bu xatoni ushlamaydi — dastur Ever! chiqarardi.",
+   "eslab": "Xatolik turiga mos except yozing."
+  },
+  "verify": {
+   "expect": "Did you ever!"
+  },
+  "section": "4.3"
+ }
+]
