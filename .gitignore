@@ -1,5 +1,6 @@
 .env
 .venv/
+.passenger_wsgi.py
 venv/
 __pycache__/
 *.pyc
